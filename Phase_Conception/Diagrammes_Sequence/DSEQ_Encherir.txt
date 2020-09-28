@@ -1,0 +1,13 @@
+title Encherir
+frame Encherir
+autoactivation on
+
+participant Equipe
+
+[->Equipe:Encherir(OffreDeBase)
+
+Equipe->Equipe:enchere = random(offreDeBase, offreDeBase*80%)
+
+[<--Equipe:
+
+

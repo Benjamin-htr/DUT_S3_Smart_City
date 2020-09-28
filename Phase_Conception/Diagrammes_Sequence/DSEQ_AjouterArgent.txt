@@ -1,0 +1,21 @@
+title Ajouter Argent
+frame Ajouter Argent
+autoactivation on
+
+participant Equipe
+participant Robot
+participant Tache
+
+[->Equipe:AjouterArgent(robot, tache)
+Equipe->Robot:chrono = robot.getChrono()
+Equipe<--Robot:
+Equipe->Tache:tempsMax = tache.getTempsMax()
+Equipe<--Tache:
+
+alt si chrono > tempsMax
+Equipe->Equipe:argent += tache.getRecompense()*70%
+else
+Equipe->Equipe:argent += tache.getRecompense()
+end
+
+[<--Equipe:

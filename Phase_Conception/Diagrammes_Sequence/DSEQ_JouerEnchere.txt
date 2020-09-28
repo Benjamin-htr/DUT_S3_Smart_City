@@ -1,0 +1,26 @@
+title JouerEnchere
+frame JouerEnchere
+autoactivation on
+
+participant Systeme
+participant Tache
+participant Equipe
+
+[->Systeme:JouerEnchere(tache)
+Systeme->Tache:OffredDeBase = getRecompense()
+Systeme<--Tache:
+Systeme->Equipe: Enchere1 = Encherir(OffreDeBase)
+Systeme<--Equipe:
+Systeme->Equipe:Enchere2 = Encherir(OffreDeBase)
+Systeme<--Equipe:
+alt si Enchere 1 < Enchere 2
+Systeme->Systeme:Gagnant = Equipe 1
+else sinon
+Systeme->Systeme:Gagnant = Equipe 2
+end
+[<--Systeme:Gagnant
+
+
+
+
+

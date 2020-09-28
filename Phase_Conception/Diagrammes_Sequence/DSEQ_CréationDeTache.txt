@@ -1,0 +1,27 @@
+title Création de tâches
+frame  Création de tâches
+autoactivation on
+
+actor Administrateur/Equipe
+participant Systeme
+participant Tache
+participant LieuMission
+participant Marchandise
+
+
+Administrateur/Equipe->Systeme:ajouterTâche(marchandise, lieuDépart, lieuArrivée, temps, recompense)
+
+Systeme->Tache:tache = new Tache(march, lieuDépart, lieuArrivée, temps, recompense)
+
+Tache->LieuMission: ajouterMarchandise(nom, poids)
+
+
+LieuMission->Marchandise:march = new Marchandise(nom, poids)
+LieuMission<--Marchandise:
+
+Tache<--LieuMission:
+
+
+Systeme<--Tache:
+Administrateur/Equipe<--Systeme:
+

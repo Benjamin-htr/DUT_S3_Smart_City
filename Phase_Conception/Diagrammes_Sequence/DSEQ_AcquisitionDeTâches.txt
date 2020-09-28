@@ -1,0 +1,31 @@
+title Acquisition de tâches
+frame Acquisition de tâches
+autoactivation on
+
+participant Equipe
+participant Systeme
+participant Robot
+ 
+[->Equipe:AcquisitionTâche()
+Equipe->Robot:tache = TachePlusProche()
+Equipe<--Robot:
+
+opt si Tache n'est pas une Tache Simple
+Equipe->Systeme:Gagnant = JouerEnchere(tache)
+Equipe<--Systeme:
+
+end
+opt si Equipe == Gagnant ou que Tache est une Tache Simple
+Equipe->Robot:LancementChrono()
+Equipe<--Robot:
+Equipe->Systeme:retirerTache()
+Equipe<--Systeme:
+Equipe->Robot:realiserTache()
+Equipe<--Robot:
+end
+
+[<--Equipe:
+
+
+
+

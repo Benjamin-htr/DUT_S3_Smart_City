@@ -1,0 +1,43 @@
+title PlusProche
+frame   PlusProche
+autoactivation on
+
+participant Robot
+participant Systeme
+participant Tache
+participant LieuMission
+participant StationRecharge
+
+[->Robot:PlusProche(type)
+alt si type == Tache
+Robot->Systeme:taches = getListeTaches()
+Robot<--Systeme:
+Robot->Robot: distances = list()
+
+loop i < taille(taches)
+Robot->Tache:LieuDep = getLieuDep(taches[i])
+Robot<--Tache:LieuDep
+Robot->LieuMission: posDep = LieuDep.getPos()
+Robot<--LieuMission: posDep
+Robot->Robot:distance[] = posDep - posRobot
+end
+
+Robot->Robot:distanceMinimale = min (distance)
+Robot->Robot:tachePlusProche = taches[distance.indexOf(distanceMinimale)]
+[<--Robot:
+
+else sinon si type == StationRecharge
+Robot->Systeme:stationsRecharges = getListeStationRecharges()
+Robot<--Systeme:
+Robot->Robot: distances = list()
+
+loop i < taille(stationsRecharges)
+Robot->StationRecharge: posStation = stationsRecharges[i].getPos()
+Robot<--StationRecharge: posStation
+Robot->Robot:distance[] = posStation - posRobot
+end
+
+Robot->Robot:distanceMinimale = min (distance)
+Robot->Robot:stationPlusProche = stationsRecharges[distance.indexOf(distanceMinimale)]
+[<--Robot:
+end

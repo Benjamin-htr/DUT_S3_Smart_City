@@ -1,0 +1,27 @@
+title Génération de la carte
+frame GénérationCarte()
+autoactivation on
+
+
+participant Systeme
+participant Carte
+participant cellule
+participant LieuMission
+participant StationRecharge
+
+
+[->Systeme:GénérationCarte(x, y)
+Systeme->Carte:a = new Carte(x, y)
+loop x*y
+Carte->cellule:c = new Cellule()
+cellule-->Carte:
+end
+Carte-->Systeme:
+
+Systeme->LieuMission:b = new LieuMission()
+LieuMission-->Systeme:
+
+Systeme->StationRecharge:s = new StationRecharge()
+Systeme<--StationRecharge:
+
+[<--Systeme:

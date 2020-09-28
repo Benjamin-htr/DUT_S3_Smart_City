@@ -1,0 +1,37 @@
+title Réalisation de tâches
+frame  Réalisation de tâches
+autoactivation on
+
+participant Robot
+participant Tache
+participant Marchandise
+participant Equipe
+
+[->Robot:realiserTache()
+Robot->Tache:march = getMarchandise()
+Tache->Marchandise:geNomMarchandise()
+Tache<--Marchandise:
+Robot<--Tache:
+
+Robot->Tache:LieuDep = getLieuDepart()
+Robot<--Tache:
+Robot->Tache:LieuDest = getLieuDestination()
+Robot<--Tache:
+
+
+Robot->Robot:seDéplacer(LieuDep)
+Robot->Robot:prendreMarchandises(march, LieuDep)
+
+Robot->Robot:seDéplacer(LieuDest)
+Robot->Robot:déposerMarchandises(march, LieuDest)
+
+Robot->Tache:recompense = obtenirRecompense()
+Robot->Equipe:ajouterArgent(robot, tache)
+Robot<--Equipe:
+
+Robot->Robot:RetirerTache()
+Robot->Tache: supprimerTache()
+Robot<--Tache:
+Robot->Robot:RéinitialiserChrono()
+[<--Robot:
+

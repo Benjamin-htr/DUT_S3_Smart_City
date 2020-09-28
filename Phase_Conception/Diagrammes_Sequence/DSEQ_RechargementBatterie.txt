@@ -1,0 +1,23 @@
+title Rechargement batterie
+frame Rachargement batterie
+autoactivation on
+
+participant Robot
+participant StationRecharge
+
+[->Robot:ContrôleBatterie()
+
+opt if BatterieFaible
+
+Robot->Robot:StationPlusProche = plusProche(StationRecharge)
+Robot->Robot:seDeplacer(StationPlusProche)
+
+loop Batterie != 100%
+
+Robot->StationRecharge:RechargerBatterie(Robot)
+Robot<--StationRecharge:
+
+end
+end
+
+[<--Robot:
