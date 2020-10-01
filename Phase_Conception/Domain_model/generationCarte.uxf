@@ -1,0 +1,19 @@
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>499</x><y>140</y><w>130</w><h>110</h></coordinates><panel_attributes>Carte
+--
+longueur
+largeur
+nbLieuMission
+nbStationRecharge</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>799</x><y>180</y><w>130</w><h>70</h></coordinates><panel_attributes>Cellule
+--
+position</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>619</x><y>200</y><w>200</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1
+</panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>749</x><y>580</y><w>130</w><h>70</h></coordinates><panel_attributes>LieuMission
+--
+stock</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>669</x><y>370</y><w>140</w><h>70</h></coordinates><panel_attributes>Lieu
+--
+position</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>729</x><y>430</y><w>110</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80;90;150</additional_attributes></element><element><id>Relation</id><coordinates><x>659</x><y>430</y><w>100</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;10;80;80;10;150</additional_attributes></element><element><id>UMLClass</id><coordinates><x>569</x><y>580</y><w>130</w><h>70</h></coordinates><panel_attributes>StationRecharge
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>240</y><w>150</w><h>200</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>10;10;10;170;130;170</additional_attributes></element></diagram>

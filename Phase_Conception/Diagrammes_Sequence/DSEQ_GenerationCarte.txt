@@ -10,18 +10,22 @@ participant LieuMission
 participant StationRecharge
 
 
-[->Systeme:GénérationCarte(x, y)
-Systeme->Carte:a = new Carte(x, y)
+[->Systeme:GénérationCarte(nbLieuMission, nbStationRecharge)
+Systeme->Carte:a = new Carte(lnbLieuMission, nbStationRecharge)
 loop x*y
-Carte->cellule:c = new Cellule()
+Carte->cellule:c = new Cellule(x, y, top, down, right, left)
 cellule-->Carte:
 end
-Carte-->Systeme:
 
-Systeme->LieuMission:b = new LieuMission()
-LieuMission-->Systeme:
+loop i < nbLieuMission
+Carte->LieuMission:b = new LieuMission()
+LieuMission-->Carte:
+end
 
-Systeme->StationRecharge:s = new StationRecharge()
-Systeme<--StationRecharge:
+loop i < nbStationRecharge
+Carte->StationRecharge:s = new StationRecharge()
+Carte<--StationRecharge:
+end
+Systeme<--Carte:
 
 [<--Systeme:

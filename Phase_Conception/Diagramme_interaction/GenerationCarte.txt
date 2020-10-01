@@ -1,0 +1,42 @@
+title Diagramme d'interaction génération de carte
+frame Diagramme d'interaction génération de carte
+autoactivation on
+
+actor administrateur
+boundary GestionSimulation
+control ControlSimulation
+entity Simulation
+entity Carte
+entity cellule
+entity LieuMission
+entity StationRecharge
+
+
+
+administrateur->GestionSimulation:LancerSimulation()
+
+GestionSimulation->ControlSimulation:créerSimulation()
+ControlSimulation->Simulation:new Simulation()
+ControlSimulation<--Simulation:
+ControlSimulation->Simulation:GénérationCarte(nbLieuMission, nbStationRecharge)
+Simulation->Carte:a = new Carte(lnbLieuMission, nbStationRecharge)
+loop x*y
+Carte->cellule:c = new Cellule(x, y, top, down, right, left)
+cellule-->Carte:
+end
+
+loop i < nbLieuMission
+Carte->LieuMission:b = new LieuMission()
+LieuMission-->Carte:
+end
+
+loop i < nbStationRecharge
+Carte->StationRecharge:s = new StationRecharge()
+Carte<--StationRecharge:
+end
+Simulation<--Carte:
+ControlSimulation<--Simulation:
+GestionSimulation<--ControlSimulation:
+GestionSimulation->ControlSimulation:afficher()
+GestionSimulation<--ControlSimulation:
+administrateur<--GestionSimulation:
