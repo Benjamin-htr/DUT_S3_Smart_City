@@ -2,7 +2,7 @@ from classes.Lieu import Lieu
 
 class StationRecharge(Lieu):
     def __init__(self):
-        self.signe = 'R'
+        super().__init__('R')
 
     def getSigne(self):
-        return self.signe
+        return super().getSigne()
