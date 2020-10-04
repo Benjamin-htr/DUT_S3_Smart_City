@@ -1,9 +1,4 @@
-from classes.Carte import Carte
-from classes.Cellule import Cellule
+from classes.GestionSimulation import GestionSimulation
 
-cel = Cellule(1,1)
-print(cel)
-carte = Carte()
-carte.cellule(1,1)
-carte.creationCartes()
-print(carte)
+a = GestionSimulation(4,15)
+a.lancerSimulation()

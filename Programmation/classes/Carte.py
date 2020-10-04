@@ -1,4 +1,6 @@
 from classes.Cellule import Cellule
+from classes.StationRecharge import StationRecharge
+from classes.LieuMission import LieuMission
 from random import *
 
 class Carte :
@@ -20,7 +22,6 @@ class Carte :
                 GrilleLigne.append(cel)
             self.cadrillage.append(GrilleLigne)
         
-        
     def cellule(self, x, y):
         """
         retourne la cellule de la grille de position (x=ligne, y=colonne)
@@ -28,17 +29,21 @@ class Carte :
         
         return self.cadrillage[x][y]
     
+    #Permet d'afficher la carte
     def __str__(self):
         """
         retourne une chaine représentant le labyrinthe
         Attention : seuls les murs Est et Sud d'une cellule sont représentés
         """
         laby_lignes = ['+---' * self.ny+'+']
-        
         for x in range(self.nx):
             laby_l = ['|']
             for y in range(self.ny):
-                if self.cadrillage[x][y].murs['E']:
+                #Si la cellule a un lieu alors on affiche son signe dans la cellule
+                if self.cadrillage[x][y].lieu != None:
+                    res = ' ' + self.cadrillage[x][y].lieu.getSigne() + ' |'
+                    laby_l.append(res)
+                elif self.cadrillage[x][y].murs['E']:
                     laby_l.append('   |')
                 else:
                     laby_l.append('    ')
@@ -52,36 +57,46 @@ class Carte :
             laby_lignes.append(''.join(laby_l))
         return '\n'.join(laby_lignes)
 
-    def creationCartes(self) :
+
+    def creationCartes(self, nbLieuMission, nbStationRecharge) :
+        #On créait une grille rempli de cellule
         for i in range (self.nx) :
             for j in range (self.ny) :
                 rand = randint(0, 1)
                 cell=self.cellule(i, j)
-                
                 if not (i == self.nx-1 and j == self.ny-1) :
-                
                     if j == self.ny-1 :
                         self.effaceMur((i, j), 'S')
-                        
-                    
                     elif i == self.nx-1 :
                         self.effaceMur((i, j), 'E')
-                        
                     else :
                         if rand == 0 :
                             self.effaceMur((i, j), 'S')
                         else :
                             self.effaceMur((i, j), 'E')
-        #On détruit des murs aléatoirement
-        for i in range(randint(100,110)):
-            x = randint(0,self.nx-1)
-            y = randint(0,self.ny-1)
+        
+        #On efface des murs aléatoirement
+        for i in range(220):
+            x = randint(0,self.nx-2)
+            y = randint(0,self.ny-2)
             if not (x == self.nx-1 and y == self.ny-1) :
                 if i%2 == 0:
                     self.effaceMur((x, y), 'S')
                 else:
                     self.effaceMur((x,y), 'E')
-    
+        #On ajoute des stations de recharge
+        for i in range(nbLieuMission):
+            x = randint(0,self.nx-1)
+            y = randint(0,self.ny-1)
+            self.cellule(x, y).setLieu(StationRecharge())
+
+        #On ajoute des lieux de mission
+        for i in range(nbStationRecharge):
+            x = randint(0,self.nx-1)
+            y = randint(0,self.ny-1)
+            self.cellule(x, y).setLieu(LieuMission())
+
+    #Efface un mur d'une cellule
     def effaceMur (self, coord, orientation) :
         cell=self.cellule(coord[0], coord[1])
         cell.murs[orientation] = False
