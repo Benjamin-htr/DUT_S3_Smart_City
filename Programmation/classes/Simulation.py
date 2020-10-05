@@ -11,7 +11,6 @@ class Simulation:
         carte = Carte(self.CanvasCarte)
         carte.creationCartes(self.nbLieuMission, self.nbStationRecharge)
         carte.dessinerCarte()
-        
         self.afficher(carte)
 
     def afficher(self, carte):

@@ -8,4 +8,4 @@ class ControlSimulation:
     def creerSimulation(self, nbLieuMission, nbStationRecharge, CanvasCarte):
         simulation = Simulation(nbLieuMission, nbStationRecharge, CanvasCarte)
         simulation.generationCarte()
-        return simulation
+        

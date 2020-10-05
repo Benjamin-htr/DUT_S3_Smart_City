@@ -91,12 +91,16 @@ class Carte :
                 if self.cadrillage[x][y].murs['S'] :
                     carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white')
 
-        carte.pack(side = RIGHT, padx = 10)
+        carte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)
         return carte
 
 
     def creationCartes(self, nbLieuMission, nbStationRecharge) :
         carte = self.carte
+        hauteur = 650
+        largeur = 650
+        tailleY = hauteur/self.nx
+        tailleX = largeur/self.ny
         #On créait une grille rempli de cellule
         for i in range (self.nx) :
             for j in range (self.ny) :
@@ -127,12 +131,16 @@ class Carte :
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(StationRecharge())
+            carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='blue')
+
+
 
         #On ajoute des lieux de mission
         for i in range(nbStationRecharge):
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(LieuMission())
+            carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='red')
 
     #Efface un mur d'une cellule
     def effaceMur (self, coord, orientation) :

@@ -114,6 +114,7 @@ class Grille :
                 if self.cadrillage[x][y].murs['S'] :
                     bord = carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white')
 
+        carte.create_oval(10, 10, 20, 20, fill='blue')
         carte.pack(side = RIGHT, padx = 10)
         return None
 
