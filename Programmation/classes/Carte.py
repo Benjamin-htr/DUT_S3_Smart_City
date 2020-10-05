@@ -2,17 +2,19 @@ from classes.Cellule import Cellule
 from classes.StationRecharge import StationRecharge
 from classes.LieuMission import LieuMission
 from random import *
+from tkinter import *
 
 class Carte :
     """
     construction d'une grille de cellules
     """
     
-    def __init__(self):
+    def __init__(self, CanvasCarte):
         """
         construction d'une grille de dimension (nx, ny)
         """
 
+        self.carte = CanvasCarte
         self.nx = 20 #Constante
         self.ny = 20 #Constante
         self.cadrillage = []
@@ -58,39 +60,43 @@ class Carte :
             laby_lignes.append(''.join(laby_l))
         return '\n'.join(laby_lignes)
 
-    def dessinerCarte(CanvasCarte) :
-        carte = CanvasCarte
+    def dessinerCarte(self) :
+        carte = self.carte
 
+        hauteur = 650
+        largeur = 650
         # taille des cellules :
-        tailleY = self.hauteur/self.nx
-        tailleX = self.hauteur/self.ny
+        tailleY = hauteur/self.nx
+        tailleX = largeur/self.ny
 
         tabPosXEst = []
         tabPosYEst = []
         tabPosXSud = []
         tabPosYSud = []
         for a in range(self.nx) :
-            tabPosYEst.append((self.hauteur/self.nx)*a)
-            tabPosXSud.append((self.hauteur/self.nx)*a)
+            tabPosYEst.append((hauteur/self.nx)*a)
+            tabPosXSud.append((hauteur/self.nx)*a)
             
         for b in range(1, self.ny+1) :
-            tabPosXEst.append((self.largeur/self.ny)*b)
-            tabPosYSud.append((self.largeur/self.ny)*b)
+            tabPosXEst.append((largeur/self.ny)*b)
+            tabPosYSud.append((largeur/self.ny)*b)
+
 
         for x in range(self.nx) :
             for y in range(self.ny) :
                 
                 if self.cadrillage[x][y].murs['E'] :
-                    bord = carte.create_line(tabPosXEst[y], tabPosYEst[x],tabPosXEst[y], tabPosYEst[x]+tailleY, fill = 'red')
+                    carte.create_line(tabPosXEst[y], tabPosYEst[x],tabPosXEst[y], tabPosYEst[x]+tailleY, fill = 'white')
 
                 if self.cadrillage[x][y].murs['S'] :
-                    bord = carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white')
+                    carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white')
 
         carte.pack(side = RIGHT, padx = 10)
-        return None
+        return carte
 
 
     def creationCartes(self, nbLieuMission, nbStationRecharge) :
+        carte = self.carte
         #On créait une grille rempli de cellule
         for i in range (self.nx) :
             for j in range (self.ny) :

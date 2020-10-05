@@ -1,4 +1,5 @@
 from classes.Simulation import Simulation
+from tkinter import *
 
 class ControlSimulation:
     def __init__(self):

@@ -1,4 +1,5 @@
 from classes.Carte import Carte
+from tkinter import *
 
 class Simulation:
     def __init__(self, nbLieuMission, nbStationRecharge, CanvasCarte):
@@ -7,9 +8,10 @@ class Simulation:
         self.CanvasCarte = CanvasCarte
     
     def generationCarte(self):
-        carte = Carte()
+        carte = Carte(self.CanvasCarte)
         carte.creationCartes(self.nbLieuMission, self.nbStationRecharge)
-        carte.dessinerCarte(self.CanvasCarte)
+        carte.dessinerCarte()
+        
         self.afficher(carte)
 
     def afficher(self, carte):
