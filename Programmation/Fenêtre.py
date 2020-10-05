@@ -93,31 +93,33 @@ class Grille :
         tailleX = self.hauteur/self.ny
         print(tailleX)
 
-        tabOriginX = []
-        for a in range(1, self.nx) :
-            tabOriginX.append((self.hauteur/self.nx)*a)
+        tabPosXEst = []
+        tabPosYEst = []
+        tabPosXSud = []
+        tabPosYSud = []
+        for a in range(self.nx) :
+            tabPosYEst.append((self.hauteur/self.nx)*a)
+            tabPosXSud.append((self.hauteur/self.nx)*a)
+            
+        for b in range(1, self.ny+1) :
+            tabPosXEst.append((self.largeur/self.ny)*b)
+            tabPosYSud.append((self.largeur/self.ny)*b)
 
-        tabOriginY = []
-        for b in range(1, self.ny) :
-            tabOriginY.append((self.largeur/self.ny)*b)
-        print(tabOriginX)
-        print(tabOriginY)
-
-        for x in range(len(tabOriginX)) :
-            for y in range(len(tabOriginY)) :
+        for x in range(self.nx) :
+            for y in range(self.ny) :
                 
                 if self.cadrillage[x][y].murs['E'] :
-                    bord = carte.create_line(tabOriginX[x], tabOriginY[y], tabOriginX[x], tabOriginY[y]+tailleY, fill = 'red')
+                    bord = carte.create_line(tabPosXEst[y], tabPosYEst[x],tabPosXEst[y], tabPosYEst[x]+tailleY, fill = 'red')
 
                 if self.cadrillage[x][y].murs['S'] :
-                    bord = carte.create_line(tabOriginX[x], tabOriginY[y], tabOriginX[x]+tailleX, tabOriginY[y], fill = 'white')
+                    bord = carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white')
 
         carte.pack(side = RIGHT, padx = 10)
         return None
 
 
 carte = Grille(20, 20)
-coord = (2, 3)
+coord = (5, 7)
 cell =carte.cellule(coord[0], coord[1])
 cell.murs['S']=False
 carte.creationCarte()

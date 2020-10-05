@@ -12,6 +12,7 @@ class Carte :
         """
         construction d'une grille de dimension (nx, ny)
         """
+
         self.nx = 20 #Constante
         self.ny = 20 #Constante
         self.cadrillage = []
@@ -56,6 +57,37 @@ class Carte :
                     laby_l.append('   +')
             laby_lignes.append(''.join(laby_l))
         return '\n'.join(laby_lignes)
+
+    def dessinerCarte(CanvasCarte) :
+        carte = CanvasCarte
+
+        # taille des cellules :
+        tailleY = self.hauteur/self.nx
+        tailleX = self.hauteur/self.ny
+
+        tabPosXEst = []
+        tabPosYEst = []
+        tabPosXSud = []
+        tabPosYSud = []
+        for a in range(self.nx) :
+            tabPosYEst.append((self.hauteur/self.nx)*a)
+            tabPosXSud.append((self.hauteur/self.nx)*a)
+            
+        for b in range(1, self.ny+1) :
+            tabPosXEst.append((self.largeur/self.ny)*b)
+            tabPosYSud.append((self.largeur/self.ny)*b)
+
+        for x in range(self.nx) :
+            for y in range(self.ny) :
+                
+                if self.cadrillage[x][y].murs['E'] :
+                    bord = carte.create_line(tabPosXEst[y], tabPosYEst[x],tabPosXEst[y], tabPosYEst[x]+tailleY, fill = 'red')
+
+                if self.cadrillage[x][y].murs['S'] :
+                    bord = carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white')
+
+        carte.pack(side = RIGHT, padx = 10)
+        return None
 
 
     def creationCartes(self, nbLieuMission, nbStationRecharge) :
