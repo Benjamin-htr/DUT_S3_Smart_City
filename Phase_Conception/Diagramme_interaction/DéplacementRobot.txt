@@ -1,0 +1,40 @@
+title Diagramme d'interaction DéplacementRobot
+frame Diagramme d'interaction DéplacementRobot
+autoactivation on
+
+actor administrateur
+boundary GestionSimulation
+control ControlSimulation
+entity Simulation
+entity Robot
+entity Carte
+entity Cellule
+
+
+
+administrateur->GestionSimulation:LancerSimulation()
+
+GestionSimulation->ControlSimulation:créerSimulation()
+ControlSimulation->Simulation:new Simulation()
+ControlSimulation<--Simulation:
+
+Simulation->Robot:robot = new Robot(nom)
+Robot-->Simulation:
+loop tant que simulation == True
+Simulation->Robot:deplacementRobot(aleatoire)
+Robot->Carte:getCellule(aleatoire)
+Carte->Cellule:murPresent(aleatoire)
+Carte<--Cellule:
+Robot<--Carte:
+Simulation<--Robot:
+alt a == True
+Simulation->Robot:ChangerDirection(aleatoire)
+Simulation<--Robot:
+else 
+Simulation->Robot:avancer(aleatoire)
+Simulation<--Robot:
+end
+end
+ControlSimulation<--Simulation:
+GestionSimulation<--ControlSimulation:
+administrateur<--GestionSimulation:
