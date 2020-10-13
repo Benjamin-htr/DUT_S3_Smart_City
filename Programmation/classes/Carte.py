@@ -162,3 +162,13 @@ class Carte :
         elif orientation == 'E' and coord[1] != self.ny-1 :
             cell2=self.cellule(coord[0], coord[1]+1)
             cell2.murs['O'] = False
+
+    def murPresent(self, direction, x, y):
+        if direction == 'N' and x != 0:
+            murPresent = cellule(x, y).murPresent(direction) and cellule(x-1, y).murPresent(direction)
+        elif direction == 'S' and x != self.nx-1:
+            murPresent = cellule(x, y).murPresent(direction) and cellule(x+1, y).murPresent(direction)
+        elif direction == 'O' and y != 0:
+            murPresent = cellule(x, y).murPresent(direction) and cellule(x, y-1).murPresent(direction)
+        elif direction == 'E' and y != self.ny-1:
+            murPresent = cellule(x, y).murPresent(direction) and cellule(x, y+1).murPresent(direction)

@@ -25,3 +25,6 @@ class Cellule:
         else:
             res = self.lieu.getSigne()
         return res
+
+    def murPresent(self, direction):
+        return self.murs[direction]
