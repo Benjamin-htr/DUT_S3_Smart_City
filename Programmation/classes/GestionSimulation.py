@@ -8,6 +8,7 @@ class GestionSimulation:
         #creation de la fenêtre :
         self.window = Tk()
         self.EnCours=False
+        self.controlSimulation = None
         
 
         #canvas :
@@ -27,6 +28,7 @@ class GestionSimulation:
         if (self.EnCours != True) :
             controlSimulation = ControlSimulation()
             sim = controlSimulation.creerSimulation(self.nbLieuMission, self.nbStationRecharge, self.CanvasCarte)
+            self.controlSimulation = controlSimulation
             self.EnCours=True
         
 
@@ -51,7 +53,8 @@ class GestionSimulation:
     
 
 
-    
+    def ajouterRobot(self, name) -> None:
+        self.controlSimulation.creerRobot(name)
 
 
 

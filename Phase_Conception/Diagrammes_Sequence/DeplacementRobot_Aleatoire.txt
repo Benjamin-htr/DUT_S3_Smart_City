@@ -1,0 +1,28 @@
+title Deplacement Robot Aleatoire
+frame Deplacement Robot Aleatoire
+autoactivation on
+
+participant Systeme
+participant Robot
+participant Carte
+participant Cellule
+
+[->Systeme:LancerSimulation()
+Systeme->Robot:robot = new Robot(nom)
+Robot-->Systeme:
+loop tant que simulation == True
+Systeme->Robot:deplacementRobot(aleatoire)
+Robot->Carte:getCellule(aleatoire)
+Carte->Cellule:murPresent(aleatoirea
+Carte<--Cellule:
+Robot<--Carte:
+Systeme<--Robot:
+alt a == True
+Systeme->Robot:ChangerDirection(aleatoire)
+Systeme<--Robot:
+else 
+Systeme->Robot:avancer(aleatoire)
+Systeme<--Robot:
+end
+end
+[<--Systeme:
