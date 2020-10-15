@@ -93,3 +93,6 @@ class GestionSimulation:
 
     def ajouterRobot(self, name) -> None:
         self.controlSimulation.creerRobot(name)
+
+    def getRobots(self) -> list:
+        self.controlSimulation.getRobots()

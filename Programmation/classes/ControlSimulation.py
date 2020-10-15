@@ -14,3 +14,6 @@ class ControlSimulation:
 
     def creerRobot(self, name) -> None:
         self.simulation.ajouterRobot(name)
+
+    def getRobots(self) -> list:
+        self.simulation.getRobots()

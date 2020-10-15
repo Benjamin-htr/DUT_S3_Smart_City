@@ -25,3 +25,6 @@ class Simulation:
     def ajouterRobot(self, name) -> None:
         self.robots.append(Robot(name, Cellule(random.randint(0,20), random.randint(0,20)), self.carte))
 
+    def getRobots(self) -> list:
+        return self.robots
+
