@@ -131,16 +131,18 @@ class Carte :
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(StationRecharge())
-            carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='blue')
-
-
+            #carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='blue')
 
         #On ajoute des lieux de mission
         for i in range(nbStationRecharge):
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(LieuMission())
-            carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='red')
+            #carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='red')
+
+        self.cellule(0,0).setLieu(Robot("Jean",))
+
+        
 
     #Efface un mur d'une cellule
     def effaceMur (self, coord, orientation) :
@@ -162,3 +164,19 @@ class Carte :
         elif orientation == 'E' and coord[1] != self.ny-1 :
             cell2=self.cellule(coord[0], coord[1]+1)
             cell2.murs['O'] = False
+
+    def murPresentCell(self, direction, position) -> bool:
+        x = position.getPosition()[0]
+        y = position.getPosition()[1]
+        cell = self.cellule(x, y)
+
+        murPresent = True
+        if direction == 'N' and not(cell.murPresent(direction)) and not(self.cellule(x-1, y).murPresent('S')) and x != 0:
+            murPresent = False
+        elif direction == 'S' and not(cell.murPresent(direction)) and not(self.cellule(x+1, y).murPresent('N')) and x != self.nx - 1:
+            murPresent = False
+        elif direction == 'E' and not(cell.murPresent(direction)) and not(self.cellule(x, y+1).murPresent('O')) and y != self.ny - 1:
+            murPresent = False
+        elif direction == 'O' and not(cell.murPresent(direction)) and not(self.cellule(x, y-1).murPresent('E')) and y != 0:
+            murPresent = False
+        return murPresent
