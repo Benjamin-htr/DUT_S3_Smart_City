@@ -3,9 +3,14 @@ from tkinter import *
 
 class ControlSimulation:
     def __init__(self):
-        None
+        self.simulation = None
+
 
     def creerSimulation(self, nbLieuMission, nbStationRecharge, CanvasCarte):
         simulation = Simulation(nbLieuMission, nbStationRecharge, CanvasCarte)
         simulation.generationCarte()
-        
+        self.simulation = simulation
+
+
+    def creerRobot(self, name) -> None:
+        self.simulation.ajouterRobot(name)

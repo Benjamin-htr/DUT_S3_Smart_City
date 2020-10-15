@@ -30,7 +30,6 @@ class GestionSimulation:
             sim = controlSimulation.creerSimulation(self.nbLieuMission, self.nbStationRecharge, self.CanvasCarte)
             self.controlSimulation = controlSimulation
             self.EnCours=True
-        
 
         
     def arreterSimulation(self):
@@ -52,11 +51,5 @@ class GestionSimulation:
         self.window.mainloop()
     
 
-
     def ajouterRobot(self, name) -> None:
         self.controlSimulation.creerRobot(name)
-
-
-
-        
-    
