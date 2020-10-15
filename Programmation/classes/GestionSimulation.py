@@ -36,6 +36,7 @@ class GestionSimulation:
             self.controlSimulation = controlSimulation
             self.EnCours=True
         
+
         
     def arreterSimulation(self):
 
@@ -94,10 +95,6 @@ class GestionSimulation:
         self.window.mainloop()
 
     
-
-
-
-
-
-        
     
+    def ajouterRobot(self, name) -> None:
+        self.controlSimulation.creerRobot(name)
