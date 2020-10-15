@@ -9,3 +9,4 @@ class ControlSimulation:
         simulation = Simulation(nbLieuMission, nbStationRecharge, CanvasCarte)
         simulation.generationCarte()
         
+    

@@ -13,7 +13,7 @@ class Robot:
         #Choisir une direction
         direction = self.choisirDirection()
         #On verifie qu'il a pas de mur
-        while (self.verificationMur(direction))
+        while (self.verificationMur(direction)):
             direction = self.choisirDirection()
         #On va sur cette case
         if direction == 'N':

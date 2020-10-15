@@ -25,6 +25,9 @@ class GestionSimulation:
         self.window.resizable(height=False, width=False)
         self.window.iconbitmap("logo.ico")
 
+    def ajouterRobot(self, name) -> None:
+        self.controlSimulation.creerRobot(name)
+
     #boutons interface :
     def lancerSimulation(self):
         if (self.EnCours != True) :
@@ -33,7 +36,6 @@ class GestionSimulation:
             self.controlSimulation = controlSimulation
             self.EnCours=True
         
-
         
     def arreterSimulation(self):
 
@@ -57,6 +59,8 @@ class GestionSimulation:
             def EnregisterNom(event):
                 if messagebox.askyesno("", "Confirmez vous votre choix de nom ?"):
                     print(entree.get())
+                    name = entree.get()
+                    self.ajouterRobot(name)
                     newWindow.destroy()
                     self.WindowNewRobState = False
 
@@ -90,11 +94,8 @@ class GestionSimulation:
         self.window.mainloop()
 
     
-    
 
 
-    def ajouterRobot(self, name) -> None:
-        self.controlSimulation.creerRobot(name)
 
 
 

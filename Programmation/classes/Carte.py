@@ -131,16 +131,15 @@ class Carte :
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(StationRecharge())
-            #carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='blue')
+            carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='blue')
 
         #On ajoute des lieux de mission
         for i in range(nbStationRecharge):
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(LieuMission())
-            #carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='red')
+            carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='red')
 
-        self.cellule(0,0).setLieu(Robot("Jean",))
 
         
 
