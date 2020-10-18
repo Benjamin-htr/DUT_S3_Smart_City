@@ -9,7 +9,7 @@ class Robot:
         self.cellule = cellule
         self.carte = carte
 
-    def deplacementRandom(self) -> Cellule:
+    def deplacementRandom(self) :
         #Choisir une direction
         direction = self.choisirDirection()
         #On verifie qu'il a pas de mur
@@ -17,14 +17,14 @@ class Robot:
             direction = self.choisirDirection()
         #On va sur cette case
         if direction == 'N':
-            cellule = self.carte.cellule(self.x-1, self.y)
+            self.cellule = self.carte.cellule(self.cellule.x-1, self.cellule.y)
         elif direction == 'S':
-            cellule = self.carte.cellule(self.x+1, self.y)
+            self.cellule = self.carte.cellule(self.cellule.x+1, self.cellule.y)
         elif direction == 'O':
-            cellule = self.carte.cellule(self.x, self.y-1)
+            self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y-1)
         elif direction == 'E':
-            cellule = self.carte.cellule(self.x, self.y+1)
-        return cellule
+            self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y+1)
+        return direction
 
 
     def choisirDirection(self):
@@ -32,4 +32,4 @@ class Robot:
         return random.choice(directions)
 
     def verificationMur(self, direction) -> bool:
-        return self.carte.murPresentCell(direction, self.position)
+        return self.carte.murPresentCell(direction, self.cellule)

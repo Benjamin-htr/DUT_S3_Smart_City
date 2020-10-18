@@ -21,7 +21,7 @@ class Cellule:
 
     def __str__(self):
         if self.lieu == None:
-            res = "aaa"
+            res = "x "+str(self.x)+" y: "+str(self.y)
         else:
             res = self.lieu.getSigne()
         return res

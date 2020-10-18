@@ -17,6 +17,8 @@ class Simulation:
         carte.creationCartes(self.nbLieuMission, self.nbStationRecharge)
         carte.dessinerCarte()
         self.carte = carte
+        self.robots.append(Robot('popol',Cellule(0, 1),self.carte))
+        #self.robots.append(Robot('test',Cellule(1, 10),self.carte))
         self.afficher(carte)
 
     def afficher(self, carte):
@@ -24,4 +26,6 @@ class Simulation:
 
     def ajouterRobot(self, name) -> None:
         self.robots.append(Robot(name, Cellule(random.randint(0,20), random.randint(0,20)), self.carte))
-
+        
+    def getRobots(self) -> list:
+        return self.robots
