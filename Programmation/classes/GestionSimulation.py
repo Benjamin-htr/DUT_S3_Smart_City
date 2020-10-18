@@ -45,23 +45,6 @@ class GestionSimulation:
             self.pointsRobots.append(self.CanvasCarte.create_oval(y*32.5+(32.5/4), x*32.5+(32.5/4), y*32.5+(32.5/1.25), x*32.5+(32.5/1.25),fill=color, outline='white'))
             
 
-    #TEST pour bouger 1er robot :
-    def deplacementFirst(self):
-        form=self.pointsRobots[0]
-        #On deplace la balle :
-        self.CanvasCarte.move(form,0,5)
-        self.CanvasCarte.update()
-        time.sleep(0.5)
-
-    #TEST pour faire tomber tous les robots :
-    def deplacementTomber(self) :
-        pointsRobots=self.pointsRobots
-        for i in range(len(pointsRobots)) :
-            self.CanvasCarte.move(pointsRobots[i],0,5)
-        
-        self.CanvasCarte.update()
-        time.sleep(0.5)
-
     def deplacement(self) :
         self.CanvasCarte.update()
         time.sleep(1)
@@ -82,10 +65,6 @@ class GestionSimulation:
             elif deplacementRandom =='O' :
                 self.CanvasCarte.move(pointsRobots[i],-32.5,0)
         
-    
-
-
-    
                 
 
     #boutons interface :
