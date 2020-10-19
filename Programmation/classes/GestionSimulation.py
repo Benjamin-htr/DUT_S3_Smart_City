@@ -52,9 +52,9 @@ class GestionSimulation:
         robots=self.getRobots()
         for i in range(len(pointsRobots)) :
             currentCell=robots[i].cellule
-            print(robots[i].nom, " :", currentCell)
+            #print(robots[i].nom, " :", currentCell)
             deplacementRandom=robots[i].deplacementRandom()
-            print(robots[i].nom, " :", deplacementRandom)
+            #print(robots[i].nom, " :", deplacementRandom)
 
             if deplacementRandom =='N' :
                 self.CanvasCarte.move(pointsRobots[i],0,-32.5)
@@ -76,7 +76,6 @@ class GestionSimulation:
             self.EnCours=True
             self.afficherRobots()
             while self.EnCours==True :
-                print('avance')
                 self.deplacement()
 
         
