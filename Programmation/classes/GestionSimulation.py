@@ -75,6 +75,13 @@ class GestionSimulation:
             self.controlSimulation = controlSimulation
             self.EnCours=True
             self.afficherRobots()
+
+            # Tests
+            #print(self.controlSimulation.simulation.carte.attenantes((2,2)))
+            print(self.controlSimulation.simulation.carte.resolution((1,1), (5,5)))
+            print(self.controlSimulation.simulation.robots[0].deplacement((5,5)))
+
+
             while self.EnCours==True :
                 self.deplacement()
 
@@ -151,5 +158,3 @@ class GestionSimulation:
             NouveauRobot.grid(row= 1, column=0, columnspan=2) 
             
             self.window.mainloop()
-
-            
