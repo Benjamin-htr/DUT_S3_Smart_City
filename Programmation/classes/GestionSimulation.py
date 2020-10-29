@@ -45,7 +45,7 @@ class GestionSimulation:
             self.pointsRobots.append(self.CanvasCarte.create_oval(y*32.5+(32.5/4), x*32.5+(32.5/4), y*32.5+(32.5/1.25), x*32.5+(32.5/1.25),fill=color, outline='white'))
             
 
-    def deplacement(self) :
+    def deplacementRandom(self) :
         self.CanvasCarte.update()
         time.sleep(1)
         pointsRobots=self.pointsRobots
@@ -64,7 +64,38 @@ class GestionSimulation:
                 self.CanvasCarte.move(pointsRobots[i],32.5,0)
             elif deplacementRandom =='O' :
                 self.CanvasCarte.move(pointsRobots[i],-32.5,0)
+
+
+    def deplacement(self) :
+        self.CanvasCarte.update()
+        pointsRobots=self.pointsRobots
+        robots=self.getRobots()
+        for i in range(len(pointsRobots)) :
+            arrivee=(10,10)
+            currentCell=robots[i].cellule
+            directions=robots[i].deplacement((4, 4))
+            #print(directions)
+            #print(robots[i].nom, " :", currentCell)
         
+            for p in range(len(directions)) :
+                j = directions[p]
+                
+            #print(robots[i].nom, " :", deplacementRandom)
+                if j =='N' :
+                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x-1, robots[i].cellule.y)
+                    self.CanvasCarte.move(pointsRobots[i],0,-32.5)
+                elif j =='S' :
+                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x+1, robots[i].cellule.y)
+                    self.CanvasCarte.move(pointsRobots[i],0,32.5)
+                elif j =='E' :
+                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x, robots[i].cellule.y+1)
+                    self.CanvasCarte.move(pointsRobots[i],32.5,0)
+                elif j =='O' :
+                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x, robots[i].cellule.y-1)
+                    self.CanvasCarte.move(pointsRobots[i],-32.5,0)
+                currentCell=robots[i].cellule
+                time.sleep(1)
+                self.CanvasCarte.update()
                 
 
     #boutons interface :
@@ -78,8 +109,8 @@ class GestionSimulation:
 
             # Tests
             #print(self.controlSimulation.simulation.carte.attenantes((2,2)))
-            print(self.controlSimulation.simulation.carte.resolution((1,1), (5,5)))
-            print(self.controlSimulation.simulation.robots[0].deplacement((5,5)))
+            #print(self.controlSimulation.simulation.carte.resolution((1,1), (5,5)))
+            #print(self.controlSimulation.simulation.robots[0].deplacement((5,5)))
 
 
             while self.EnCours==True :
