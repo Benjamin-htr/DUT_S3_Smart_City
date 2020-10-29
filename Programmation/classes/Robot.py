@@ -27,6 +27,25 @@ class Robot:
         return direction
 
 
+    def deplacement(self, positionArr : tuple) -> list:
+        cheminPosition = self.carte.resolution(self.cellule.getPosition() , positionArr)
+
+        cheminDirection = []
+        for indexCase in range(1 ,len(cheminPosition)):
+            if cheminPosition[indexCase][0] == cheminPosition[indexCase-1][0] -1:
+                cheminDirection.append('N')
+            elif cheminPosition[indexCase][0] == cheminPosition[indexCase-1][0] +1:
+                cheminDirection.append('S')
+            elif cheminPosition[indexCase][1] == cheminPosition[indexCase-1][1] -1:
+                cheminDirection.append('O')
+            elif cheminPosition[indexCase][1] == cheminPosition[indexCase-1][1] +1:
+                cheminDirection.append('E')
+
+        return cheminDirection
+
+                
+
+
     def choisirDirection(self):
         directions = ['N', 'S', 'E', 'O']
         return random.choice(directions)
