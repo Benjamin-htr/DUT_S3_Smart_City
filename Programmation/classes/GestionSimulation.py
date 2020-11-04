@@ -29,7 +29,6 @@ class GestionSimulation:
         self.window.title('smart_City')
         self.window.geometry('1350x700')
         self.window.resizable(height=False, width=False)
-        self.window.iconbitmap("logo.ico")
 
     def ajouterRobot(self, name) -> None:
         self.controlSimulation.creerRobot(name)
@@ -45,27 +44,65 @@ class GestionSimulation:
             self.pointsRobots.append(self.CanvasCarte.create_oval(y*32.5+(32.5/4), x*32.5+(32.5/4), y*32.5+(32.5/1.25), x*32.5+(32.5/1.25),fill=color, outline='white'))
             
 
+    def deplacement(self, typeDeplacement="random") :
+        self.CanvasCarte.update()
+        time.sleep(0.1)
+        pointsRobots=self.pointsRobots
+        robots=self.getRobots()
+
+        for i in range(len(pointsRobots)) :
+            currentCell=robots[i].cellule
+            #print(robots[i].nom, " :", currentCell)
+            if typeDeplacement == "random" :
+                deplacement=robots[i].deplacementRandom()
+                #print(robots[i].nom, " :", deplacementRandom)
+
+            elif typeDeplacement == "djikstra" :
+                self.controlSimulation.simulation.robots[i].setChemin((19,19))
+                #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
+                deplacement=robots[i].deplacement()
+
+            if deplacement =='N' :
+                self.CanvasCarte.move(pointsRobots[i],0,-32.5)
+            elif deplacement =='S' :
+                self.CanvasCarte.move(pointsRobots[i],0,32.5)
+            elif deplacement =='E' :
+                self.CanvasCarte.move(pointsRobots[i],32.5,0)
+            elif deplacement =='O' :
+                self.CanvasCarte.move(pointsRobots[i],-32.5,0)
+
+    """
     def deplacement(self) :
         self.CanvasCarte.update()
-        time.sleep(1)
         pointsRobots=self.pointsRobots
         robots=self.getRobots()
         for i in range(len(pointsRobots)) :
             currentCell=robots[i].cellule
+            directions=robots[i].deplacement((9, 9))
+            #print(directions)
             #print(robots[i].nom, " :", currentCell)
-            deplacementRandom=robots[i].deplacementRandom()
-            #print(robots[i].nom, " :", deplacementRandom)
-
-            if deplacementRandom =='N' :
-                self.CanvasCarte.move(pointsRobots[i],0,-32.5)
-            elif deplacementRandom =='S' :
-                self.CanvasCarte.move(pointsRobots[i],0,32.5)
-            elif deplacementRandom =='E' :
-                self.CanvasCarte.move(pointsRobots[i],32.5,0)
-            elif deplacementRandom =='O' :
-                self.CanvasCarte.move(pointsRobots[i],-32.5,0)
         
-                
+            for p in range(len(directions)) :
+                j = directions[p]
+            #print(robots[i].nom, " :", deplacementRandom)
+                if j =='N' :
+                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x-1, robots[i].cellule.y)
+                    self.CanvasCarte.move(pointsRobots[i],0,-32.5)
+                elif j =='S' :
+                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x+1, robots[i].cellule.y)
+                    self.CanvasCarte.move(pointsRobots[i],0,32.5)
+                elif j =='E' :
+                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x, robots[i].cellule.y+1)
+                    self.CanvasCarte.move(pointsRobots[i],32.5,0)
+                elif j =='O' :
+                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x, robots[i].cellule.y-1)
+                    self.CanvasCarte.move(pointsRobots[i],-32.5,0)
+                currentCell=robots[i].cellule
+                time.sleep(1)
+                self.CanvasCarte.update()
+        """  
+
+        
 
     #boutons interface :
     def lancerSimulation(self):
@@ -75,9 +112,17 @@ class GestionSimulation:
             self.controlSimulation = controlSimulation
             self.EnCours=True
             self.afficherRobots()
-            while self.EnCours==True :
-                self.deplacement()
 
+            # Tests
+            #print(self.controlSimulation.simulation.carte.attenantes((2,2)))
+            #print(self.controlSimulation.simulation.carte.resolution((1,1), (5,5)))
+            #print(self.controlSimulation.simulation.robots[0].deplacement((5,5)))
+            #self.controlSimulation.simulation.robots[0].setChemin((9,9))
+            #print(self.controlSimulation.simulation.robots[0].deplacement())
+
+            while self.EnCours==True :
+                self.deplacement("djikstra")
+    
         
     def arreterSimulation(self):
         self.EnCours=False
@@ -151,5 +196,3 @@ class GestionSimulation:
             NouveauRobot.grid(row= 1, column=0, columnspan=2) 
             
             self.window.mainloop()
-
-            

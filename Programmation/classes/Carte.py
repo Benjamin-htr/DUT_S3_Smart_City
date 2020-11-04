@@ -162,9 +162,9 @@ class Carte :
             cell2=self.cellule(coord[0], coord[1]+1)
             cell2.murs['O'] = False
 
-    def murPresentCell(self, direction, position) -> bool:
-        x = position.getPosition()[0]
-        y = position.getPosition()[1]
+    def murPresentCell(self, direction, cellule) -> bool:
+        x = cellule.getPosition()[0]
+        y = cellule.getPosition()[1]
         cell = self.cellule(x, y)
 
         murPresent = True
@@ -177,3 +177,60 @@ class Carte :
         elif direction == 'O' and not(cell.murPresent(direction)) and not(self.cellule(x, y-1).murPresent('E')) and y != 0:
             murPresent = False
         return murPresent
+
+
+    def distance(self, positionDep : tuple) -> list:
+        dist = []
+        for i in range(self.nx):
+            dist.append([])
+            for j in range(self.ny):
+                dist[i].append(-1)
+
+        File = list()
+        dist[positionDep[0]][positionDep[1]] = 0
+        File.append(positionDep)
+
+        while len(File) != 0:
+            k = File[0]
+            liste = self.attenantes(k)
+            for i in range(len(liste)):
+                if dist[liste[i][0]][liste[i][1]] == -1:
+                    File.append(liste[i])
+                    dist[liste[i][0]][liste[i][1]] = dist[k[0]][k[1]]+1
+
+            del File[0]
+
+        return dist
+
+    def attenantes(self, coord : tuple) -> list:
+        cell = self.cellule(coord[0], coord[1])
+        liste = []
+        direction = ['N', 'S', 'E', 'O']
+
+        for direc in direction:
+            if direc == 'N' and coord[0] != 0 and cell.murPresent('N') == False:
+                liste.append((cell.getPosition()[0] - 1 , cell.getPosition()[1]))
+            if direc == 'S' and coord[0] != self.nx - 1 and cell.murPresent('S') == False:
+                liste.append((cell.getPosition()[0] + 1 , cell.getPosition()[1]))
+            if direc == 'E' and coord[1] != self.ny - 1 and cell.murPresent('E') == False:
+                liste.append((cell.getPosition()[0] , cell.getPosition()[1] + 1))
+            if direc == 'O' and coord[1] != 0 and cell.murPresent('O') == False:
+                liste.append((cell.getPosition()[0] , cell.getPosition()[1] - 1))
+
+        return liste
+
+    def resolution(self, positionDep : tuple, positionArr : tuple) -> list:
+        D = self.distance(positionDep)
+        x = self.nx
+        y = self.ny
+        a = positionArr[0]
+        b = positionArr[1]
+        rep = [(a,b)]
+        while (positionDep[0],positionDep[1]) != (a,b):
+            att = self.attenantes((a,b))
+            for i in att:
+                if D[a][b]-1 == D[i[0]][i[1]] and (0,0) != (a,b):
+                    a = i[0]
+                    b = i[1]
+                    rep = [(a,b)] + rep
+        return rep
