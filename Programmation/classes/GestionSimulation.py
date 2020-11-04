@@ -46,7 +46,7 @@ class GestionSimulation:
 
     def deplacement(self, typeDeplacement="random") :
         self.CanvasCarte.update()
-        time.sleep(0.1)
+        #time.sleep(0.1)
         pointsRobots=self.pointsRobots
         robots=self.getRobots()
 
@@ -121,7 +121,7 @@ class GestionSimulation:
             #print(self.controlSimulation.simulation.robots[0].deplacement())
 
             while self.EnCours==True :
-                self.window.after(1000, self.deplacement("djikstra"))
+                self.CanvasCarte.after(300, self.deplacement("djikstra"))
     
         
     def arreterSimulation(self):
