@@ -121,7 +121,7 @@ class GestionSimulation:
             #print(self.controlSimulation.simulation.robots[0].deplacement())
 
             while self.EnCours==True :
-                self.deplacement("djikstra")
+                self.window.after(1000, self.deplacement("djikstra"))
     
         
     def arreterSimulation(self):
