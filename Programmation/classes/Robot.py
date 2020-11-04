@@ -30,11 +30,13 @@ class Robot:
 
 
     def setChemin(self, positionArr) -> None:
+        #print('setchemin')
         self.chemin = Chemin(self.carte.resolution(self.cellule.getPosition() , positionArr))
 
 
-    def deplacement(self) -> str:
+    def deplacement(self, ) -> str:
         if not(self.chemin.vide()): 
+            #print('rentré')
             direction = self.chemin.prochainePosition()
             
             if direction == 'N':

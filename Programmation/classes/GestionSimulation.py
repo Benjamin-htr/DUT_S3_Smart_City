@@ -45,24 +45,31 @@ class GestionSimulation:
             self.pointsRobots.append(self.CanvasCarte.create_oval(y*32.5+(32.5/4), x*32.5+(32.5/4), y*32.5+(32.5/1.25), x*32.5+(32.5/1.25),fill=color, outline='white'))
             
 
-    def deplacementRandom(self) :
+    def deplacement(self, typeDeplacement="random") :
         self.CanvasCarte.update()
         time.sleep(1)
         pointsRobots=self.pointsRobots
         robots=self.getRobots()
+        
+
         for i in range(len(pointsRobots)) :
             currentCell=robots[i].cellule
             #print(robots[i].nom, " :", currentCell)
-            deplacementRandom=robots[i].deplacementRandom()
-            #print(robots[i].nom, " :", deplacementRandom)
+            if typeDeplacement == "random" :
+                deplacement=robots[i].deplacementRandom()
+                #print(robots[i].nom, " :", deplacementRandom)
 
-            if deplacementRandom =='N' :
+            elif typeDeplacement == "djikstra" :
+                self.controlSimulation.simulation.robots[i].setChemin((9,9))
+                deplacement=robots[i].deplacement()
+
+            if deplacement =='N' :
                 self.CanvasCarte.move(pointsRobots[i],0,-32.5)
-            elif deplacementRandom =='S' :
+            elif deplacement =='S' :
                 self.CanvasCarte.move(pointsRobots[i],0,32.5)
-            elif deplacementRandom =='E' :
+            elif deplacement =='E' :
                 self.CanvasCarte.move(pointsRobots[i],32.5,0)
-            elif deplacementRandom =='O' :
+            elif deplacement =='O' :
                 self.CanvasCarte.move(pointsRobots[i],-32.5,0)
 
     """
@@ -111,13 +118,12 @@ class GestionSimulation:
             #print(self.controlSimulation.simulation.carte.attenantes((2,2)))
             #print(self.controlSimulation.simulation.carte.resolution((1,1), (5,5)))
             #print(self.controlSimulation.simulation.robots[0].deplacement((5,5)))
-            self.controlSimulation.simulation.robots[0].setChemin((9,9))
-            print(self.controlSimulation.simulation.robots[0].deplacement())
+            #self.controlSimulation.simulation.robots[0].setChemin((9,9))
+            #print(self.controlSimulation.simulation.robots[0].deplacement())
 
-
-            #while self.EnCours==True :
-                #self.deplacement()
-
+            while self.EnCours==True :
+                self.deplacement("djikstra")
+    
         
     def arreterSimulation(self):
         self.EnCours=False
