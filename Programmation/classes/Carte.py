@@ -141,8 +141,6 @@ class Carte :
             carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='red')
 
 
-        
-
     #Efface un mur d'une cellule
     def effaceMur (self, coord, orientation) :
         cell=self.cellule(coord[0], coord[1])
