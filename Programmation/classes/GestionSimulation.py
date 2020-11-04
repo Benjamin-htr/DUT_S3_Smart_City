@@ -79,7 +79,6 @@ class GestionSimulation:
         
             for p in range(len(directions)) :
                 j = directions[p]
-                
             #print(robots[i].nom, " :", deplacementRandom)
                 if j =='N' :
                     robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x-1, robots[i].cellule.y)

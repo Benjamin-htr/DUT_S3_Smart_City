@@ -1,0 +1,25 @@
+title AcquisitionTache
+frame AcquisitionTache
+autoactivation on
+
+participant Systeme
+participant Robot
+participant Tache
+participant Carte
+
+
+[->Systeme:LancerSimulation()
+Systeme->Robot:AcquisitionTache(listeTache)
+Robot->Robot:distance==[]
+loop i < taille(listeTache)
+Robot->Robot:tache = listeTache[i]
+Robot->Tache:ptDepart = tache.getPtDepart()
+Tache-->Robot:
+Robot->Carte:distance += (distance(ptDepart))
+Carte-->Robot:
+end
+
+Robot->Robot: missionPlusProche = listeTache(minimum(distance))
+
+Robot-->Systeme:
+Systeme-->[:
