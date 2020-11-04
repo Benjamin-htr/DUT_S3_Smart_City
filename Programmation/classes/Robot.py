@@ -1,6 +1,7 @@
 import random
 from classes.Carte import Carte
 from classes.Cellule import Cellule
+from classes.Chemin import Chemin
 
 class Robot:
 
@@ -8,7 +9,7 @@ class Robot:
         self.nom = nom
         self.cellule = cellule
         self.carte = carte
-        
+        self.chemin = None
 
     def deplacementRandom(self) :
         #Choisir une direction
@@ -28,26 +29,26 @@ class Robot:
         return direction
 
 
-    def deplacement(self, positionArr : tuple) -> list:
-        cheminPosition = self.carte.resolution(self.cellule.getPosition() , positionArr)
+    def setChemin(self, positionArr) -> None:
+        self.chemin = Chemin(self.carte.resolution(self.cellule.getPosition() , positionArr))
 
-        cheminDirection = []
-        for indexCase in range(1 ,len(cheminPosition)):
-            if cheminPosition[indexCase][0] == cheminPosition[indexCase-1][0] -1:
-                cheminDirection.append('N')
 
-            elif cheminPosition[indexCase][0] == cheminPosition[indexCase-1][0] +1:
-                cheminDirection.append('S')
+    def deplacement(self) -> str:
+        if not(self.chemin.vide()): 
+            direction = self.chemin.prochainePosition()
+            
+            if direction == 'N':
+                self.cellule = self.carte.cellule(self.cellule.x-1, self.cellule.y)
+            elif direction == 'S':
+                self.cellule = self.carte.cellule(self.cellule.x+1, self.cellule.y)
+            elif direction == 'O':
+                self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y-1)
+            elif direction == 'E':
+                self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y+1)
 
-            elif cheminPosition[indexCase][1] == cheminPosition[indexCase-1][1] -1:
-                cheminDirection.append('O')
+            return direction
 
-            elif cheminPosition[indexCase][1] == cheminPosition[indexCase-1][1] +1:
-                cheminDirection.append('E')
-
-        return cheminDirection
-
-                
+        
 
 
     def choisirDirection(self):

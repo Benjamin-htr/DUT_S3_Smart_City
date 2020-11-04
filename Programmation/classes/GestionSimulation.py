@@ -65,7 +65,7 @@ class GestionSimulation:
             elif deplacementRandom =='O' :
                 self.CanvasCarte.move(pointsRobots[i],-32.5,0)
 
-
+    """
     def deplacement(self) :
         self.CanvasCarte.update()
         pointsRobots=self.pointsRobots
@@ -94,7 +94,9 @@ class GestionSimulation:
                 currentCell=robots[i].cellule
                 time.sleep(1)
                 self.CanvasCarte.update()
-                
+        """  
+
+        
 
     #boutons interface :
     def lancerSimulation(self):
@@ -109,10 +111,12 @@ class GestionSimulation:
             #print(self.controlSimulation.simulation.carte.attenantes((2,2)))
             #print(self.controlSimulation.simulation.carte.resolution((1,1), (5,5)))
             #print(self.controlSimulation.simulation.robots[0].deplacement((5,5)))
+            self.controlSimulation.simulation.robots[0].setChemin((9,9))
+            print(self.controlSimulation.simulation.robots[0].deplacement())
 
 
-            while self.EnCours==True :
-                self.deplacement()
+            #while self.EnCours==True :
+                #self.deplacement()
 
         
     def arreterSimulation(self):
