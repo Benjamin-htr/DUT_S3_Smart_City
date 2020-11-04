@@ -110,6 +110,8 @@ class GestionSimulation:
             #print(self.controlSimulation.simulation.carte.attenantes((2,2)))
             #print(self.controlSimulation.simulation.carte.resolution((1,1), (5,5)))
             #print(self.controlSimulation.simulation.robots[0].deplacement((5,5)))
+            self.controlSimulation.simulation.robots[0].setChemin((9,9))
+            print(self.controlSimulation.simulation.robots[0].deplacement())
 
 
             while self.EnCours==True :

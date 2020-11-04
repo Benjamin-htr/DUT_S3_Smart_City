@@ -1,6 +1,7 @@
 import random
 from classes.Carte import Carte
 from classes.Cellule import Cellule
+from classes.Chemin import Chemin
 
 class Robot:
 
@@ -8,6 +9,7 @@ class Robot:
         self.nom = nom
         self.cellule = cellule
         self.carte = carte
+        self.chemin = None
 
     def deplacementRandom(self) :
         #Choisir une direction
@@ -27,26 +29,13 @@ class Robot:
         return direction
 
 
-    def deplacement(self, positionArr : tuple) -> list:
-        cheminPosition = self.carte.resolution(self.cellule.getPosition() , positionArr)
+    def setChemin(self, positionArr) -> None:
+        self.chemin = Chemin(self.carte.resolution(self.cellule.getPosition() , positionArr))
 
-        cheminDirection = []
-        for indexCase in range(1 ,len(cheminPosition)):
-            if cheminPosition[indexCase][0] == cheminPosition[indexCase-1][0] -1:
-                cheminDirection.append('N')
 
-            elif cheminPosition[indexCase][0] == cheminPosition[indexCase-1][0] +1:
-                cheminDirection.append('S')
-
-            elif cheminPosition[indexCase][1] == cheminPosition[indexCase-1][1] -1:
-                cheminDirection.append('O')
-
-            elif cheminPosition[indexCase][1] == cheminPosition[indexCase-1][1] +1:
-                cheminDirection.append('E')
-
-        return cheminDirection
-
-                
+    def deplacement(self) -> str:
+        if not(self.chemin.vide()): 
+            return self.chemin.prochainePosition()
 
 
     def choisirDirection(self):
