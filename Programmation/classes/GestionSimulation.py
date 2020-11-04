@@ -63,7 +63,7 @@ class GestionSimulation:
                 #print(robots[i].nom, " :", deplacementRandom)
 
             elif typeDeplacement == "djikstra" :
-                self.controlSimulation.simulation.robots[i].setChemin((19,19))
+                self.controlSimulation.simulation.robots[i].setChemin((9,9))
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
                 deplacement=robots[i].deplacement()
 
