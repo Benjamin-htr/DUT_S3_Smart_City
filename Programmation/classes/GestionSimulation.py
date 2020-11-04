@@ -71,9 +71,8 @@ class GestionSimulation:
         pointsRobots=self.pointsRobots
         robots=self.getRobots()
         for i in range(len(pointsRobots)) :
-            arrivee=(10,10)
             currentCell=robots[i].cellule
-            directions=robots[i].deplacement((4, 4))
+            directions=robots[i].deplacement((9, 9))
             #print(directions)
             #print(robots[i].nom, " :", currentCell)
         

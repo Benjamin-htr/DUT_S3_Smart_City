@@ -8,6 +8,7 @@ class Robot:
         self.nom = nom
         self.cellule = cellule
         self.carte = carte
+        
 
     def deplacementRandom(self) :
         #Choisir une direction
