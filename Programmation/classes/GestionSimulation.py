@@ -76,7 +76,7 @@ class GestionSimulation:
             elif deplacement =='O' :
                 self.CanvasCarte.move(pointsRobots[i],-32.5,0)
         self.CanvasCarte.after(1000, lambda : self.deplacement("djikstra"))
-        
+
     """
     def deplacement(self) :
         self.CanvasCarte.update()
