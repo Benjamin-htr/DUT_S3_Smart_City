@@ -31,7 +31,6 @@ class GestionSimulation:
         self.window.title('smart_City')
         self.window.geometry('1350x700')
         self.window.resizable(height=False, width=False)
-        self.window.iconbitmap("logo.ico")
 
     def ajouterRobot(self, name) -> None:
         self.controlSimulation.creerRobot(name)
@@ -52,7 +51,7 @@ class GestionSimulation:
             return
 
         self.CanvasCarte.update()
-        #time.sleep(1)
+        time.sleep(0.1)
         pointsRobots=self.pointsRobots
         robots=self.getRobots()
 
@@ -64,7 +63,7 @@ class GestionSimulation:
                 #print(robots[i].nom, " :", deplacementRandom)
 
             elif typeDeplacement == "djikstra" :
-                robots[i].setChemin((9,9))
+                self.controlSimulation.simulation.robots[i].setChemin((19,19))
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
                 deplacement=robots[i].deplacement()
 

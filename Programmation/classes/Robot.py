@@ -59,3 +59,4 @@ class Robot:
 
     def verificationMur(self, direction) -> bool:
         return self.carte.murPresentCell(direction, self.cellule)
+
