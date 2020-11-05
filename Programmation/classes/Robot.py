@@ -30,12 +30,27 @@ class Robot:
 
 
     def setChemin(self, positionArr) -> None:
+        #print('setchemin')
         self.chemin = Chemin(self.carte.resolution(self.cellule.getPosition() , positionArr))
 
 
-    def deplacement(self) -> str:
+    def deplacement(self, ) -> str:
         if not(self.chemin.vide()): 
-            return self.chemin.prochainePosition()
+            #print('rentré')
+            direction = self.chemin.prochainePosition()
+            
+            if direction == 'N':
+                self.cellule = self.carte.cellule(self.cellule.x-1, self.cellule.y)
+            elif direction == 'S':
+                self.cellule = self.carte.cellule(self.cellule.x+1, self.cellule.y)
+            elif direction == 'O':
+                self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y-1)
+            elif direction == 'E':
+                self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y+1)
+
+            return direction
+
+        
 
 
     def choisirDirection(self):
@@ -44,3 +59,4 @@ class Robot:
 
     def verificationMur(self, direction) -> bool:
         return self.carte.murPresentCell(direction, self.cellule)
+
