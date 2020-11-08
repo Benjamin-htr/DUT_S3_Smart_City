@@ -12,19 +12,20 @@ class Simulation:
         self.robots = []
         self.carte = None
     
-    def generationCarte(self):
-        carte = Carte(self.CanvasCarte)
-        carte.creationCartes(self.nbLieuMission, self.nbStationRecharge)
+    def generationCarte(self, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
+        carte = Carte(self.CanvasCarte, nbCells)
+        carte.creationCartes(self.nbLieuMission, self.nbStationRecharge, densite, tailleStationRecharge, tailleLieuxMission)
         carte.dessinerCarte()
         self.carte = carte
-        self.robots.append(Robot('test',Cellule(0, 0),self.carte))
+        self.robots.append(Robot('test',Cellule(5, 5),self.carte))
         self.afficher(carte)
 
     def afficher(self, carte):
         print(carte)
 
     def ajouterRobot(self, name) -> None:
-        self.robots.append(Robot(name, Cellule(random.randint(0,19), random.randint(0,19)), self.carte))
+        nbCell=self.carte.nx
+        self.robots.append(Robot(name, Cellule(random.randint(0,nbCell-1), random.randint(0,nbCell-1)), self.carte))
         
     def getRobots(self) -> list:
         return self.robots

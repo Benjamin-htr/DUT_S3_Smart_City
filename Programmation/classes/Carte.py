@@ -9,14 +9,14 @@ class Carte :
     construction d'une grille de cellules
     """
     
-    def __init__(self, CanvasCarte):
+    def __init__(self, CanvasCarte, nbCells):
         """
         construction d'une grille de dimension (nx, ny)
         """
 
         self.carte = CanvasCarte
-        self.nx = 20 #Constante
-        self.ny = 20 #Constante
+        self.nx = nbCells
+        self.ny = self.nx
         self.cadrillage = []
         for i in range(self.nx):
             GrilleLigne=[]
@@ -91,11 +91,11 @@ class Carte :
                 if self.cadrillage[x][y].murs['S'] :
                     carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white')
 
-        carte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)
+        #carte.grid(row = 0, column = 0, rowspan=10, padx = 10, pady=25)
         return carte
 
 
-    def creationCartes(self, nbLieuMission, nbStationRecharge) :
+    def creationCartes(self, nbLieuMission, nbStationRecharge, densite, tailleStationRecharge, tailleLieuxMission) :
         carte = self.carte
         hauteur = 650
         largeur = 650
@@ -116,9 +116,9 @@ class Carte :
                             self.effaceMur((i, j), 'S')
                         else :
                             self.effaceMur((i, j), 'E')
-        
+        percent=100-densite
         #On efface des murs aléatoirement
-        for i in range(220):
+        for i in range(round((self.nx*self.nx)*(percent/100))):
             x = randint(0,self.nx-2)
             y = randint(0,self.ny-2)
             if not (x == self.nx-1 and y == self.ny-1) :
@@ -126,19 +126,27 @@ class Carte :
                     self.effaceMur((x, y), 'S')
                 else:
                     self.effaceMur((x,y), 'E')
+
+
+        diam=tailleStationRecharge
+        diamDeb=((100-diam)/2)/100
+        diamFin=(((100-diam)/2)+diam)/100
         #On ajoute des stations de recharge
         for i in range(nbLieuMission):
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(StationRecharge())
-            carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='blue')
+            carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='blue')
 
+        diam=tailleLieuxMission
+        diamDeb=((100-diam)/2)/100
+        diamFin=(((100-diam)/2)+diam)/100
         #On ajoute des lieux de mission
         for i in range(nbStationRecharge):
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(LieuMission())
-            carte.create_oval(y*tailleY+10, x*tailleX+10, y*tailleY+22, x*tailleX+22, fill='red')
+            carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='red')
 
 
     #Efface un mur d'une cellule
