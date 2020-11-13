@@ -92,37 +92,6 @@ class GestionSimulation:
                 self.CanvasCarte.move(pointsRobots[i],-self.tailleX,0)
         self.CanvasCarte.after(1000, lambda : self.deplacement("djikstra"))
 
-    """
-    def deplacement(self) :
-        self.CanvasCarte.update()
-        pointsRobots=self.pointsRobots
-        robots=self.getRobots()
-        for i in range(len(pointsRobots)) :
-            currentCell=robots[i].cellule
-            directions=robots[i].deplacement((9, 9))
-            #print(directions)
-            #print(robots[i].nom, " :", currentCell)
-        
-            for p in range(len(directions)) :
-                j = directions[p]
-            #print(robots[i].nom, " :", deplacementRandom)
-                if j =='N' :
-                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x-1, robots[i].cellule.y)
-                    self.CanvasCarte.move(pointsRobots[i],0,-32.5)
-                elif j =='S' :
-                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x+1, robots[i].cellule.y)
-                    self.CanvasCarte.move(pointsRobots[i],0,32.5)
-                elif j =='E' :
-                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x, robots[i].cellule.y+1)
-                    self.CanvasCarte.move(pointsRobots[i],32.5,0)
-                elif j =='O' :
-                    robots[i].cellule = self.controlSimulation.simulation.carte.cellule(robots[i].cellule.x, robots[i].cellule.y-1)
-                    self.CanvasCarte.move(pointsRobots[i],-32.5,0)
-                currentCell=robots[i].cellule
-                time.sleep(1)
-                self.CanvasCarte.update()
-        """  
-
 
     #boutons interface :
     def lancerSimulation(self):
@@ -263,9 +232,6 @@ class GestionSimulation:
                 self.WindowSettingState = False
 
             newWindow.protocol("WM_DELETE_WINDOW", on_closing)
-
-
-
 
 
     def afficherSimulation(self) :
