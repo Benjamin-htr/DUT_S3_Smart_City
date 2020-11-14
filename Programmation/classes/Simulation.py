@@ -27,5 +27,6 @@ class Simulation:
         nbCell=self.carte.nx
         self.robots.append(Robot(name, Cellule(random.randint(0,nbCell-1), random.randint(0,nbCell-1)), self.carte))
         
+        
     def getRobots(self) -> list:
         return self.robots

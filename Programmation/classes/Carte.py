@@ -86,10 +86,10 @@ class Carte :
             for y in range(self.ny) :
                 
                 if self.cadrillage[x][y].murs['E'] :
-                    carte.create_line(tabPosXEst[y], tabPosYEst[x],tabPosXEst[y], tabPosYEst[x]+tailleY, fill = 'white')
+                    carte.create_line(tabPosXEst[y], tabPosYEst[x],tabPosXEst[y], tabPosYEst[x]+tailleY, fill = 'white', tags='form')
 
                 if self.cadrillage[x][y].murs['S'] :
-                    carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white')
+                    carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white', tags='form')
 
         #carte.grid(row = 0, column = 0, rowspan=10, padx = 10, pady=25)
         return carte
@@ -136,7 +136,7 @@ class Carte :
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(StationRecharge())
-            carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='blue')
+            carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='blue', tags='form')
 
         diam=tailleLieuxMission
         diamDeb=((100-diam)/2)/100
@@ -146,7 +146,7 @@ class Carte :
             x = randint(0,self.nx-1)
             y = randint(0,self.ny-1)
             self.cellule(x, y).setLieu(LieuMission())
-            carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='red')
+            carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='red', tags='form')
 
 
     #Efface un mur d'une cellule

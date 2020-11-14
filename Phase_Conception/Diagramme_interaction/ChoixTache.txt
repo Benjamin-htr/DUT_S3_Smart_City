@@ -1,0 +1,39 @@
+title Diagramme d'interaction ChoixTache
+frame Diagramme d'interaction ChoixTache
+autoactivation on
+
+actor administrateur
+boundary GestionSimulation
+control ControlSimulation
+entity Simulation
+entity Robot
+entity Tache
+entity Carte
+
+
+
+
+administrateur->GestionSimulation:LancerSimulation()
+
+GestionSimulation->ControlSimulation:créerSimulation()
+ControlSimulation->Simulation:new Simulation()
+ControlSimulation<--Simulation:
+ControlSimulation->Simulation:ListeTache=getTâches
+ControlSimulation<--Simulation:
+
+Simulation->Robot:ChoixTache(listeTache)
+Robot->Robot:distance==[]
+loop i < taille(listeTache)
+Robot->Robot:tache = listeTache[i]
+Robot->Tache:ptDepart = tache.getPtDepart()
+Tache-->Robot:
+Robot->Carte:distance += (distance(ptDepart))
+Carte-->Robot:
+end
+
+Robot->Robot: missionPlusProche = listeTache(minimum(distance))
+
+Robot-->Simulation:
+ControlSimulation<--Simulation:
+GestionSimulation<--ControlSimulation:
+administrateur<--GestionSimulation:
