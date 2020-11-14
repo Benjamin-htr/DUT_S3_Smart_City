@@ -34,13 +34,13 @@ class GestionSimulation:
 
 
         #taille du robot :
-        self.diam=70
+        self.diam=60
         #densite des murs 0 -> il y en a moins mais pas aucun !, 100 -> il y en a plus 
         self.densite=60
         #taille des stations de recharges :
-        self.tailleStationRecharge=50
+        self.tailleStationRecharge=45
         #taille des lieux de missions :
-        self.tailleLieuxMission=50
+        self.tailleLieuxMission=45
         #nb de cellules (nb de cellule en largeur = nb de cellule en hauteur):
         self.nbCells=20
 
@@ -163,6 +163,7 @@ class GestionSimulation:
         if (self.EnCours==True) :
             self.EnCours=False
             self.zoom.resetZoom2()
+            del self.zoom
             self.CanvasCarte.delete("all")
             self.pointsRobots=[]
             self.tailleX=0
