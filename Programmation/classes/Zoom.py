@@ -9,7 +9,7 @@ class zoom(Frame) :
         self.nbZoom=0
 
         self.canvas = self.gestSim.CanvasCarte
-        self.canvas.configure(scrollregion = self.canvas.bbox("all"))
+        self.canvas.configure(scrollregion = (self.canvas.bbox("all")[0]+4,self.canvas.bbox("all")[1]+4,self.canvas.bbox("all")[2],self.canvas.bbox("all")[3]))
         
         # Mouse bindings to the canvas
         self.canvas.bind("<ButtonPress-1>", self.move_start)
