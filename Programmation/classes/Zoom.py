@@ -10,7 +10,6 @@ class zoom(Frame) :
 
         self.canvas = self.gestSim.CanvasCarte
         self.canvas.configure(scrollregion = (self.canvas.bbox("all")[0]+4,self.canvas.bbox("all")[1]+4,self.canvas.bbox("all")[2],self.canvas.bbox("all")[3]))
-        
         # Mouse bindings to the canvas
         self.canvas.bind("<ButtonPress-1>", self.move_start)
         self.canvas.bind("<B1-Motion>", self.move_move)
@@ -34,6 +33,7 @@ class zoom(Frame) :
         self.canvas.configure(scrollregion = (self.canvas.bbox("all")[0]+4,self.canvas.bbox("all")[1]+4,self.canvas.bbox("all")[2],self.canvas.bbox("all")[3]))
         self.gestSim.scale=1
         self.gestSim.tailleX=(650/self.gestSim.controlSimulation.simulation.carte.nx)*self.gestSim.scale
+        self.nbZoom=0
 
         return scale
 
@@ -45,6 +45,7 @@ class zoom(Frame) :
         self.canvas.configure(scrollregion = (self.canvas.bbox("all")[0]+4,self.canvas.bbox("all")[1]+4,self.canvas.bbox("all")[2],self.canvas.bbox("all")[3]))
         self.gestSim.scale=1
         self.gestSim.tailleX=(650/self.gestSim.controlSimulation.simulation.carte.nx)*self.gestSim.scale
+        self.nbZoom=0
         return scale
 
 
@@ -61,11 +62,12 @@ class zoom(Frame) :
             self.gestSim.scale *= 1.1
         elif (event.delta < 0 and self.nbZoom > 0):
             self.nbZoom-=1
-            self.canvas.scale("all", true_x, true_y, scale, scale)
-            self.gestSim.scale *= scale
+            self.canvas.scale("all", true_x, true_y, 1/1.1, 1/1.1)
+            self.gestSim.scale *= 1/1.1
 
         self.gestSim.tailleX=(650/self.gestSim.controlSimulation.simulation.carte.nx)*self.gestSim.scale
         self.canvas.configure(scrollregion = (self.canvas.bbox("all")[0]+4,self.canvas.bbox("all")[1]+4,self.canvas.bbox("all")[2],self.canvas.bbox("all")[3]))
+        
 
         
 
