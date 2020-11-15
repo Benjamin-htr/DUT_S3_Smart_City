@@ -11,6 +11,7 @@ class Tache:
         self.celluleTache = self.carte.getCelluleRandom()
         self.lieuDepart = self.carte.ajouterLieuMission()
         self.lieuArrivee = self.carte.ajouterLieuMission()
+        self.form= None
 
     def getDepart(self) -> Lieu:
         return self.lieuDepart
@@ -23,3 +24,17 @@ class Tache:
 
     def getCelluleTache(self) -> Cellule:
         return self.celluleTache
+
+    def dessinerTache(self, tailleX, tailleTache) -> None :
+        x = self.celluleTache.getPosition()[0]
+        y = self.celluleTache.getPosition()[1]
+        tailleY=tailleX
+
+        diam=tailleTache
+        diamDeb=((100-diam)/2)/100
+        diamFin=(((100-diam)/2)+diam)/100
+      
+        self.form = self.carte.carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='red', tags='form')
+
+    def supprimerForme(self) -> None :
+         self.carte.carte.delete(self.form)
