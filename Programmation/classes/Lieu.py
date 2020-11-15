@@ -1,7 +1,9 @@
+from classes.Cellule import Cellule
+
 class Lieu:
 
-    def __init__(self, signe):
-        self.signe = signe
+    def __init__(self, cellule):
+        self.cellule = cellule
     
-    def getSigne(self):
-        return self.signe
+    def getCellule(self) -> Cellule:
+        return self.cellule

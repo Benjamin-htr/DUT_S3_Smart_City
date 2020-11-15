@@ -3,7 +3,7 @@ class Cellule:
     définition d'une cellule
     """
     
-    def __init__(self,x, y, lieu = None):
+    def __init__(self,x, y):
         """
         créer une cellule positionnée en (x=ligne, y=colonne)
         """
@@ -11,19 +11,13 @@ class Cellule:
             raise("Les coordonnées de la cellule doivent etre positives.")
         self.x = x
         self.y = y
-        self.lieu = lieu
         #les murs sont dans l'ordre : N, S, E, O. 
         #la valeur est à True si un mur est présent, False sinon
         self.murs = {'N': True, 'S': True, 'E': True, 'O': True}
     
-    def setLieu(self, lieu):
-        self.lieu = lieu
 
     def __str__(self):
-        if self.lieu == None:
-            res = "x "+str(self.x)+" y: "+str(self.y)
-        else:
-            res = self.lieu.getSigne()
+        res = "x "+str(self.x)+" y: "+str(self.y)
         return res
 
     def murPresent(self, direction):

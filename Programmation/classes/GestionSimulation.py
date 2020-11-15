@@ -97,7 +97,7 @@ class GestionSimulation:
         pointsRobots=self.pointsRobots
         robots=self.getRobots()
 
-        for i in range(len(pointsRobots)) :
+        for i in range(len(pointsRobots)):
             currentCell=robots[i].cellule
             #print(robots[i].nom, " :", currentCell)
             if typeDeplacement == "random" :
@@ -105,9 +105,10 @@ class GestionSimulation:
                 #print(robots[i].nom, " :", deplacementRandom)
 
             elif typeDeplacement == "djikstra" :
-                self.controlSimulation.simulation.robots[i].setChemin((9,9))
+                #self.controlSimulation.simulation.robots[i].setChemin(robots[i].choixTacheDijkstra(self.getTaches()).getDepart().getCellule().getPosition())
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
                 deplacement=robots[i].deplacement()
+                #print("Deplacement d"robots[i].getDestination())
 
             if deplacement =='N' :
                 self.CanvasCarte.move(pointsRobots[i],0,-self.tailleX)
@@ -244,6 +245,9 @@ class GestionSimulation:
     def getRobots(self) -> list:
         return self.controlSimulation.getRobots()
 
+    def getTaches(self) -> list:
+        return self.controlSimulation.getTaches()
+
     """
     Méthode permettant d'ouvrir la fenêtre des options si elle n'est pas déja ouverte :
     """
@@ -323,8 +327,8 @@ class GestionSimulation:
             #self.CanvasCarte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)
 
             #Bouton settings :
-            icon=PhotoImage(file="classes/icons/settings.png")
-            settings = Button(self.window, image=icon, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
+            #icon=PhotoImage(file="classes/icons/settings.png")
+            settings = Button(self.window, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
             settings.grid(row= 0, column=3) 
 
             self.window.mainloop()

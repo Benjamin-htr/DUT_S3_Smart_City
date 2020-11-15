@@ -1,9 +1,6 @@
 from classes.Lieu import Lieu
 
 class LieuMission(Lieu):
-    def __init__(self, stock = []):
-        super().__init__('M')
+    def __init__(self, cellule ,stock = []):
+        super().__init__(cellule)
         self.stock = stock
-
-    def getSigne(self):
-        return super().getSigne()
