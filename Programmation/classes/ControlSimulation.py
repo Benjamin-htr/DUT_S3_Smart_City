@@ -6,8 +6,8 @@ class ControlSimulation:
         self.simulation = None
 
 
-    def creerSimulation(self, nbLieuMission, nbStationRecharge, CanvasCarte, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
-        simulation = Simulation(nbLieuMission, nbStationRecharge, CanvasCarte)
+    def creerSimulation(self, CanvasCarte, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
+        simulation = Simulation(CanvasCarte)
         simulation.generationCarte(nbCells, densite, tailleStationRecharge, tailleLieuxMission)
         self.simulation = simulation
 
