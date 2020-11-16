@@ -97,7 +97,7 @@ class GestionSimulation:
         pointsRobots=self.pointsRobots
         robots=self.getRobots()
 
-        for i in range(len(pointsRobots)) :
+        for i in range(len(pointsRobots)):
             currentCell=robots[i].cellule
             #print(robots[i].nom, " :", currentCell)
             if typeDeplacement == "random" :
@@ -105,9 +105,10 @@ class GestionSimulation:
                 #print(robots[i].nom, " :", deplacementRandom)
 
             elif typeDeplacement == "djikstra" :
-                self.controlSimulation.simulation.robots[i].setChemin((9,9))
+                #self.controlSimulation.simulation.robots[i].setChemin(robots[i].choixTacheDijkstra(self.getTaches()).getDepart().getCellule().getPosition())
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
                 deplacement=robots[i].deplacement()
+                #print("Deplacement d"robots[i].getDestination())
 
             if deplacement =='N' :
                 self.CanvasCarte.move(pointsRobots[i],0,-self.tailleX)
@@ -243,6 +244,9 @@ class GestionSimulation:
 
     def getRobots(self) -> list:
         return self.controlSimulation.getRobots()
+
+    def getTaches(self) -> list:
+        return self.controlSimulation.getTaches()
 
     """
     Méthode permettant d'ouvrir la fenêtre des options si elle n'est pas déja ouverte :

@@ -17,3 +17,6 @@ class ControlSimulation:
 
     def getRobots(self) -> list:
         return self.simulation.getRobots()
+
+    def getTaches(self) -> list:
+        return self.simulation.getTaches()

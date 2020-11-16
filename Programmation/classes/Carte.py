@@ -1,7 +1,7 @@
 from classes.Cellule import Cellule
 from classes.StationRecharge import StationRecharge
 from classes.LieuMission import LieuMission
-from random import *
+import random
 from tkinter import *
 
 class Carte :
@@ -18,6 +18,7 @@ class Carte :
         self.nx = nbCells
         self.ny = self.nx
         self.cadrillage = []
+        self.lieu = []
         for i in range(self.nx):
             GrilleLigne=[]
             for j in range(self.ny):
@@ -43,10 +44,10 @@ class Carte :
             laby_l = ['|']
             for y in range(self.ny):
                 #Si la cellule a un lieu alors on affiche son signe dans la cellule
-                if self.cadrillage[x][y].lieu != None:
-                    res = ' ' + self.cadrillage[x][y].lieu.getSigne() + ' |'
-                    laby_l.append(res)
-                elif self.cadrillage[x][y].murs['E']:
+                #if self.cadrillage[x][y].lieu != None:
+                #    res = ' ' + self.cadrillage[x][y].lieu.getSigne() + ' |'
+                #    laby_l.append(res)
+                if self.cadrillage[x][y].murs['E']:
                     laby_l.append('   |')
                 else:
                     laby_l.append('    ')
@@ -104,7 +105,7 @@ class Carte :
         #On créait une grille rempli de cellule
         for i in range (self.nx) :
             for j in range (self.ny) :
-                rand = randint(0, 1)
+                rand = random.randint(0, 1)
                 cell=self.cellule(i, j)
                 if not (i == self.nx-1 and j == self.ny-1) :
                     if j == self.ny-1 :
@@ -119,35 +120,62 @@ class Carte :
         percent=100-densite
         #On efface des murs aléatoirement
         for i in range(round((self.nx*self.nx)*(percent/100))):
-            x = randint(0,self.nx-2)
-            y = randint(0,self.ny-2)
+            x = random.randint(0,self.nx-2)
+            y = random.randint(0,self.ny-2)
             if not (x == self.nx-1 and y == self.ny-1) :
                 if i%2 == 0:
                     self.effaceMur((x, y), 'S')
                 else:
                     self.effaceMur((x,y), 'E')
 
-
-        diam=tailleStationRecharge
-        diamDeb=((100-diam)/2)/100
-        diamFin=(((100-diam)/2)+diam)/100
-        #On ajoute des stations de recharge
-        for i in range(nbLieuMission):
-            x = randint(0,self.nx-1)
-            y = randint(0,self.ny-1)
-            self.cellule(x, y).setLieu(StationRecharge())
-            carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='blue', tags='form')
-
-        diam=tailleLieuxMission
-        diamDeb=((100-diam)/2)/100
-        diamFin=(((100-diam)/2)+diam)/100
-        #On ajoute des lieux de mission
         for i in range(nbStationRecharge):
-            x = randint(0,self.nx-1)
-            y = randint(0,self.ny-1)
-            self.cellule(x, y).setLieu(LieuMission())
-            carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='red', tags='form')
+            self.ajouterStationRecharge()
 
+        #diam=tailleStationRecharge
+        #diamDeb=((100-diam)/2)/100
+        #diamFin=(((100-diam)/2)+diam)/100
+        #On ajoute des stations de recharge
+        #for i in range(nbLieuMission):
+        #    x = random.randint(0,self.nx-1)
+        #    y = random.randint(0,self.ny-1)
+        #    self.cellule(x, y).setLieu(StationRecharge())
+        #    carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='blue', tags='form')
+
+        #diam=tailleLieuxMission
+        #diamDeb=((100-diam)/2)/100
+        #diamFin=(((100-diam)/2)+diam)/100
+        #On ajoute des lieux de mission
+        #for i in range(nbStationRecharge):
+        #    x = random.randint(0,self.nx-1)
+        #    y = random.randint(0,self.ny-1)
+        #    lieuMission = LieuMission()
+        #    carte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='red', tags='form')
+
+    def getCelluleRandom(self):
+        return self.cellule(random.randint(0,self.nx - 1), random.randint(0, self.ny - 1))
+
+    def estPresent(self, cellule):
+        estPresent = False
+        for i in range(len(self.lieu)):
+            if (self.lieu[i].getCellule().getPosition() == cellule.getPosition()):
+                estPresent = True
+                break
+        return estPresent
+
+    
+    def ajouterLieuMission(self):
+        cel = self.getCelluleRandom()
+        while self.estPresent(cel):
+            cel = self.getCelluleRandom()
+        lieuMission = LieuMission(cel)
+        self.lieu.append(lieuMission)
+        return lieuMission
+
+    def ajouterStationRecharge(self):
+        cel = self.getCelluleRandom()
+        while self.estPresent(cel):
+            cel = self.getCelluleRandom()
+        self.lieu.append(StationRecharge(cel))
 
     #Efface un mur d'une cellule
     def effaceMur (self, coord, orientation) :
@@ -242,3 +270,17 @@ class Carte :
                     b = i[1]
                     rep = [(a,b)] + rep
         return rep
+
+    def getLieuMission(self) -> list:
+        lesLieuxMissions = []
+        for lieu in self.lieu:
+            if isinstance(lieu, LieuMission):
+                lesLieuxMissions.append(lieu)
+        return lesLieuxMissions
+
+    def getStationRecharge(self) -> list:
+        lesStationsRecharges = []
+        for lieu in self.lieu:
+            if isinstance(lieu, StationRecharge):
+                lesStationsRecharges.append(lieu)
+        return lesStationsRecharges
