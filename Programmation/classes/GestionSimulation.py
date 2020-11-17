@@ -67,7 +67,7 @@ class GestionSimulation:
         #personnalisation de la fenêtre
         self.window.title('smart_City')
         self.window.geometry('1350x700')
-        self.window.iconbitmap('logo.ico')
+        #self.window.iconbitmap('logo.ico')
         self.window.resizable(height=False, width=False)
 
     #ajoute le robot à la simulation (utilisée notamment dans nouveauRobot())
