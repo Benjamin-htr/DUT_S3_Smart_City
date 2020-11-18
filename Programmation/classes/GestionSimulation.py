@@ -67,7 +67,7 @@ class GestionSimulation:
         #personnalisation de la fenêtre
         self.window.title('smart_City')
         self.window.geometry('1350x700')
-        #self.window.iconbitmap('logo.ico')
+        self.window.iconbitmap('logo.ico')
         self.window.resizable(height=False, width=False)
 
     #ajoute le robot à la simulation (utilisée notamment dans nouveauRobot())
@@ -216,9 +216,17 @@ class GestionSimulation:
                     
 
                     color=self.colors[random.randint(0,len(self.colors)-1)]
+
+                    #on ajoute le robot à la simulation :
                     self.ajouterRobot(name)
+
                     liste=self.getRobots()
                     rob=liste[len(liste)-1]
+                    #le robot cherche la tache la plus proche de lui :
+                    NearbyTache = rob.choixTacheVolOiseau(self.getTaches())
+                    #on définit cette tâche comme étant sa destination :
+                    rob.setChemin(NearbyTache.getCelluleTache().getPosition())
+
                     x = rob.cellule.x
                     y = rob.cellule.y
 
