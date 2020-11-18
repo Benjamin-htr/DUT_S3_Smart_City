@@ -1,0 +1,41 @@
+title Diagramme d'interaction RecuperationMarchandise
+frame Diagramme d'interaction RecuperationMarchandise
+autoactivation on
+
+actor administrateur
+boundary GestionSimulation
+control ControlSimulation
+entity Simulation
+entity Robot
+entity LieuMission
+entity Marchandise
+
+
+
+
+administrateur->GestionSimulation:LancerSimulation()
+
+GestionSimulation->ControlSimulation:créerSimulation()
+ControlSimulation->Simulation:new Simulation()
+ControlSimulation<--Simulation:
+
+
+Simulation->Robot:RealiserTache(tacheARealiser)
+Robot->Robot:LieuMision=LieuDepart(Tache)
+Robot->Robot:Deplacement(LieuMission)
+Robot->Robot:capacité = getCapacité()
+Robot->LieuMission:marchandise = getMarchandise()
+LieuMission->Marchandise:poids=marchandise.getPoids()
+
+Marchandise-->LieuMission:
+LieuMission-->Robot:
+alt poids < capacité
+Robot->Robot:prendreMarchandise(marchandise)
+end
+
+
+
+Robot-->Simulation:
+ControlSimulation<--Simulation:
+GestionSimulation<--ControlSimulation:
+administrateur<--GestionSimulation:
