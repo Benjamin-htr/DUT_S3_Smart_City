@@ -13,6 +13,8 @@ class Robot:
         self.chemin = None
         self.destination = None
         self.tache = None
+        self.coffre = None
+        self.poidsMax = 100
 
     def deplacementRandom(self) :
         #Choisir une direction
@@ -89,3 +91,6 @@ class Robot:
 
     def getDestination(self):
         return self.destination
+
+    def ajouterMarchandise(self, stock : list) -> None:
+        self.coffre.append(stock)
