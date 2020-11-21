@@ -7,7 +7,7 @@ import random
 
 
 class GestionSimulation:
-    def __init__(self, nbLieuMission, nbStationRecharge):
+    def __init__(self):
         #creation de la fenêtre :
         self.window = Tk()
 
@@ -27,10 +27,6 @@ class GestionSimulation:
         #liste des points des robots (qui sont affichés sur la carte)
         self.pointsRobots=[]
 
-        #nb de lieux de missions :
-        self.nbLieuMission = nbLieuMission
-        #nb de station de recharges :
-        self.nbStationRecharge = nbStationRecharge
 
 
         #taille du robot :
@@ -41,6 +37,11 @@ class GestionSimulation:
         self.tailleStationRecharge=45
         #taille des lieux de missions :
         self.tailleLieuxMission=45
+
+        #taille des tâches :
+        self.tailleTaches=30
+
+
         #nb de cellules (nb de cellule en largeur = nb de cellule en hauteur):
         self.nbCells=20
 
@@ -87,6 +88,11 @@ class GestionSimulation:
             color=self.colors[random.randint(0,len(self.colors)-1)]
             self.pointsRobots.append(self.CanvasCarte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill=color, outline='white', tags='form'))
             
+    def afficherTaches(self) :
+        Taches = self.getTaches()
+        for tache in Taches :
+            tache.dessinerTache(self.tailleX, self.tailleTaches)
+
 
     #fonction permettant d'afficher le déplacement du robot)
     def deplacement(self, typeDeplacement="random") :
@@ -108,6 +114,7 @@ class GestionSimulation:
                 #self.controlSimulation.simulation.robots[i].setChemin(robots[i].choixTacheDijkstra(self.getTaches()).getDepart().getCellule().getPosition())
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
                 deplacement=robots[i].deplacement()
+                robots[i].estArrivéSurTache()
                 #print("Deplacement d"robots[i].getDestination())
 
             if deplacement =='N' :
@@ -132,7 +139,7 @@ class GestionSimulation:
 
             #on créer la simulation :
             controlSimulation = ControlSimulation()
-            sim = controlSimulation.creerSimulation(self.nbLieuMission, self.nbStationRecharge, self.CanvasCarte, self.nbCells, self.densite, self.tailleStationRecharge, self.tailleLieuxMission)
+            sim = controlSimulation.creerSimulation(self.CanvasCarte, self.nbCells, self.densite, self.tailleStationRecharge, self.tailleLieuxMission)
             self.controlSimulation = controlSimulation
         
 
@@ -145,6 +152,9 @@ class GestionSimulation:
             
             #on affiche les robots :
             self.afficherRobots()
+
+            #on affiche les taches :
+            self.afficherTaches()
 
             # Tests
             #print(self.controlSimulation.simulation.carte.attenantes((2,2)))
@@ -206,9 +216,17 @@ class GestionSimulation:
                     
 
                     color=self.colors[random.randint(0,len(self.colors)-1)]
+
+                    #on ajoute le robot à la simulation :
                     self.ajouterRobot(name)
+
                     liste=self.getRobots()
                     rob=liste[len(liste)-1]
+                    #le robot cherche la tache la plus proche de lui :
+                    NearbyTache = rob.choixTacheVolOiseau(self.getTaches())
+                    #on définit cette tâche comme étant sa destination :
+                    rob.setChemin(NearbyTache.getCelluleTache().getPosition())
+
                     x = rob.cellule.x
                     y = rob.cellule.y
 

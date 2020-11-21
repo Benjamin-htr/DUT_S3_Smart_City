@@ -6,9 +6,9 @@ from tkinter import *
 import random
 
 class Simulation:
-    def __init__(self, nbLieuMission, nbStationRecharge, CanvasCarte):
-        self.nbLieuMission = nbLieuMission
-        self.nbStationRecharge = nbStationRecharge
+    def __init__(self, CanvasCarte):
+        self.nbLieuMission = None
+        self.nbStationRecharge = None
         self.CanvasCarte = CanvasCarte
         self.robots = []
         self.taches = []
@@ -16,22 +16,31 @@ class Simulation:
     
     def generationCarte(self, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
         carte = Carte(self.CanvasCarte, nbCells)
-        carte.creationCartes(self.nbLieuMission, self.nbStationRecharge, densite, tailleStationRecharge, tailleLieuxMission)
-        carte.dessinerCarte()
+        carte.creationCartes(densite)
+        carte.dessinerCarte(tailleStationRecharge, tailleLieuxMission)
         self.carte = carte
+
+        #on ajoute les robots :
         for i in range(int(self.carte.nx / 2)):
             self.robots.append(Robot('test',self.carte.getCelluleRandom(),self.carte))
             #print("Position initiale robot", self.robots[i].cellule.getPosition())
 
+        #on ajoute les tâches :
         for i in range(int((self.carte.nx / 2) * 1.5)):
             self.ajouterTache()
 
+        
         for robot in self.robots:
             #robot.setChemin(robot.choixTacheDijkstra(self.getTaches()).getCelluleTache().getPosition())
-            robot.setChemin(robot.choixTacheVolOiseau(self.getTaches()).getCelluleTache().getPosition())
+            NearbyTache = robot.choixTacheVolOiseau(self.getTaches())
+
+            robot.setChemin(NearbyTache.getCelluleTache().getPosition())
+            
+            robot.ObjetDestination = NearbyTache
             #print("Destination robot : ", robot.destination)
 
         self.afficher(carte)
+
 
     def afficher(self, carte):
         print(carte)

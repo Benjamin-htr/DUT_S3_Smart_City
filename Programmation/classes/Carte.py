@@ -61,7 +61,7 @@ class Carte :
             laby_lignes.append(''.join(laby_l))
         return '\n'.join(laby_lignes)
 
-    def dessinerCarte(self) :
+    def dessinerCarte(self, tailleStationRecharge, tailleLieuxMission) :
         carte = self.carte
 
         hauteur = 650
@@ -92,11 +92,22 @@ class Carte :
                 if self.cadrillage[x][y].murs['S'] :
                     carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white', tags='form')
 
+
+        diam=tailleStationRecharge
+        diamDeb=((100-diam)/2)/100
+        diamFin=(((100-diam)/2)+diam)/100
+        StationsRecharges = self.getStationRecharge()
+
+        for StationRecharge in (StationsRecharges) :
+            x = StationRecharge.getCellule().getPosition()[0]
+            y = StationRecharge.getCellule().getPosition()[1]
+            carte.create_rectangle(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='blue', tags='form')
+
         #carte.grid(row = 0, column = 0, rowspan=10, padx = 10, pady=25)
         return carte
 
 
-    def creationCartes(self, nbLieuMission, nbStationRecharge, densite, tailleStationRecharge, tailleLieuxMission) :
+    def creationCartes(self, densite) :
         carte = self.carte
         hauteur = 650
         largeur = 650
@@ -128,8 +139,10 @@ class Carte :
                 else:
                     self.effaceMur((x,y), 'E')
 
-        for i in range(nbStationRecharge):
+        #on ajoute les stations de recharges :
+        for i in range(int(self.nx/2)):
             self.ajouterStationRecharge()
+    
 
         #diam=tailleStationRecharge
         #diamDeb=((100-diam)/2)/100
@@ -163,11 +176,11 @@ class Carte :
         return estPresent
 
     
-    def ajouterLieuMission(self):
+    def ajouterLieuMission(self, stock = []):
         cel = self.getCelluleRandom()
         while self.estPresent(cel):
             cel = self.getCelluleRandom()
-        lieuMission = LieuMission(cel)
+        lieuMission = LieuMission(cel, stock)
         self.lieu.append(lieuMission)
         return lieuMission
 

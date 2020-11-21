@@ -1,0 +1,25 @@
+title RecuperationMarchandise
+frame RecuperationMarchandise
+autoactivation on
+
+participant Systeme
+participant Robot
+participant LieuMission
+
+
+
+[->Systeme:LancerSimulation()
+Systeme->Robot:LieuMision=LieuDepart(Tache)
+Robot->Robot:Deplacement(LieuMission)
+Robot->Robot:capacité = getCapacité()
+Robot->LieuMission:marchandise = getMarchandise()
+LieuMission->Marchandise:poids=marchandise.getPoids()
+
+Marchandise-->LieuMission:
+LieuMission-->Robot:
+alt poids < capacité
+Robot->Robot:prendreMarchandise(marchandise)
+end
+
+Robot-->Systeme:
+Systeme-->[:

@@ -12,6 +12,10 @@ class Robot:
         self.carte = carte
         self.chemin = None
         self.destination = None
+
+        #attribut permettant de connaitre l'objet de la destination du robot (lieuMission, stationRecharge ou tache)
+        self.ObjetDestination = None
+
         self.tache = None
         self.coffre = None
         self.poidsMax = 100
@@ -94,3 +98,35 @@ class Robot:
 
     def ajouterMarchandise(self, stock : list) -> None:
         self.coffre.append(stock)
+
+    def deposerMarchandise(self) -> None:
+        if self.cellule.getPosition() == self.tache.getArrivee().getCellule().getPosition():
+            self.coffre = None
+
+    
+    #méthode permettant de svaoir si le robot est arrivé sur la tache
+    def estArrivéSurTache(self) -> None:
+        #si il est bien arrivé sur une tache :
+        if (isinstance(self.ObjetDestination, Tache) and self.cellule.getPosition() == self.destination) :
+            #alors on affecte cette tâche au robot
+            self.tache = self.ObjetDestination
+            #on supprime alors le point de la tâche sur la carte :
+            self.tache.supprimerForme()
+
+
+        """
+        //////////////////!!!!!!!!!!!!!!!!!!!!!!\\\\\\\\\\\\\\\\\\\\\\\
+        /////////////////!!!!!!!!!!!!!!!!!!!!!!!\\\\\\\\\\\\\\\\\\\\\\\
+            A FAIRE A FAIRE A FAIRE A FAIRE A FAIRE A FAIRE A FAIRE
+
+        supprimer la tache de la liste de tache de simulation lorsque le robot l'ajoute à sa propre
+        tache à réaliser
+        
+           A FAIRE A FAIRE A FAIRE A FAIRE A FAIRE A FAIRE A FAIRE 
+
+        """
+
+
+        
+
+        
