@@ -22,7 +22,7 @@ class Simulation:
 
         #on ajoute les robots :
         for i in range(int(self.carte.nx / 2)):
-            self.robots.append(Robot('test',self.carte.getCelluleRandom(),self.carte))
+            self.robots.append(Robot('test',self.carte.getCelluleRandom(),self.carte, self))
             #print("Position initiale robot", self.robots[i].cellule.getPosition())
 
         #on ajoute les tâches :
@@ -39,7 +39,7 @@ class Simulation:
             robot.ObjetDestination = NearbyTache
             #print("Destination robot : ", robot.destination)
 
-        self.afficher(carte)
+        #self.afficher(carte)
 
 
     def afficher(self, carte):
@@ -47,7 +47,7 @@ class Simulation:
 
     def ajouterRobot(self, name) -> None:
         nbCell=self.carte.nx
-        self.robots.append(Robot(name, Cellule(random.randint(0,nbCell-1), random.randint(0,nbCell-1)), self.carte))
+        self.robots.append(Robot(name, Cellule(random.randint(0,nbCell-1), random.randint(0,nbCell-1)), self.carte, self))
         
         
     def getRobots(self) -> list:

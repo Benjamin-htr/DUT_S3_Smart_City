@@ -40,13 +40,14 @@ class zoom(Frame) :
 
     def resetZoom2(self):
         scale=self.tailleXdeb/self.gestSim.tailleX
+        self.gestSim.preScale=1/(self.tailleXdeb/self.gestSim.tailleX)
         self.canvas.scale("all", self.gestSim.origX, self.gestSim.origY, scale, scale)
         self.canvas.scan_mark(2, 2)
         self.canvas.configure(scrollregion = (self.canvas.bbox("all")[0]+4,self.canvas.bbox("all")[1]+4,self.canvas.bbox("all")[2],self.canvas.bbox("all")[3]))
         self.gestSim.scale=1
         self.gestSim.tailleX=(650/self.gestSim.controlSimulation.simulation.carte.nx)*self.gestSim.scale
         self.nbZoom=0
-        return scale
+        return self.gestSim.tailleX
 
 
     # zoom
@@ -64,6 +65,11 @@ class zoom(Frame) :
             self.nbZoom-=1
             self.canvas.scale("all", true_x, true_y, 1/1.1, 1/1.1)
             self.gestSim.scale *= 1/1.1
+
+        self.gestSim.preTrue_x=true_x
+        self.gestSim.preTrue_y=true_y
+
+        
 
         self.gestSim.tailleX=(650/self.gestSim.controlSimulation.simulation.carte.nx)*self.gestSim.scale
         self.canvas.configure(scrollregion = (self.canvas.bbox("all")[0]+4,self.canvas.bbox("all")[1]+4,self.canvas.bbox("all")[2],self.canvas.bbox("all")[3]))

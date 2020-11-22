@@ -30,13 +30,13 @@ class GestionSimulation:
 
 
         #taille du robot :
-        self.diam=60
+        self.diam=65
         #densite des murs 0 -> il y en a moins mais pas aucun !, 100 -> il y en a plus 
         self.densite=60
         #taille des stations de recharges :
         self.tailleStationRecharge=45
         #taille des lieux de missions :
-        self.tailleLieuxMission=45
+        self.tailleLieuxMission=55
 
         #taille des tâches :
         self.tailleTaches=30
@@ -51,6 +51,13 @@ class GestionSimulation:
 
         # niveaux de zoom (utile pour retailler la carte)
         self.scale = 1
+
+        #peut on bouger la camero + zoom
+        self.cameraMoovable = True
+
+        self.preScale = None
+        self.preTrue_x = None
+        self.preTrue_y = None
 
     
 
@@ -70,6 +77,9 @@ class GestionSimulation:
         self.window.iconbitmap('logo.ico')
         self.window.resizable(height=False, width=False)
 
+
+
+
     #ajoute le robot à la simulation (utilisée notamment dans nouveauRobot())
     def ajouterRobot(self, name) -> None:
         self.controlSimulation.creerRobot(name)
@@ -81,7 +91,7 @@ class GestionSimulation:
         tailleX=self.tailleX
         tailleY=self.tailleX
         robots=self.getRobots()
-        print(robots)
+        #print(robots)
         for i in range(0, len(robots)) :
             x = robots[i].cellule.x
             y = robots[i].cellule.y
@@ -114,7 +124,14 @@ class GestionSimulation:
                 #self.controlSimulation.simulation.robots[i].setChemin(robots[i].choixTacheDijkstra(self.getTaches()).getDepart().getCellule().getPosition())
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
                 deplacement=robots[i].deplacement()
-                robots[i].estArrivéSurTache()
+
+                robots[i].AccomplirTâche(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom)
+
+                        
+                #print("nb taches restantes :", len(self.controlSimulation.simulation.taches))
+                #print("nb lieu :", len(self.controlSimulation.simulation.carte.lieu))
+                    
+
                 #print("Deplacement d"robots[i].getDestination())
 
             if deplacement =='N' :
@@ -164,7 +181,8 @@ class GestionSimulation:
             #print(self.controlSimulation.simulation.robots[0].deplacement())
 
             #on créer l'instance de zoom permettant de zoomer comme on le souhaite
-            self.zoom = zoom(self, self.window)
+            if self.cameraMoovable :
+                self.zoom = zoom(self, self.window)
 
             #on lance le déplacement des robots (avec en paramètre l'algo utilisé (random par défaut ou djikstra))
             self.deplacement("djikstra")
@@ -173,8 +191,9 @@ class GestionSimulation:
     def arreterSimulation(self):
         if (self.EnCours==True) :
             self.EnCours=False
-            self.zoom.resetZoom2()
-            del self.zoom
+            if self.cameraMoovable :
+                self.zoom.resetZoom2()
+                del self.zoom
             self.CanvasCarte.delete("all")
             self.pointsRobots=[]
             self.tailleX=0
@@ -204,7 +223,8 @@ class GestionSimulation:
                 #si l'utilisateur décide de confirmer son choix :
                 if messagebox.askyesno("", "Confirmez vous votre choix de nom ?"):
                     #on rénitialise le zoom
-                    self.zoom.resetZoom2()
+                    if self.cameraMoovable :
+                        self.zoom.resetZoom2()
             
                     print(entree.get())
                     name = entree.get()
@@ -226,6 +246,7 @@ class GestionSimulation:
                     NearbyTache = rob.choixTacheVolOiseau(self.getTaches())
                     #on définit cette tâche comme étant sa destination :
                     rob.setChemin(NearbyTache.getCelluleTache().getPosition())
+                    rob.ObjetDestination = NearbyTache
 
                     x = rob.cellule.x
                     y = rob.cellule.y
@@ -345,8 +366,8 @@ class GestionSimulation:
             #self.CanvasCarte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)
 
             #Bouton settings :
-            #icon=PhotoImage(file="classes/icons/settings.png")
-            settings = Button(self.window, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
+            icon=PhotoImage(file="classes/icons/settings.png")
+            settings = Button(self.window, image=icon, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
             settings.grid(row= 0, column=3) 
 
             self.window.mainloop()
