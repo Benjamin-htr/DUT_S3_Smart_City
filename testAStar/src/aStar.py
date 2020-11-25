@@ -17,7 +17,6 @@ class aStar:
         h = self.carte.getHauteur() 
         l = self.carte.getLargeur()
         ls = [] 
-        print(cel.getPosition()[0]-1 , not(cel.murPresent('O')))
         if cel.getPosition()[0]-1 >= 0 and not(cel.murPresent('O')):
             ls.append((cel.getPosition()[0]-1, cel.getPosition()[1])) 
 
@@ -29,7 +28,6 @@ class aStar:
 
         if cel.getPosition()[1]+1 < l  and not(cel.murPresent('S')): 
             ls.append((cel.getPosition()[0], cel.getPosition()[1] + 1))
-
 
         return ls
 
@@ -43,7 +41,6 @@ class aStar:
         heapq.heappush(list_O,((self.heuristique(source,target)),start))
 
         while len(list_O) > 0 :
-            print(list_O)
             current=heapq.heappop(list_O)
             current=current[1]
             list_F=[current]+list_F
@@ -67,5 +64,7 @@ class aStar:
                     for openNode in list_O:
                         if child == openNode[1] and child.g < openNode[1].g:
                             openNode[1].g=child.g
+                            openNode[1].g=child.f
+                            openNode[0]=openNode[1].f
                     if (child.f,child) not in list_O:
                         heapq.heappush(list_O,(child.f,child))
