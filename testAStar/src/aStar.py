@@ -58,7 +58,7 @@ class aStar:
                 children.append(newNode)
             for child in children:
                 if child not in list_F:
-                    child.g=current.g+1
+                    child.g = current.g + 1
                     child.h = self.heuristique(child.position,target)
                     child.f = child.g + child.h
                     for openNode in list_O:
