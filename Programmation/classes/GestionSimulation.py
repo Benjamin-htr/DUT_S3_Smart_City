@@ -8,6 +8,7 @@ import random
 
 class GestionSimulation:
     def __init__(self):
+        self.zoom = None
         #creation de la fenêtre :
         self.window = Tk()
 
@@ -51,7 +52,7 @@ class GestionSimulation:
         self.scale = 1
 
         #peut on bouger la camero + zoom
-        self.cameraMoovable = True
+        self.cameraMoovable = False
 
         self.preScale = None
         self.preTrue_x = None
@@ -113,7 +114,7 @@ class GestionSimulation:
 
                 deplacement=robots[i].deplacement(self.tailleX)
 
-                if robots[i].AccomplirTâche(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom) :
+                if robots[i].AccomplirTâche(self.cameraMoovable , self.scale, self.tailleX, self.tailleLieuxMission, self.zoom) :
                     self.controlSimulation.simulation.ajouterTache()
 
                         
