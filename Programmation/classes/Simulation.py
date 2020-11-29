@@ -7,8 +7,6 @@ import random
 
 class Simulation:
     def __init__(self, CanvasCarte):
-        self.nbLieuMission = None
-        self.nbStationRecharge = None
         self.CanvasCarte = CanvasCarte
         self.robots = []
         self.taches = []
@@ -21,7 +19,7 @@ class Simulation:
         self.carte = carte
 
         #on ajoute les robots :
-        for i in range(int(self.carte.nx / 2)):
+        for i in range(int(self.carte.nx / 4)):
             self.robots.append(Robot('test',self.carte.getCelluleRandom(),self.carte, self))
             #print("Position initiale robot", self.robots[i].cellule.getPosition())
 
@@ -29,15 +27,7 @@ class Simulation:
         for i in range(int((self.carte.nx / 2) * 1.5)):
             self.ajouterTache()
 
-        
-        for robot in self.robots:
-            #robot.setChemin(robot.choixTacheDijkstra(self.getTaches()).getCelluleTache().getPosition())
-            NearbyTache = robot.choixTacheVolOiseau(self.getTaches())
 
-            robot.setChemin(NearbyTache.getCelluleTache().getPosition())
-            
-            robot.ObjetDestination = NearbyTache
-            #print("Destination robot : ", robot.destination)
 
         #self.afficher(carte)
 
@@ -66,6 +56,4 @@ class Simulation:
 
     def ajouterTache(self) -> None:
         tache = Tache(self.carte)
-        while self.estPresent(tache.getCelluleTache()):
-            tache = Tache(self.carte)
         self.taches.append(tache)

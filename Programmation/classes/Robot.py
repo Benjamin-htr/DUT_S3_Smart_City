@@ -23,8 +23,37 @@ class Robot:
 
         self.passéSurLieuDepart = False
 
+        self.form = None
 
-    def deplacementRandom(self) :
+    def dessinerRobot(self, tailleX, tailleRobot, couleur, nouveau=False) :
+        x = self.cellule.x
+        y = self.cellule.y
+        tailleY=tailleX
+
+        diam=tailleRobot
+        diamDeb=((100-diam)/2)/100
+        diamFin=(((100-diam)/2)+diam)/100
+
+        x0=(y*tailleY+(tailleY*diamDeb))
+        y0=(x*tailleX+(tailleX*diamDeb))
+        x1=(y*tailleY+(tailleY*diamFin))
+        y1=(x*tailleX+(tailleX*diamFin))
+
+        if nouveau :
+            #on calcule les coordonnées relatives au canvas :
+            x0=self.carte.carte.canvasx(y*tailleY+(tailleY*diamDeb))
+            y0=self.carte.carte.canvasy(x*tailleX+(tailleX*diamDeb))
+            x1=self.carte.carte.canvasx(y*tailleY+(tailleY*diamFin))
+            y1=self.carte.carte.canvasy(x*tailleX+(tailleX*diamFin))
+
+        self.form = self.carte.carte.create_oval(x0, y0, x1, y1, fill=couleur, tags='form')
+
+
+    def supprimerForme(self) -> None :
+         self.carte.carte.delete(self.form)
+         self.form=None
+
+    def deplacementRandom(self, tailleX) :
         #Choisir une direction
         direction = self.choisirDirection()
         #On verifie qu'il a pas de mur
@@ -32,13 +61,19 @@ class Robot:
             direction = self.choisirDirection()
         #On va sur cette case
         if direction == 'N':
+            #on met à jour ses coordonnées :
             self.cellule = self.carte.cellule(self.cellule.x-1, self.cellule.y)
+            #on met à jour son affichage sur la carte :
+            self.carte.carte.move(self.form,0,-tailleX)
         elif direction == 'S':
             self.cellule = self.carte.cellule(self.cellule.x+1, self.cellule.y)
+            self.carte.carte.move(self.form,0,tailleX)
         elif direction == 'O':
             self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y-1)
+            self.carte.carte.move(self.form,-tailleX,0)
         elif direction == 'E':
             self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y+1)
+            self.carte.carte.move(self.form,tailleX,0)
         return direction
 
 
@@ -50,19 +85,25 @@ class Robot:
         self.chemin = Chemin(resolution)
 
 
-    def deplacement(self) -> str:
+    def deplacement(self, tailleX) -> str:
         if not(self.chemin.vide()): 
             #print('rentré')
             direction = self.chemin.prochainePosition()
             
             if direction == 'N':
+                #on met à jour ses coordonnées :
                 self.cellule = self.carte.cellule(self.cellule.x-1, self.cellule.y)
+                #on met à jour son affichage sur la carte :
+                self.carte.carte.move(self.form,0,-tailleX)
             elif direction == 'S':
                 self.cellule = self.carte.cellule(self.cellule.x+1, self.cellule.y)
+                self.carte.carte.move(self.form,0,tailleX)
             elif direction == 'O':
                 self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y-1)
+                self.carte.carte.move(self.form,-tailleX,0)
             elif direction == 'E':
                 self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y+1)
+                self.carte.carte.move(self.form,tailleX,0)
 
             return direction
 
@@ -87,8 +128,8 @@ class Robot:
         for tache in listTache:
             x1 = self.cellule.x
             y1 = self.cellule.y
-            x2 = tache.getCelluleTache().x
-            y2 = tache.getCelluleTache().y
+            x2 = tache.lieuDepart.cellule.getPosition()[0]
+            y2 = tache.lieuDepart.cellule.getPosition()[1]
             distanceTache.append( abs((((x2-x1)**2) + ((y2 - y1)**2)) ** 0.5) )
         distanceMin = min(distanceTache)
         tacheChoisi = listTache[ distanceTache.index( distanceMin ) ]
@@ -102,41 +143,37 @@ class Robot:
         self.coffre.append(stock)
 
     def deposerMarchandise(self) -> None:
-        self.coffre = None
+        self.coffre = []
 
     
-    #méthode permettant de savoir si le robot est arrivé sur la tache
-    def estSurTache(self) -> bool :
-        #si il est bien arrivé sur une tache :
-        if (isinstance(self.ObjetDestination, Tache) and self.cellule.getPosition() == self.destination) :
-            #si la tache existe encore dans la liste des tâches de simulation :
-            if self.ObjetDestination in self.simulation.taches :
-                #je la supprime (elle n'est plus disponible)
-                self.ObjetDestination.supprimerForme()
-                self.simulation.taches.remove(self.ObjetDestination)
-                
+    #méthode permettant au robot d'Acquérir une tache
+    def AcquisitionTache(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom) -> bool :
+        if self.tache == None :
+            #tache la plus proche :
+            NearbyTache = self.choixTacheVolOiseau(self.simulation.getTaches())
 
-                #je la définie comme étant la tâche du robot
-                self.tache = self.ObjetDestination
+            #je la définie comme étant la tâche du robot
+            self.tache = NearbyTache
 
-                #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
-                self.ObjetDestination = self.tache.getDepart()
-                self.destination = self.tache.getDepart().getCellule().getPosition()
-                self.setChemin(self.destination)
+            self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/9)
 
+            #je la supprime de la liste des tâches de la simulation
+            self.simulation.taches.remove(self.tache)
+                    
 
-                return True
-            
-            #si la tache n'existe plus la liste des tâches de simulation (le robot est arrivé trop tard):
-            elif (self.tache == None) :
-                NearbyTache = self.choixTacheVolOiseau(self.simulation.getTaches())
-                self.setChemin(NearbyTache.getCelluleTache().getPosition())
-                self.ObjetDestination = NearbyTache
+            #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
+            self.ObjetDestination = self.tache.getDepart()
+            self.destination = self.tache.getDepart().getCellule().getPosition()
+            self.setChemin(self.destination)
 
-                return False
-        else :
-            return False
+            #si le zoom est activé et que j'ai déjà zoomé alors je réinitialise la caméra :
+            if cameraMoovable and scale != 1 :
+                 tailleX = zoom.resetZoom2()
+            #Je dessine le lieu départ
+            self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
+            print('ok')
 
+            return True
 
     def estSurLieuDepart(self) :
         arrive = False
@@ -170,13 +207,6 @@ class Robot:
         
 
     def AccomplirTâche(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom =None) :
-        #s'il est arrivé sur la tâche :
-        if self.estSurTache() :
-            #si le zoom est activé et que j'ai déjà zoomé alors je réinitialise la caméra :
-            if cameraMoovable and scale != 1 :
-                 tailleX = zoom.resetZoom2()
-            #s'il est arrivé sur la tache je dessine le lieu départ
-            self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
 
         #s'il a auparavant recuperer une tache
         if self.tache != None :
@@ -189,6 +219,8 @@ class Robot:
                 #s'il est arrivé sur le lieu de départ je dessine le lieu d'arrivee
                 self.tache.dessinerLieu(1, tailleX, tailleLieuxMission, 'green')
 
+                self.carte.carte.itemconfigure(self.form, outline = 'green', width = tailleX/9)
+
         #s'il a auparavant atteint le lieu de depart :
         if self.passéSurLieuDepart :
             #s'il a terminé la tâche :
@@ -196,7 +228,9 @@ class Robot:
                 #je réinitialise les attributs d'instance :
                 self.passéSurLieuDepart = False
                 self.tache = None
+                self.carte.carte.itemconfigure(self.form, outline = 'white', width = tailleX/tailleX)
                 print('tache terminée !')
+                return True
         
 
 
