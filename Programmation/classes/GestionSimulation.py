@@ -1,4 +1,5 @@
 from classes.ControlSimulation import ControlSimulation
+from classes.Scoreboard import Scoreboard
 from classes.Zoom import zoom
 from tkinter import *
 from tkinter import messagebox
@@ -62,11 +63,13 @@ class GestionSimulation:
         #canvas :
         hauteur = 650
         largeur = 650
+
+
         #création du canvas
         self.CanvasCarte = Canvas(self.window, bg = 'black', height = hauteur, width = largeur)
 
         #affichage du canvas
-        self.CanvasCarte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)
+        self.CanvasCarte.grid(row = 0, column = 2, rowspan=10, pady=25)
         
         
         #personnalisation de la fenêtre
@@ -74,6 +77,11 @@ class GestionSimulation:
         self.window.geometry('1350x700')
         self.window.iconbitmap('logo.ico')
         self.window.resizable(height=False, width=False)
+
+        #on créer le scoreboard :
+        self.scoreboard=Scoreboard(self.window)
+
+
 
 
 
@@ -114,6 +122,7 @@ class GestionSimulation:
 
                 if robots[i].AccomplirTâche(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom) :
                     self.controlSimulation.simulation.ajouterTache()
+                    self.scoreboard.updateScoreboard(self.controlSimulation.simulation.equipes)
 
                         
                 #print("nb taches restantes :", len(self.controlSimulation.simulation.taches))
@@ -144,9 +153,12 @@ class GestionSimulation:
             #elle est maintenant en cours :
             self.EnCours=True
 
+            self.scoreboard.chargerDonnees(self.controlSimulation.simulation.equipes)
+
             #on calcule la taille des bords des cellules (taille du canvas 650 divisé par le nombre de cellule)
             self.tailleX=650/self.controlSimulation.simulation.carte.nx
             self.tailleY=self.tailleX
+
 
             #on affiche les robots :
             self.afficherRobots()
@@ -174,6 +186,7 @@ class GestionSimulation:
                 self.zoom.resetZoom2()
                 del self.zoom
             self.CanvasCarte.delete("all")
+            self.scoreboard.resetScoreboard()
             self.controlSimulation = None
             self.tailleX=0
             self.scale=1
@@ -314,18 +327,20 @@ class GestionSimulation:
 
 
     def afficherSimulation(self) :
+            Gestion = Frame(self.window)
+            Gestion.grid(row=0, column = 0, columnspan=2, padx = 10)
             #Bouton LancerSimulation :
-            LancerSimulation = Button(self.window, text='Lancer Simulation', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.lancerSimulation())
-            LancerSimulation.grid(row= 0, column=0)
+            LancerSimulation = Button(Gestion, text='Lancer Simulation', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.lancerSimulation())
+            LancerSimulation.pack(side=LEFT)
 
             #Bouton ArreterSimulation :
-            ArreterSimulation = Button(self.window, text='Arreter Simulation', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.arreterSimulation())
-            ArreterSimulation.grid(row= 0, column=1)
+            ArreterSimulation = Button(Gestion, text='Arreter Simulation', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.arreterSimulation())
+            ArreterSimulation.pack(side=RIGHT)
 
             #Bouton création robot :
             #command=lambda:self.lancerSimulation()
             NouveauRobot = Button(self.window, text='Nouveau Robot', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.NouveauRobot())
-            NouveauRobot.grid(row= 1, column=0, columnspan=2) 
+            #NouveauRobot.grid(row= 1, column=0, columnspan=2) 
 
             #Carte :
             #self.CanvasCarte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)

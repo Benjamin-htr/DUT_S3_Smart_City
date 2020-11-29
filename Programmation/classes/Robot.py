@@ -226,11 +226,13 @@ class Robot:
         if self.passéSurLieuDepart :
             #s'il a terminé la tâche :
             if self.estSurLieuArrive() :
+                #on ajoute la recompense à son equipe :
+                self.equipe.ajouterArgent(self.tache.recompense)
                 #je réinitialise les attributs d'instance :
                 self.passéSurLieuDepart = False
                 self.tache = None
                 self.carte.carte.itemconfigure(self.form, outline = 'white', width = tailleX/tailleX)
-                print('tache terminée !')
+                print('Tache terminée ! ', self.equipe.name, ' argent : ', self.equipe.argent)
                 return True
         
 
