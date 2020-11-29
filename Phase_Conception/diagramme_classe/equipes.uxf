@@ -1,0 +1,114 @@
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>664</x><y>0</y><w>330</w><h>140</h></coordinates><panel_attributes>GestionSimulation
+--
+- nbLieuMission : int
+- nbStationRecharge : int
+--
++ lancerSimulation() : void
++ arreterSimulation() : void
++ ajouterRobot() : void
++ demanderNom() : string
++ construct(nbLieuMission : int, nbStationRecharge : int)
+
+
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>783</x><y>130</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=-&gt;
+</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>654</x><y>769</y><w>320</w><h>199</h></coordinates><panel_attributes>Cellule
+--
+- x : int
+- y : int
+- murs : dict
+--
++ construct(x : int, y : int, lieu = None : Lieu)
++ toString() : string
++ setLieu(lieu : Lieu) : void
++ murPresent(direction) : bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1344</x><y>719</y><w>210</w><h>89</h></coordinates><panel_attributes>LieuMission
+--
+- stock : array
+--
++ construct(stock)
++ getMarchandise() : marchandise</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1344</x><y>419</y><w>170</w><h>99</h></coordinates><panel_attributes>SationRecharge
+--
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1104</x><y>530</y><w>150</w><h>130</h></coordinates><panel_attributes>Lieu
+--
+- signe : string
+--
++ construct(x, y)
++ getSigne() : string
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1244</x><y>580</y><w>120</w><h>210</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;60;10;60;190;100;190</additional_attributes></element><element><id>Relation</id><coordinates><x>1244</x><y>459</y><w>120</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;130;60;130;60;10;100;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>614</x><y>520</y><w>399</w><h>170</h></coordinates><panel_attributes>Carte
+--
+- longueur : int
+- largeur : int
+--
++ construct()
++ cellule(x : int, y : int)
++ toString() : string
++ creationCartes(nbLieuMission : int, nbStationRecharge : int) : void
++ effaceMur(coord : tuple, orientation : string )
++ getCellule(direction) : Cellule</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1003</x><y>570</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>10;10;100;10</additional_attributes></element><element><id>Relation</id><coordinates><x>773</x><y>680</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>644</x><y>320</y><w>340</w><h>130</h></coordinates><panel_attributes>Simulation
+--
+--
++ construct(nbLieuMission : int, nbStationRecharge : int)
++ générationCarte() : void
++ créerRobot(nom) : Robot
++ afficher(carte : Carte) : void
++ getListeTaches() : liste</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>773</x><y>439</y><w>50</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=1..1
+m2=1..1</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>783</x><y>260</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;-
+</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>624</x><y>179</y><w>429</w><h>89</h></coordinates><panel_attributes>ControlSimulation
+--
+--
++ construct()
++ créerSimulation(nbLieuMission : int, nbStationRecharge : int) : Simulation 
++ créerRobot(nom) : Robot
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>963</x><y>650</y><w>220</w><h>230</h></coordinates><panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;&gt;
+m1=0..1
+</panel_attributes><additional_attributes>180;10;180;210;10;210</additional_attributes></element><element><id>UMLClass</id><coordinates><x>224</x><y>560</y><w>270</w><h>130</h></coordinates><panel_attributes>Robot
+--
+- nom : string
+--
++ construct()
++ seDeplacer(typeDeDeplacement) : void
++ changerDirection(aléatoire) : void
++ avancer(aléatoire) : void
++ realiserTache() : void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>483</x><y>580</y><w>150</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>130;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>474</x><y>389</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>170;10;10;11</additional_attributes></element><element><id>UMLClass</id><coordinates><x>264</x><y>790</y><w>210</w><h>120</h></coordinates><panel_attributes>Tache
+--
+temps
+recompense
+--
++ getDepart() : LieuMission
++ getArrivee() : Cellule</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>354</x><y>680</y><w>50</w><h>130</h></coordinates><panel_attributes>lt=&lt;-
+m2=1..1</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>464</x><y>820</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes><additional_attributes>190;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>344</x><y>650</y><w>910</w><h>400</h></coordinates><panel_attributes>lt=-
+m2=1..1
+m1=0..*</panel_attributes><additional_attributes>10;260;10;380;870;380;870;10</additional_attributes></element><element><id>Relation</id><coordinates><x>130</x><y>320</y><w>530</w><h>550</h></coordinates><panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;
+m2=0..*</panel_attributes><additional_attributes>130;530;10;530;10;10;510;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>1120</y><w>210</w><h>110</h></coordinates><panel_attributes>Marchandise
+--
+- nom : string
+- poids : float
+--
++ getPoids() : string
++ getName() : float</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1003</x><y>800</y><w>450</w><h>410</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>410;10;410;380;10;380</additional_attributes></element><element><id>Relation</id><coordinates><x>164</x><y>620</y><w>660</w><h>600</h></coordinates><panel_attributes>lt=&lt;-
+m2=0..*
+m1=1..1</panel_attributes><additional_attributes>640;570;10;570;10;10;60;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>360</y><w>210</w><h>110</h></coordinates><panel_attributes>Equipe
+--
+- nom : string
+- argent : int
+--
++ getRobots() : liste
++ getArgent() : int</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>364</x><y>459</y><w>50</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element></diagram>

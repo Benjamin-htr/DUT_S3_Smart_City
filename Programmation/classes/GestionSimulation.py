@@ -116,12 +116,6 @@ class GestionSimulation:
                 if robots[i].AccomplirTâche(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom) :
                     self.controlSimulation.simulation.ajouterTache()
 
-
-                
-                
-
-                
-
                         
                 #print("nb taches restantes :", len(self.controlSimulation.simulation.taches))
                 #print("nb lieu :", len(self.controlSimulation.simulation.carte.lieu))
