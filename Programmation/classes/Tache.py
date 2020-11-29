@@ -9,7 +9,7 @@ class Tache:
         self.temps = 60 #A gerer plus tard
         self.recompense = random.randint(100,200)
         self.celluleTache = self.carte.getCelluleRandom()
-        self.lieuDepart = self.carte.ajouterLieuMission([ ("Patate1", 20), ("Patate2", 25)])
+        self.lieuDepart = self.carte.ajouterLieuMission([ ("Patate1", 20), ("Patate2", 25)] )
         self.lieuArrivee = self.carte.ajouterLieuMission()
         self.form= None
 
