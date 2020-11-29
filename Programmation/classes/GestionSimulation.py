@@ -51,7 +51,10 @@ class GestionSimulation:
         self.scale = 1
 
         #peut on bouger la camero + zoom
-        self.cameraMoovable = True
+        self.cameraMoovable = False
+
+        #zoom :
+        self.zoom=None
 
         self.preScale = None
         self.preTrue_x = None
@@ -332,8 +335,8 @@ class GestionSimulation:
             #self.CanvasCarte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)
 
             #Bouton settings :
-            #icon=PhotoImage(file="classes/icons/settings.png")
-            settings = Button(self.window, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
+            icon=PhotoImage(file="classes/icons/settings.png")
+            settings = Button(self.window, image = icon, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
             settings.grid(row= 0, column=3) 
 
             self.window.mainloop()

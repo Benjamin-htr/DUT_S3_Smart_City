@@ -155,8 +155,6 @@ class Robot:
             #je la définie comme étant la tâche du robot
             self.tache = NearbyTache
 
-            self.carte.carte.itemconfigure(self.form, outline = 'red', width = 10)
-
             #je la supprime de la liste des tâches de la simulation
             self.simulation.taches.remove(self.tache)
                     
@@ -171,6 +169,7 @@ class Robot:
                  tailleX = zoom.resetZoom2()
             #Je dessine le lieu départ
             self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
+            self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/9)
 
             return True
 
@@ -217,8 +216,7 @@ class Robot:
                     tailleX = zoom.resetZoom2()
                 #s'il est arrivé sur le lieu de départ je dessine le lieu d'arrivee
                 self.tache.dessinerLieu(1, tailleX, tailleLieuxMission, 'green')
-
-                self.carte.carte.itemconfigure(self.form, outline = 'green', width = 10)
+                self.carte.carte.itemconfigure(self.form, outline = 'green', width = tailleX/9)
 
         #s'il a auparavant atteint le lieu de depart :
         if self.passéSurLieuDepart :
