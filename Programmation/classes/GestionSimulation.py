@@ -24,19 +24,17 @@ class GestionSimulation:
         #couleurs possible pour les robots :
         self.colors=['snow', 'ghost white', 'white smoke', 'gainsboro', 'floral white', 'old lace','linen', 'antique white', 'papaya whip', 'blanched almond', 'bisque', 'peach puff','navajo white', 'lemon chiffon', 'mint cream', 'azure', 'alice blue', 'lavender','lavender blush', 'misty rose', 'dark slate gray', 'dim gray', 'slate gray','light slate gray', 'gray', 'light grey', 'midnight blue', 'navy', 'cornflower blue', 'dark slate blue','slate blue', 'medium slate blue', 'light slate blue', 'medium blue', 'royal blue',  'blue','dodger blue', 'deep sky blue', 'sky blue', 'light sky blue', 'steel blue', 'light steel blue','light blue', 'powder blue', 'pale turquoise', 'dark turquoise', 'medium turquoise', 'turquoise','cyan', 'light cyan', 'cadet blue', 'medium aquamarine', 'aquamarine', 'dark green', 'dark olive green','dark sea green', 'sea green', 'medium sea green', 'light sea green', 'pale green', 'spring green','lawn green', 'medium spring green', 'green yellow', 'lime green', 'yellow green','forest green', 'olive drab', 'dark khaki', 'khaki', 'pale goldenrod', 'light goldenrod yellow','light yellow', 'yellow', 'gold', 'light goldenrod', 'goldenrod', 'dark goldenrod', 'rosy brown','indian red', 'saddle brown', 'sandy brown','dark salmon', 'salmon', 'light salmon', 'orange', 'dark orange','coral', 'light coral', 'tomato', 'orange red', 'red', 'hot pink', 'deep pink', 'pink', 'light pink','pale violet red', 'maroon', 'medium violet red', 'violet red','medium orchid', 'dark orchid', 'dark violet', 'blue violet', 'purple', 'medium purple','thistle', 'snow2', 'snow3','snow4', 'seashell2', 'seashell3', 'seashell4', 'AntiqueWhite1', 'AntiqueWhite2','AntiqueWhite3', 'AntiqueWhite4', 'bisque2', 'bisque3', 'bisque4', 'PeachPuff2','PeachPuff3', 'PeachPuff4', 'NavajoWhite2', 'NavajoWhite3', 'NavajoWhite4','LemonChiffon2', 'LemonChiffon3', 'LemonChiffon4', 'cornsilk2', 'cornsilk3','cornsilk4', 'ivory2', 'ivory3', 'ivory4', 'honeydew2', 'honeydew3', 'honeydew4','LavenderBlush2', 'LavenderBlush3', 'LavenderBlush4', 'MistyRose2', 'MistyRose3','MistyRose4', 'azure2', 'azure3', 'azure4', 'SlateBlue1', 'SlateBlue2', 'SlateBlue3','SlateBlue4', 'RoyalBlue1', 'RoyalBlue2', 'RoyalBlue3', 'RoyalBlue4', 'blue2', 'blue4','DodgerBlue2', 'DodgerBlue3', 'DodgerBlue4', 'SteelBlue1', 'SteelBlue2','SteelBlue3', 'SteelBlue4', 'DeepSkyBlue2', 'DeepSkyBlue3', 'DeepSkyBlue4','SkyBlue1', 'SkyBlue2', 'SkyBlue3', 'SkyBlue4', 'LightSkyBlue1', 'LightSkyBlue2','LightSkyBlue3', 'LightSkyBlue4', 'SlateGray1', 'SlateGray2', 'SlateGray3','SlateGray4', 'LightSteelBlue1', 'LightSteelBlue2', 'LightSteelBlue3','LightSteelBlue4', 'LightBlue1', 'LightBlue2', 'LightBlue3', 'LightBlue4','LightCyan2', 'LightCyan3', 'LightCyan4', 'PaleTurquoise1', 'PaleTurquoise2','PaleTurquoise3', 'PaleTurquoise4', 'CadetBlue1', 'CadetBlue2', 'CadetBlue3','CadetBlue4', 'turquoise1', 'turquoise2', 'turquoise3', 'turquoise4', 'cyan2', 'cyan3','cyan4', 'DarkSlateGray1', 'DarkSlateGray2', 'DarkSlateGray3', 'DarkSlateGray4','aquamarine2', 'aquamarine4', 'DarkSeaGreen1', 'DarkSeaGreen2', 'DarkSeaGreen3','DarkSeaGreen4', 'SeaGreen1', 'SeaGreen2', 'SeaGreen3', 'PaleGreen1', 'PaleGreen2','PaleGreen3', 'PaleGreen4', 'SpringGreen2', 'SpringGreen3', 'SpringGreen4','green2', 'green3', 'green4', 'chartreuse2', 'chartreuse3', 'chartreuse4','OliveDrab1', 'OliveDrab2', 'OliveDrab4', 'DarkOliveGreen1', 'DarkOliveGreen2','DarkOliveGreen3', 'DarkOliveGreen4', 'khaki1', 'khaki2', 'khaki3', 'khaki4','LightGoldenrod1', 'LightGoldenrod2', 'LightGoldenrod3', 'LightGoldenrod4','LightYellow2', 'LightYellow3', 'LightYellow4', 'yellow2', 'yellow3', 'yellow4','gold2', 'gold3', 'gold4', 'goldenrod1', 'goldenrod2', 'goldenrod3', 'goldenrod4','DarkGoldenrod1', 'DarkGoldenrod2', 'DarkGoldenrod3', 'DarkGoldenrod4','RosyBrown1', 'RosyBrown2', 'RosyBrown3', 'RosyBrown4', 'IndianRed1', 'IndianRed2','IndianRed3', 'IndianRed4', 'sienna1', 'sienna2', 'sienna3', 'sienna4', 'burlywood1','burlywood2', 'burlywood3', 'burlywood4', 'wheat1', 'wheat2', 'wheat3', 'wheat4', 'tan1','tan2', 'tan4', 'chocolate1', 'chocolate2', 'chocolate3', 'firebrick1', 'firebrick2','firebrick3', 'firebrick4', 'brown1', 'brown2', 'brown3', 'brown4', 'salmon1', 'salmon2','salmon3', 'salmon4', 'LightSalmon2', 'LightSalmon3', 'LightSalmon4', 'orange2','orange3', 'orange4', 'DarkOrange1', 'DarkOrange2', 'DarkOrange3', 'DarkOrange4','coral1', 'coral2', 'coral3', 'coral4', 'tomato2', 'tomato3', 'tomato4', 'OrangeRed2','OrangeRed3', 'OrangeRed4', 'red2', 'red3', 'red4', 'DeepPink2', 'DeepPink3', 'DeepPink4','HotPink1', 'HotPink2', 'HotPink3', 'HotPink4', 'pink1', 'pink2', 'pink3', 'pink4','LightPink1', 'LightPink2', 'LightPink3', 'LightPink4', 'PaleVioletRed1','PaleVioletRed2', 'PaleVioletRed3', 'PaleVioletRed4', 'maroon1', 'maroon2','maroon3', 'maroon4', 'VioletRed1', 'VioletRed2', 'VioletRed3', 'VioletRed4','magenta2', 'magenta3', 'magenta4', 'orchid1', 'orchid2', 'orchid3', 'orchid4', 'plum1','plum2', 'plum3', 'plum4', 'MediumOrchid1', 'MediumOrchid2', 'MediumOrchid3','MediumOrchid4', 'DarkOrchid1', 'DarkOrchid2', 'DarkOrchid3', 'DarkOrchid4','purple1', 'purple2', 'purple3', 'purple4', 'MediumPurple1', 'MediumPurple2','MediumPurple3', 'MediumPurple4', 'thistle1', 'thistle2', 'thistle3', 'thistle4']
         
-        #liste des points des robots (qui sont affichés sur la carte)
-        self.pointsRobots=[]
 
 
 
         #taille du robot :
-        self.diam=60
+        self.tailleRobot=65
         #densite des murs 0 -> il y en a moins mais pas aucun !, 100 -> il y en a plus 
         self.densite=60
         #taille des stations de recharges :
         self.tailleStationRecharge=45
         #taille des lieux de missions :
-        self.tailleLieuxMission=45
+        self.tailleLieuxMission=55
 
         #taille des tâches :
         self.tailleTaches=30
@@ -51,6 +49,13 @@ class GestionSimulation:
 
         # niveaux de zoom (utile pour retailler la carte)
         self.scale = 1
+
+        #peut on bouger la camero + zoom
+        self.cameraMoovable = True
+
+        self.preScale = None
+        self.preTrue_x = None
+        self.preTrue_y = None
 
     
 
@@ -70,28 +75,20 @@ class GestionSimulation:
         self.window.iconbitmap('logo.ico')
         self.window.resizable(height=False, width=False)
 
+
+
+
     #ajoute le robot à la simulation (utilisée notamment dans nouveauRobot())
     def ajouterRobot(self, name) -> None:
         self.controlSimulation.creerRobot(name)
 
     #affiche les robots (utilisée au lancement de la simulation)
     def afficherRobots(self) :
-        diamDeb=((100-self.diam)/2)/100
-        diamFin=(((100-self.diam)/2)+self.diam)/100
-        tailleX=self.tailleX
-        tailleY=self.tailleX
-        robots=self.getRobots()
-        print(robots)
-        for i in range(0, len(robots)) :
-            x = robots[i].cellule.x
-            y = robots[i].cellule.y
+        Robots = self.getRobots()
+        for robot in Robots :
             color=self.colors[random.randint(0,len(self.colors)-1)]
-            self.pointsRobots.append(self.CanvasCarte.create_oval(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill=color, outline='white', tags='form'))
-            
-    def afficherTaches(self) :
-        Taches = self.getTaches()
-        for tache in Taches :
-            tache.dessinerTache(self.tailleX, self.tailleTaches)
+            robot.dessinerRobot(self.tailleX, self.tailleRobot, color)
+        
 
 
     #fonction permettant d'afficher le déplacement du robot)
@@ -100,32 +97,39 @@ class GestionSimulation:
         if self.EnCours == False :
             return
 
-        pointsRobots=self.pointsRobots
         robots=self.getRobots()
 
-        for i in range(len(pointsRobots)):
+        for i in range(len(robots)):
             currentCell=robots[i].cellule
             #print(robots[i].nom, " :", currentCell)
             if typeDeplacement == "random" :
-                deplacement=robots[i].deplacementRandom()
+                deplacement=robots[i].deplacementRandom(self.tailleX)
                 #print(robots[i].nom, " :", deplacementRandom)
 
             elif typeDeplacement == "djikstra" :
                 #self.controlSimulation.simulation.robots[i].setChemin(robots[i].choixTacheDijkstra(self.getTaches()).getDepart().getCellule().getPosition())
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
-                deplacement=robots[i].deplacement()
-                robots[i].estArrivéSurTache()
+                robots[i].AcquisitionTache(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom)
+
+                deplacement=robots[i].deplacement(self.tailleX)
+
+                if robots[i].AccomplirTâche(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom) :
+                    self.controlSimulation.simulation.ajouterTache()
+
+
+                
+                
+
+                
+
+                        
+                #print("nb taches restantes :", len(self.controlSimulation.simulation.taches))
+                #print("nb lieu :", len(self.controlSimulation.simulation.carte.lieu))
+                    
+
                 #print("Deplacement d"robots[i].getDestination())
 
-            if deplacement =='N' :
-                self.CanvasCarte.move(pointsRobots[i],0,-self.tailleX)
-            elif deplacement =='S' :
-                self.CanvasCarte.move(pointsRobots[i],0,self.tailleX)
-            elif deplacement =='E' :
-                self.CanvasCarte.move(pointsRobots[i],self.tailleX,0)
-            elif deplacement =='O' :
-                self.CanvasCarte.move(pointsRobots[i],-self.tailleX,0)
-        self.CanvasCarte.after(1000, lambda : self.deplacement("djikstra"))
+        self.CanvasCarte.after(1000, lambda : self.deplacement(typeDeplacement))
 
 
     def lancerSimulation(self):
@@ -136,6 +140,7 @@ class GestionSimulation:
             #on créer le canvas :
             self.origX = self.CanvasCarte.xview()[0]
             self.origY = self.CanvasCarte.yview()[0]
+
 
             #on créer la simulation :
             controlSimulation = ControlSimulation()
@@ -153,9 +158,6 @@ class GestionSimulation:
             #on affiche les robots :
             self.afficherRobots()
 
-            #on affiche les taches :
-            self.afficherTaches()
-
             # Tests
             #print(self.controlSimulation.simulation.carte.attenantes((2,2)))
             #print(self.controlSimulation.simulation.carte.resolution((1,1), (5,5)))
@@ -164,7 +166,8 @@ class GestionSimulation:
             #print(self.controlSimulation.simulation.robots[0].deplacement())
 
             #on créer l'instance de zoom permettant de zoomer comme on le souhaite
-            self.zoom = zoom(self, self.window)
+            if self.cameraMoovable :
+                self.zoom = zoom(self, self.window)
 
             #on lance le déplacement des robots (avec en paramètre l'algo utilisé (random par défaut ou djikstra))
             self.deplacement("djikstra")
@@ -173,10 +176,11 @@ class GestionSimulation:
     def arreterSimulation(self):
         if (self.EnCours==True) :
             self.EnCours=False
-            self.zoom.resetZoom2()
-            del self.zoom
+            if self.cameraMoovable :
+                self.zoom.resetZoom2()
+                del self.zoom
             self.CanvasCarte.delete("all")
-            self.pointsRobots=[]
+            self.controlSimulation = None
             self.tailleX=0
             self.scale=1
             
@@ -204,19 +208,12 @@ class GestionSimulation:
                 #si l'utilisateur décide de confirmer son choix :
                 if messagebox.askyesno("", "Confirmez vous votre choix de nom ?"):
                     #on rénitialise le zoom
-                    self.zoom.resetZoom2()
+                    if self.cameraMoovable :
+                        self.zoom.resetZoom2()
             
                     print(entree.get())
                     name = entree.get()
                     #ajout du robot :
-                    diamDeb=((100-self.diam)/2)/100
-                    diamFin=(((100-self.diam)/2)+self.diam)/100
-                    tailleX=self.tailleX
-                    tailleY=self.tailleX
-                    
-
-                    color=self.colors[random.randint(0,len(self.colors)-1)]
-
                     #on ajoute le robot à la simulation :
                     self.ajouterRobot(name)
 
@@ -226,18 +223,14 @@ class GestionSimulation:
                     NearbyTache = rob.choixTacheVolOiseau(self.getTaches())
                     #on définit cette tâche comme étant sa destination :
                     rob.setChemin(NearbyTache.getCelluleTache().getPosition())
+                    rob.ObjetDestination = NearbyTache
 
                     x = rob.cellule.x
                     y = rob.cellule.y
 
-                    #on calcule les coordonnées relatives au canvas :
-                    x0=self.CanvasCarte.canvasx(y*tailleY+(tailleY*diamDeb))
-                    y0=self.CanvasCarte.canvasy(x*tailleX+(tailleX*diamDeb))
-                    x1=self.CanvasCarte.canvasx(y*tailleY+(tailleY*diamFin))
-                    y1=self.CanvasCarte.canvasy(x*tailleX+(tailleX*diamFin))
-                    
-                    #on dessine le robot:
-                    self.pointsRobots.append(self.CanvasCarte.create_oval(x0, y0, x1, y1, fill=color, outline='white', tags='form'))
+                    #on dessine le robot :
+                    color=self.colors[random.randint(0,len(self.colors)-1)]
+                    rob.dessinerRobot(self.tailleX, self.tailleRobot, color, True)
 
 
                     newWindow.destroy()
@@ -291,7 +284,7 @@ class GestionSimulation:
 
             Label(newWindow,  text ="Taille des robots (en %) de 30 à 100 :", wraplength=180, width=25, anchor=W, justify=LEFT).grid(row=4, sticky=W)
             var3 = IntVar(newWindow)
-            var3.set(self.diam)
+            var3.set(self.tailleRobot)
             entree3 = Spinbox(newWindow, textvariable=var3, from_=30, to=100, width=10)
             entree3.grid(row=5, sticky=W)
 
@@ -312,7 +305,7 @@ class GestionSimulation:
 
             #enregistre les modifications effectuées
             def Confirmer() :
-                self.diam=int(entree3.get())
+                self.tailleRobot=int(entree3.get())
                 self.densite=int(entree2.get())
                 self.tailleStationRecharge=int(entree5.get())
                 self.tailleLieuxMission=int(entree4.get())

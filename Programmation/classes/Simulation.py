@@ -2,16 +2,16 @@ from classes.Carte import Carte
 from classes.Robot import Robot
 from classes.Cellule import Cellule
 from classes.Tache import Tache
+from classes.Equipe import Equipe
 from tkinter import *
 import random
 
 class Simulation:
     def __init__(self, CanvasCarte):
-        self.nbLieuMission = None
-        self.nbStationRecharge = None
         self.CanvasCarte = CanvasCarte
         self.robots = []
         self.taches = []
+        self.equipes = []
         self.carte = None
     
     def generationCarte(self, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
@@ -20,34 +20,33 @@ class Simulation:
         carte.dessinerCarte(tailleStationRecharge, tailleLieuxMission)
         self.carte = carte
 
+        self.equipes.append(Equipe("Golios"))
+        self.equipes.append(Equipe("Serpentard"))
+
         #on ajoute les robots :
-        for i in range(int(self.carte.nx / 2)):
-            self.robots.append(Robot('test',self.carte.getCelluleRandom(),self.carte))
+        for i in range(int(self.carte.nx / 8)):
+            self.ajouterRobot('test', self.equipes[0])
             #print("Position initiale robot", self.robots[i].cellule.getPosition())
+
+        #on ajoute les robots :
+        for i in range(int(self.carte.nx / 8)):
+            self.ajouterRobot('test', self.equipes[1])
 
         #on ajoute les tâches :
         for i in range(int((self.carte.nx / 2) * 1.5)):
             self.ajouterTache()
 
-        
-        for robot in self.robots:
-            #robot.setChemin(robot.choixTacheDijkstra(self.getTaches()).getCelluleTache().getPosition())
-            NearbyTache = robot.choixTacheVolOiseau(self.getTaches())
 
-            robot.setChemin(NearbyTache.getCelluleTache().getPosition())
-            
-            robot.ObjetDestination = NearbyTache
-            #print("Destination robot : ", robot.destination)
 
-        self.afficher(carte)
+        #self.afficher(carte)
 
 
     def afficher(self, carte):
         print(carte)
 
-    def ajouterRobot(self, name) -> None:
-        nbCell=self.carte.nx
-        self.robots.append(Robot(name, Cellule(random.randint(0,nbCell-1), random.randint(0,nbCell-1)), self.carte))
+
+    def ajouterRobot(self, name, equipe : Equipe) -> None:
+        self.robots.append(equipe.ajouterRobot(name, self.carte.getCelluleRandom(), self.carte, self))
         
         
     def getRobots(self) -> list:
@@ -66,6 +65,4 @@ class Simulation:
 
     def ajouterTache(self) -> None:
         tache = Tache(self.carte)
-        while self.estPresent(tache.getCelluleTache()):
-            tache = Tache(self.carte)
         self.taches.append(tache)
