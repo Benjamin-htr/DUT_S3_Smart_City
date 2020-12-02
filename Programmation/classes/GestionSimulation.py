@@ -58,6 +58,12 @@ class GestionSimulation:
         self.preTrue_x = None
         self.preTrue_y = None
 
+        #permet de savoir si la simulation est en pause ou non :
+        self.pause=False
+        self.textStartButton=StringVar()
+        self.textStartButton.set("Lancer Simulation")
+
+
     
 
         #canvas :
@@ -109,11 +115,11 @@ class GestionSimulation:
         for i in range(len(robots)):
             currentCell=robots[i].cellule
             #print(robots[i].nom, " :", currentCell)
-            if typeDeplacement == "random" :
+            if typeDeplacement == "random" and self.pause == False :
                 deplacement=robots[i].deplacementRandom(self.tailleX)
                 #print(robots[i].nom, " :", deplacementRandom)
 
-            elif typeDeplacement == "djikstra" :
+            elif typeDeplacement == "djikstra" and self.pause == False :
                 #self.controlSimulation.simulation.robots[i].setChemin(robots[i].choixTacheDijkstra(self.getTaches()).getDepart().getCellule().getPosition())
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
                 robots[i].AcquisitionTache(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom)
@@ -130,12 +136,14 @@ class GestionSimulation:
                     
 
                 #print("Deplacement d"robots[i].getDestination())
-
+    
         self.CanvasCarte.after(1000, lambda : self.deplacement(typeDeplacement))
 
 
     def lancerSimulation(self):
-        if (self.EnCours != True) :
+        if (self.EnCours == False) :
+            self.textStartButton.set("Mettre en pause")
+            
             hauteur = 650
             largeur = 650
 
@@ -177,10 +185,19 @@ class GestionSimulation:
 
             #on lance le déplacement des robots (avec en paramètre l'algo utilisé (random par défaut ou djikstra))
             self.deplacement("djikstra")
+
+        else :
+            if self.pause == False :
+                self.pause = True
+                self.textStartButton.set("Lancer Simulation")
+            else :
+                self.pause = False
+                self.textStartButton.set("Mettre en pause")
     
         
     def arreterSimulation(self):
         if (self.EnCours==True) :
+            self.textStartButton.set("Lancer Simulation")
             self.EnCours=False
             if self.cameraMoovable :
                 self.zoom.resetZoom2()
@@ -330,11 +347,11 @@ class GestionSimulation:
             Gestion = Frame(self.window)
             Gestion.grid(row=0, column = 0, columnspan=2, padx = 10)
             #Bouton LancerSimulation :
-            LancerSimulation = Button(Gestion, text='Lancer Simulation', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.lancerSimulation())
+            LancerSimulation = Button(Gestion, textvariable=self.textStartButton, height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.lancerSimulation())
             LancerSimulation.pack(side=LEFT)
 
             #Bouton ArreterSimulation :
-            ArreterSimulation = Button(Gestion, text='Arreter Simulation', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.arreterSimulation())
+            ArreterSimulation = Button(Gestion, text='Réinitialiser Simulation', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.arreterSimulation())
             ArreterSimulation.pack(side=RIGHT)
 
             #Bouton création robot :
