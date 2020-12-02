@@ -198,6 +198,7 @@ class GestionSimulation:
     def arreterSimulation(self):
         if (self.EnCours==True) :
             self.textStartButton.set("Lancer Simulation")
+            self.pause=False
             self.EnCours=False
             if self.cameraMoovable :
                 self.zoom.resetZoom2()
