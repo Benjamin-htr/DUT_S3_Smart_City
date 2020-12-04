@@ -30,7 +30,7 @@ class Simulation:
         self.carte = carte
 
         #on génère les equipes :
-        self.genererEquipes(2)
+        self.genererEquipes()
 
         carte.dessinerStationsRecharges(tailleStationRecharge)
         

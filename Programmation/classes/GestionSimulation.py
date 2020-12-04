@@ -138,7 +138,7 @@ class GestionSimulation:
                 #print("Deplacement d"robots[i].getDestination())
             robots[i].checkBatterie(self.tailleX)
 
-            self.controlSimulation.simulation.launchStations(self.tailleX)
+        self.controlSimulation.simulation.launchStations(self.tailleX)
         self.CanvasCarte.after(1000, lambda : self.deplacement(typeDeplacement))
 
 
