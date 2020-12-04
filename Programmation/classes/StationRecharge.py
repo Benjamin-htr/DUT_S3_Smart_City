@@ -15,8 +15,10 @@ class StationRecharge(Lieu):
     def Recharger(self, tailleX) :
         if (len(self.garage) > 0) :
             for robot in (self.garage) :
-                if robot.batterie < 100 :
+                if robot.batterie < 90 :
                     robot.batterie += self.tauxDeRecharge
+                elif robot.batterie < 100 :
+                    robot.batterie = 100
             
                         
             
