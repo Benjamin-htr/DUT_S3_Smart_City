@@ -61,7 +61,7 @@ class Carte :
             laby_lignes.append(''.join(laby_l))
         return '\n'.join(laby_lignes)
 
-    def dessinerCarte(self, tailleStationRecharge, tailleLieuxMission) :
+    def dessinerCarte(self) :
         carte = self.carte
 
         hauteur = 650
@@ -93,18 +93,27 @@ class Carte :
                     carte.create_line(tabPosXSud[y], tabPosYSud[x], tabPosXSud[y]+tailleX, tabPosYSud[x], fill = 'white', tags='form')
 
 
+
+        #carte.grid(row = 0, column = 0, rowspan=10, padx = 10, pady=25)
+        return carte
+
+    def dessinerStationsRecharges(self, tailleStationRecharge) :
+        hauteur = 650
+        largeur = 650
+        # taille des cellules :
+        tailleY = hauteur/self.nx
+        tailleX = largeur/self.ny
+
         diam=tailleStationRecharge
         diamDeb=((100-diam)/2)/100
         diamFin=(((100-diam)/2)+diam)/100
         StationsRecharges = self.getStationRecharge()
+        
 
         for StationRecharge in (StationsRecharges) :
             x = StationRecharge.getCellule().getPosition()[0]
             y = StationRecharge.getCellule().getPosition()[1]
-            carte.create_rectangle(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='blue', tags='form')
-
-        #carte.grid(row = 0, column = 0, rowspan=10, padx = 10, pady=25)
-        return carte
+            self.carte.create_rectangle(y*tailleY+(tailleY*diamDeb), x*tailleX+(tailleX*diamDeb), y*tailleY+(tailleY*diamFin), x*tailleX+(tailleX*diamFin), fill='blue', tags='form')
 
 
     def creationCartes(self, densite) :

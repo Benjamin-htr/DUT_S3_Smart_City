@@ -3,11 +3,14 @@ from classes.Carte import Carte
 from classes.Cellule import Cellule
 from classes.Chemin import Chemin
 from classes.Tache import Tache
+from classes.StationRecharge import StationRecharge
+from tkinter.font import Font
 
 class Robot:
 
-    def __init__(self, nom, cellule, carte, simulation, equipe):
+    def __init__(self, nom, color, cellule, carte, simulation, equipe):
         self.nom = nom
+        self.color = color
         self.cellule = cellule
         self.carte = carte
         self.simulation = simulation
@@ -25,11 +28,22 @@ class Robot:
         self.passéSurLieuDepart = False
 
         self.form = None
+        self.form2 = None
+
+        self.argent=0
+
+        self.outline='white'
+
+        self.batterie=random.randint(85, 100)
+
+        self.enRecharge = False
 
 
 
 
     def dessinerRobot(self, tailleX, tailleRobot, nouveau = False) :
+        font = Font(family="Fixedsys",size=14,weight="bold")
+        
         x = self.cellule.x
         y = self.cellule.y
         tailleY=tailleX
@@ -43,6 +57,9 @@ class Robot:
         x1=(y*tailleY+(tailleY*diamFin))
         y1=(x*tailleX+(tailleX*diamFin))
 
+        xText=y*tailleY+(tailleY/2)
+        yText=x*tailleX+(tailleX/2)
+
         if nouveau :
             #on calcule les coordonnées relatives au canvas :
             x0=self.carte.carte.canvasx(y*tailleY+(tailleY*diamDeb))
@@ -50,7 +67,8 @@ class Robot:
             x1=self.carte.carte.canvasx(y*tailleY+(tailleY*diamFin))
             y1=self.carte.carte.canvasy(x*tailleX+(tailleX*diamFin))
 
-        self.form = self.carte.carte.create_oval(x0, y0, x1, y1, fill=self.equipe.color, tags='form')
+        self.form = self.carte.carte.create_oval(x0, y0, x1, y1, fill=self.color, tags='form')
+        self.form2 = self.carte.carte.create_text(xText, yText,text=self.equipe.letter, fill='black', font=font)
 
 
     def supprimerForme(self) -> None :
@@ -69,15 +87,22 @@ class Robot:
             self.cellule = self.carte.cellule(self.cellule.x-1, self.cellule.y)
             #on met à jour son affichage sur la carte :
             self.carte.carte.move(self.form,0,-tailleX)
+            self.carte.carte.move(self.form2,0,-tailleX)
         elif direction == 'S':
             self.cellule = self.carte.cellule(self.cellule.x+1, self.cellule.y)
             self.carte.carte.move(self.form,0,tailleX)
+            self.carte.carte.move(self.form2,0,-tailleX)
         elif direction == 'O':
             self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y-1)
             self.carte.carte.move(self.form,-tailleX,0)
+            self.carte.carte.move(self.form2,0,-tailleX)
         elif direction == 'E':
             self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y+1)
             self.carte.carte.move(self.form,tailleX,0)
+            self.carte.carte.move(self.form2,0,-tailleX)
+
+        self.batterie -= 2
+
         return direction
 
 
@@ -99,15 +124,23 @@ class Robot:
                 self.cellule = self.carte.cellule(self.cellule.x-1, self.cellule.y)
                 #on met à jour son affichage sur la carte :
                 self.carte.carte.move(self.form,0,-tailleX)
+                self.carte.carte.move(self.form2,0,-tailleX)
             elif direction == 'S':
                 self.cellule = self.carte.cellule(self.cellule.x+1, self.cellule.y)
                 self.carte.carte.move(self.form,0,tailleX)
+                self.carte.carte.move(self.form2,0,tailleX)
             elif direction == 'O':
                 self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y-1)
                 self.carte.carte.move(self.form,-tailleX,0)
+                self.carte.carte.move(self.form2,-tailleX,0)
             elif direction == 'E':
                 self.cellule = self.carte.cellule(self.cellule.x, self.cellule.y+1)
                 self.carte.carte.move(self.form,tailleX,0)
+                self.carte.carte.move(self.form2,tailleX,0)
+
+            self.batterie -= 2
+
+            
 
             return direction
 
@@ -121,24 +154,30 @@ class Robot:
     def choixTacheDijkstra(self, listTache : list) -> Tache:
         distanceTache = []
         for tache in listTache:
-            distanceTache.append(len(self.carte.resolution(self.cellule.getPosition() , tache.getCelluleTache().getPosition())))
+            distanceTache.append(len(self.carte.resolution(self.cellule.getPosition() , tache.lieuDepart.getPosition())))
         distanceMin = min(distanceTache)
         tacheChoisi = listTache[ distanceTache.index( distanceMin ) ]
 
         return tacheChoisi
 
-    def choixTacheVolOiseau(self, listTache : list) -> Tache:
-        distanceTache = []
-        for tache in listTache:
+    def PlusProcheVolOiseau(self, liste : list, recherche):
+        distance = []
+        for obj in liste:
             x1 = self.cellule.x
             y1 = self.cellule.y
-            x2 = tache.lieuDepart.cellule.getPosition()[0]
-            y2 = tache.lieuDepart.cellule.getPosition()[1]
-            distanceTache.append( abs((((x2-x1)**2) + ((y2 - y1)**2)) ** 0.5) )
-        distanceMin = min(distanceTache)
-        tacheChoisi = listTache[ distanceTache.index( distanceMin ) ]
+            if recherche == "Tache" :
+                x2 = obj.lieuDepart.cellule.getPosition()[0]
+                y2 = obj.lieuDepart.cellule.getPosition()[1]
+            elif recherche == "Station" :
+                x2 = obj.cellule.getPosition()[0]
+                y2 = obj.cellule.getPosition()[1]
+
+            distance.append( (((x2-x1)**2) + ((y2 - y1)**2)) ** 0.5) 
+        distanceMin = min(distance)
+        tacheChoisi = liste[ distance.index( distanceMin ) ]
 
         return tacheChoisi
+
 
     def getDestination(self):
         return self.destination
@@ -154,7 +193,7 @@ class Robot:
     def AcquisitionTache(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom) -> bool :
         if self.tache == None :
             #tache la plus proche :
-            NearbyTache = self.choixTacheVolOiseau(self.simulation.getTaches())
+            NearbyTache = self.PlusProcheVolOiseau(self.simulation.getTaches(), "Tache")
 
             #je la définie comme étant la tâche du robot
             self.tache = NearbyTache
@@ -173,6 +212,7 @@ class Robot:
                  tailleX = zoom.resetZoom2()
             #Je dessine le lieu départ
             self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
+            self.outline='red'
             self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/10)
 
             return True
@@ -220,6 +260,7 @@ class Robot:
                     tailleX = zoom.resetZoom2()
                 #s'il est arrivé sur le lieu de départ je dessine le lieu d'arrivee
                 self.tache.dessinerLieu(1, tailleX, tailleLieuxMission, 'green')
+                self.outline='green'
                 self.carte.carte.itemconfigure(self.form, outline = 'green', width = tailleX/10)
 
         #s'il a auparavant atteint le lieu de depart :
@@ -228,6 +269,8 @@ class Robot:
             if self.estSurLieuArrive() :
                 #on ajoute la recompense à son equipe :
                 self.equipe.ajouterArgent(self.tache.recompense)
+                #on ajoute la recompense au robot e :
+                self.argent += (self.tache.recompense)
                 #je réinitialise les attributs d'instance :
                 self.passéSurLieuDepart = False
                 self.tache = None
@@ -235,6 +278,59 @@ class Robot:
                 print('Tache terminée ! ', self.equipe.name, ' argent : ', self.equipe.argent)
                 return True
         
+
+    def checkBatterie(self, tailleX) :
+        if self.batterie <= 40 :
+            if not isinstance(self.ObjetDestination, StationRecharge) :
+                self.PreviousObjetDestination = self.ObjetDestination
+                self.PreviousDestination = self.destination
+                self.PreviousOutline = self.outline
+
+            self.outline='blue'
+            self.carte.carte.itemconfigure(self.form, outline = 'blue', width = tailleX/10)
+
+            stations = self.carte.getStationRecharge()
+            
+            stationPlusProche = self.PlusProcheVolOiseau(stations, "Station")
+
+            self.ObjetDestination = stationPlusProche
+            self.destination = stationPlusProche.getCellule().getPosition()
+            self.setChemin(self.destination)
+
+            if (self.enRecharge == False) :
+                self.estSurStation()
+
+        if self.batterie >= 100 :
+            self.rechargeFinie(tailleX)
+
+
+    def rechargeFinie(self, tailleX) :
+        if (isinstance(self.ObjetDestination, StationRecharge) and (self.cellule.getPosition() == self.destination)) :
+            self.enRecharge=False
+            self.ObjetDestination.departRobot(self)
+
+            self.outline=self.PreviousOutline
+            self.carte.carte.itemconfigure(self.form, outline = self.outline, width = tailleX/10)
+                
+
+            self.ObjetDestination = self.PreviousObjetDestination
+            self.destination = self.PreviousDestination
+            self.setChemin(self.destination)
+
+
+
+    def estSurStation(self) :
+        self.enRecharge=False
+        if (isinstance(self.ObjetDestination, StationRecharge) and (self.cellule.getPosition() == self.destination)) :
+            if self.ObjetDestination in self.carte.lieu :
+                self.ObjetDestination.arriveeRobot(self)
+                self.enRecharge=True
+
+
+
+
+
+
 
 
 

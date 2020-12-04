@@ -128,7 +128,7 @@ class GestionSimulation:
 
                 if robots[i].AccomplirTâche(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom) :
                     self.controlSimulation.simulation.ajouterTache()
-                    self.scoreboard.updateScoreboard(self.controlSimulation.simulation.equipes)
+                self.scoreboard.updateScoreboard(self.controlSimulation.simulation.equipes)
 
                         
                 #print("nb taches restantes :", len(self.controlSimulation.simulation.taches))
@@ -136,7 +136,9 @@ class GestionSimulation:
                     
 
                 #print("Deplacement d"robots[i].getDestination())
-    
+            robots[i].checkBatterie(self.tailleX)
+
+            self.controlSimulation.simulation.launchStations(self.tailleX)
         self.CanvasCarte.after(1000, lambda : self.deplacement(typeDeplacement))
 
 
