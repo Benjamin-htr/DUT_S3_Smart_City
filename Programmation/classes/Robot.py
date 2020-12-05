@@ -3,6 +3,7 @@ from classes.Carte import Carte
 from classes.Cellule import Cellule
 from classes.Chemin import Chemin
 from classes.Tache import Tache
+from classes.Enchere import Enchere
 from classes.StationRecharge import StationRecharge
 from tkinter.font import Font
 
@@ -37,6 +38,10 @@ class Robot:
         self.batterie=random.randint(85, 100)
 
         self.enRecharge = False
+
+        self.gagnant = False
+
+        self.offre = "Aucune"
 
 
 
@@ -162,6 +167,7 @@ class Robot:
 
     def PlusProcheVolOiseau(self, liste : list, recherche):
         distance = []
+        
         for obj in liste:
             x1 = self.cellule.x
             y1 = self.cellule.y
@@ -191,31 +197,49 @@ class Robot:
     
     #méthode permettant au robot d'Acquérir une tache
     def AcquisitionTache(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom) -> bool :
+        retour = False
         if self.tache == None :
             #tache la plus proche :
             NearbyTache = self.PlusProcheVolOiseau(self.simulation.getTaches(), "Tache")
 
-            #je la définie comme étant la tâche du robot
-            self.tache = NearbyTache
+            if type(NearbyTache) == Tache :
+                self.gagnant = True
+                retour = NearbyTache
 
-            #je la supprime de la liste des tâches de la simulation
-            self.simulation.taches.remove(self.tache)
-                    
+            elif type(NearbyTache) == Enchere :
+                self.setChemin(self.cellule.getPosition())
 
-            #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
-            self.ObjetDestination = self.tache.getDepart()
-            self.destination = self.tache.getDepart().getCellule().getPosition()
-            self.setChemin(self.destination)
+                NearbyTache.arriveeParticipant(self)
 
-            #si le zoom est activé et que j'ai déjà zoomé alors je réinitialise la caméra :
-            if cameraMoovable and scale != 1 :
-                 tailleX = zoom.resetZoom2()
-            #Je dessine le lieu départ
-            self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
-            self.outline='red'
-            self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/10)
+                retour = NearbyTache
+            
 
-            return True
+            if self.gagnant :
+                #je la définie comme étant la tâche du robot
+                self.tache = NearbyTache
+
+                #je la supprime de la liste des tâches de la simulation
+                self.simulation.taches.remove(self.tache)
+                        
+
+                #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
+                self.ObjetDestination = self.tache.getDepart()
+                self.destination = self.tache.getDepart().getCellule().getPosition()
+                self.setChemin(self.destination)
+
+                #si le zoom est activé et que j'ai déjà zoomé alors je réinitialise la caméra :
+                if cameraMoovable and scale != 1 :
+                    tailleX = zoom.resetZoom2()
+                #Je dessine le lieu départ
+                self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
+                self.outline='red'
+                self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/10)
+
+                self.gagnant = False
+
+        return retour
+    
+    
 
     def estSurLieuDepart(self) :
         arrive = False
@@ -249,6 +273,7 @@ class Robot:
         
 
     def AccomplirTâche(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom =None) :
+        retour = False
 
         #s'il a auparavant recuperer une tache
         if self.tache != None :
@@ -269,14 +294,16 @@ class Robot:
             if self.estSurLieuArrive() :
                 #on ajoute la recompense à son equipe :
                 self.equipe.ajouterArgent(self.tache.recompense)
-                #on ajoute la recompense au robot e :
+                #on ajoute la recompense au robot :
                 self.argent += (self.tache.recompense)
                 #je réinitialise les attributs d'instance :
                 self.passéSurLieuDepart = False
+                retour = self.tache
                 self.tache = None
+                self.outline='white'
                 self.carte.carte.itemconfigure(self.form, outline = 'white', width = tailleX/tailleX)
                 print('Tache terminée ! ', self.equipe.name, ' argent : ', self.equipe.argent)
-                return True
+                return retour
         
 
     def checkBatterie(self, tailleX) :

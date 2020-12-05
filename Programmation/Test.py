@@ -5,5 +5,6 @@ a = GestionSimulation()
 a.afficherSimulation()
 
 
+
 #affichage
 #a.window.mainloop()

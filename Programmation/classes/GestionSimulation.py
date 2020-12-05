@@ -1,6 +1,9 @@
 from classes.ControlSimulation import ControlSimulation
 from classes.Scoreboard import Scoreboard
+from classes.AffichageEncheres import AffichageEncheres
 from classes.Zoom import zoom
+from classes.Tache import Tache
+from classes.Enchere import Enchere
 from tkinter import *
 from tkinter import messagebox
 import time
@@ -87,6 +90,11 @@ class GestionSimulation:
         #on créer le scoreboard :
         self.scoreboard=Scoreboard(self.window)
 
+        #on créer l'affichage des encheres' :
+        self.AffichageEncheres=AffichageEncheres(self.window)
+
+        self.vitesse = 1000 #en miliseconde
+
 
 
 
@@ -122,13 +130,20 @@ class GestionSimulation:
             elif typeDeplacement == "djikstra" and self.pause == False :
                 #self.controlSimulation.simulation.robots[i].setChemin(robots[i].choixTacheDijkstra(self.getTaches()).getDepart().getCellule().getPosition())
                 #print(self.controlSimulation.simulation.robots[i].chemin.chemin)
-                robots[i].AcquisitionTache(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom)
+                tache = robots[i].AcquisitionTache(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom)
 
                 deplacement=robots[i].deplacement(self.tailleX)
 
-                if robots[i].AccomplirTâche(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom) :
+                tacheAccompli = robots[i].AccomplirTâche(self.cameraMoovable, self.scale, self.tailleX, self.tailleLieuxMission, self.zoom)
+
+                if type(tacheAccompli) == Tache :
                     self.controlSimulation.simulation.ajouterTache()
+                elif type(tacheAccompli) == Enchere :
+                    self.controlSimulation.simulation.ajouterEnchere()
+
+                
                 self.scoreboard.updateScoreboard(self.controlSimulation.simulation.equipes)
+        
 
                         
                 #print("nb taches restantes :", len(self.controlSimulation.simulation.taches))
@@ -137,9 +152,11 @@ class GestionSimulation:
 
                 #print("Deplacement d"robots[i].getDestination())
             robots[i].checkBatterie(self.tailleX)
-
+            
+        self.AffichageEncheres.updateAffichageEncheres(self.controlSimulation.simulation.getEncheres())
+        self.controlSimulation.simulation.checkEnchere(self.vitesse)
         self.controlSimulation.simulation.launchStations(self.tailleX)
-        self.CanvasCarte.after(1000, lambda : self.deplacement(typeDeplacement))
+        self.CanvasCarte.after(self.vitesse, lambda : self.deplacement(typeDeplacement))
 
 
     def lancerSimulation(self):
@@ -164,6 +181,7 @@ class GestionSimulation:
             self.EnCours=True
 
             self.scoreboard.chargerDonnees(self.controlSimulation.simulation.equipes)
+            self.AffichageEncheres.chargerDonnees(self.controlSimulation.simulation.getEncheres())
 
             #on calcule la taille des bords des cellules (taille du canvas 650 divisé par le nombre de cellule)
             self.tailleX=650/self.controlSimulation.simulation.carte.nx
@@ -207,6 +225,7 @@ class GestionSimulation:
                 del self.zoom
             self.CanvasCarte.delete("all")
             self.scoreboard.resetScoreboard()
+            self.AffichageEncheres.resetAffichageEncheres()
             self.controlSimulation = None
             self.tailleX=0
             self.scale=1
