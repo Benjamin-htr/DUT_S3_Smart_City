@@ -7,7 +7,6 @@ class Cellule:
         self.murs = {'N': True, 'S': True, 'E': True, 'O': True}
 
     def murPresent(self, direction):
-        print(self.murs)
         return self.murs[direction]
 
     def getPosition(self) -> tuple:

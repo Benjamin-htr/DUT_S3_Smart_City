@@ -6,13 +6,14 @@ from classes.Tache import Tache
 
 class Robot:
 
-    def __init__(self, nom, cellule, carte, simulation):
+    def __init__(self, nom, cellule, carte, simulation, equipe):
         self.nom = nom
         self.cellule = cellule
         self.carte = carte
         self.simulation = simulation
         self.chemin = None
         self.destination = None
+        self.equipe = equipe
 
         #attribut permettant de connaitre l'objet de la destination du robot (lieuMission, stationRecharge ou tache)
         self.ObjetDestination = None
@@ -25,7 +26,10 @@ class Robot:
 
         self.form = None
 
-    def dessinerRobot(self, tailleX, tailleRobot, couleur, nouveau=False) :
+
+
+
+    def dessinerRobot(self, tailleX, tailleRobot, nouveau = False) :
         x = self.cellule.x
         y = self.cellule.y
         tailleY=tailleX
@@ -46,7 +50,7 @@ class Robot:
             x1=self.carte.carte.canvasx(y*tailleY+(tailleY*diamFin))
             y1=self.carte.carte.canvasy(x*tailleX+(tailleX*diamFin))
 
-        self.form = self.carte.carte.create_oval(x0, y0, x1, y1, fill=couleur, tags='form')
+        self.form = self.carte.carte.create_oval(x0, y0, x1, y1, fill=self.equipe.color, tags='form')
 
 
     def supprimerForme(self) -> None :
@@ -169,7 +173,7 @@ class Robot:
                  tailleX = zoom.resetZoom2()
             #Je dessine le lieu départ
             self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
-            self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/9)
+            self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/10)
 
             return True
 
@@ -216,17 +220,19 @@ class Robot:
                     tailleX = zoom.resetZoom2()
                 #s'il est arrivé sur le lieu de départ je dessine le lieu d'arrivee
                 self.tache.dessinerLieu(1, tailleX, tailleLieuxMission, 'green')
-                self.carte.carte.itemconfigure(self.form, outline = 'green', width = tailleX/9)
+                self.carte.carte.itemconfigure(self.form, outline = 'green', width = tailleX/10)
 
         #s'il a auparavant atteint le lieu de depart :
         if self.passéSurLieuDepart :
             #s'il a terminé la tâche :
             if self.estSurLieuArrive() :
+                #on ajoute la recompense à son equipe :
+                self.equipe.ajouterArgent(self.tache.recompense)
                 #je réinitialise les attributs d'instance :
                 self.passéSurLieuDepart = False
                 self.tache = None
                 self.carte.carte.itemconfigure(self.form, outline = 'white', width = tailleX/tailleX)
-                print('tache terminée !')
+                print('Tache terminée ! ', self.equipe.name, ' argent : ', self.equipe.argent)
                 return True
         
 
