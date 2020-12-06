@@ -4,7 +4,7 @@ import random
 
 class Enchere(Tache):
     def __init__(self, carte : Carte, numero) :
-        super().__init__(carte)
+        super().__init__(carte, random.randint(300,500))
         self.numero = numero
         self.participants = []
         self.duree = 20 #en seconde
@@ -16,13 +16,11 @@ class Enchere(Tache):
 
     def arriveeParticipant(self, robot) :
         if robot not in self.participants :
+            robot.EnchereEnCours = True
             self.participants.append(robot)
         
 
-            
-    def departParticipant(self, robot) :
-        self.participants.remove(robot)
-        robot.offre = "Aucune"
+
 
 
     def checkEnchere(self, vitesse) :
@@ -59,8 +57,10 @@ class Enchere(Tache):
             
             
     def enchereTerminée(self) :
-        for robot in self.participants :
-            self.departParticipant(robot)
+        for i in range(len(self.participants)) :
+            self.participants[0].offre = "Aucune"
+            self.participants[0].EnchereEnCours = False
+            del self.participants[0]
         del self
 
 

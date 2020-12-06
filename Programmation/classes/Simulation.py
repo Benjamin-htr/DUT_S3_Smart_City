@@ -115,9 +115,9 @@ class Simulation:
             nbEncheres = 2
 
         
+        """for i in range(nbTaches) :
+            self.ajouterTache()"""
         for i in range(nbTaches) :
-            self.ajouterTache()
-        for i in range(nbEncheres) :
             self.ajouterEnchere()
 
         

@@ -44,6 +44,8 @@ class Robot:
 
         self.offre = "Aucune"
 
+        self.EnchereEnCours = False
+
 
 
 

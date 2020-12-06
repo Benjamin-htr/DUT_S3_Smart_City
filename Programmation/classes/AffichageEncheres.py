@@ -20,9 +20,6 @@ class AffichageEncheres:
 
         self.robotFrame = {}
 
-        self.robotsCanvas={}
-        self.robotsFormes={}
-
         #dictionnaire contenant les descriptions des robots :
         self.descriptionRobots = {}
 
@@ -93,7 +90,7 @@ class AffichageEncheres:
             if robot not in self.robotFrame :
                 name = robot.nom
                 offre = robot.offre
-                chaine = name + ' offre : ' + offre
+                chaine = name + ' offre : ' + str(offre)
 
                 self.descriptionRobots[robot] = StringVar()
                 self.descriptionRobots[robot].set(chaine)
@@ -103,9 +100,9 @@ class AffichageEncheres:
                 RobotFrame.pack(fill=X)
 
 
-                self.robotsCanvas[robot] = Canvas(RobotFrame, bg = self.bg, height =28, width = 28, highlightthickness=0)
-                self.robotsFormes[robot] = self.robotsCanvas[robot].create_oval(2.5, 2.5, 24, 24, fill=robot.color, outline ='white')
-                self.robotsCanvas[robot].grid(row=0, column=0, padx = 5)
+                canva = Canvas(RobotFrame, bg = self.bg, height =28, width = 28, highlightthickness=0)
+                canva.create_oval(2.5, 2.5, 24, 24, fill=robot.color, outline ='white')
+                canva.grid(row=0, column=0, padx = 5)
                 
 
 
@@ -140,7 +137,7 @@ class AffichageEncheres:
                 chaine = name + ' : offre : ' + str(offre)
 
                 self.descriptionRobots[robot].set(chaine)
-                self.robotsCanvas[robot].itemconfigure(self.robotsFormes[robot], outline = robot.outline, width=2)
+                #self.robotsCanvas[robot].itemconfigure(self.robotsFormes[robot], outline = robot.outline, width=2)
             
     def deleteEnchereFrame(self, Encherframe, enchere) :
         self.Enchereframe[enchere].destroy()
@@ -149,8 +146,6 @@ class AffichageEncheres:
         self.EnchereGagnant.pop(enchere, False)
         for robot in enchere.participants :
             self.robotFrame.pop(robot, False)
-            self.robotsCanvas.pop(robot, False)
-            self.robotsFormes.pop(robot, False)
             self.descriptionRobots.pop(robot, False)
 
 
