@@ -12,6 +12,7 @@ import random
 
 class GestionSimulation:
     def __init__(self):
+        self.zoom = None
         #creation de la fenêtre :
         self.window = Tk()
 
@@ -52,6 +53,7 @@ class GestionSimulation:
         self.scale = 1
 
         #peut on bouger la camero + zoom
+        self.cameraMoovable = False
         self.cameraMoovable = True
 
         #zoom :
@@ -386,7 +388,7 @@ class GestionSimulation:
 
             #Bouton settings :
             icon=PhotoImage(file="classes/icons/settings.png")
-            settings = Button(self.window, image = icon, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
+            settings = Button(self.window, image=icon, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
             settings.grid(row= 0, column=3) 
 
             self.window.mainloop()

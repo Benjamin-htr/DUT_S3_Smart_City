@@ -12,12 +12,12 @@ class StationRecharge(Lieu):
     def departRobot(self, robot) :
         self.garage.remove(robot)
 
-    def Recharger(self, tailleX) :
-        if (len(self.garage) > 0) :
-            for robot in (self.garage) :
-                if robot.batterie < 90 :
+    def Recharger(self, tailleX):
+        if (len(self.garage) > 0):
+            for robot in (self.garage):
+                if robot.batterie < 100 - self.tauxDeRecharge:
                     robot.batterie += self.tauxDeRecharge
-                elif robot.batterie < 100 :
+                elif robot.batterie < 100:
                     robot.batterie = 100
             
                         

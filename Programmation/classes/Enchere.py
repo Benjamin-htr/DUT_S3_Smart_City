@@ -75,19 +75,3 @@ class Enchere(Tache):
 
 
         
-            
-        
-
-    
-
-
-
-        
-
-    
-
-
-
-
-    #def lancerEnchere() -> None :
-        
