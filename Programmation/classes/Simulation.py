@@ -57,7 +57,7 @@ class Simulation:
 
             self.equipes.append(Equipe(name, letter))
             #for j in range(int(2)) :
-            for j in range(int(4)) :
+            for j in range(int(2)) :
                 robotName = self.RobotsNames[random.randint(0,len(self.RobotsNames)-1)]
                 color = self.colors[random.randint(0,len(self.colors)-1)]
                 robot = self.ajouterRobot(robotName, color, self.equipes[i])

@@ -225,7 +225,7 @@ class Robot:
                 retour = NearbyTache
             
         
-            elif self.gagnant :
+            if self.gagnant :
                 #je la définie comme étant la tâche du robot
                 self.tache = NearbyTache
 
