@@ -144,8 +144,7 @@ class GestionSimulation:
                     self.controlSimulation.simulation.ajouterEnchere()
 
                 
-                self.scoreboard.updateScoreboard(self.controlSimulation.simulation.equipes)
-        
+                
 
                         
                 #print("nb taches restantes :", len(self.controlSimulation.simulation.taches))
@@ -154,10 +153,12 @@ class GestionSimulation:
 
                 #print("Deplacement d"robots[i].getDestination())
             robots[i].checkBatterie(self.tailleX)
-            
-        self.AffichageEncheres.updateAffichageEncheres(self.controlSimulation.simulation.getEncheres())
-        self.controlSimulation.simulation.checkEnchere(self.vitesse)
-        self.controlSimulation.simulation.launchStations(self.tailleX)
+        if self.pause == False :
+            self.scoreboard.updateScoreboard(self.controlSimulation.simulation.equipes)
+            self.AffichageEncheres.updateAffichageEncheres(self.controlSimulation.simulation.getEncheres())
+            self.controlSimulation.simulation.checkEnchere(self.vitesse)
+            self.controlSimulation.simulation.launchStations(self.tailleX)
+
         self.CanvasCarte.after(self.vitesse, lambda : self.deplacement(typeDeplacement))
 
 

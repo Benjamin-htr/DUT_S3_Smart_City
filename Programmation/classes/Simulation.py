@@ -57,7 +57,7 @@ class Simulation:
 
             self.equipes.append(Equipe(name, letter))
             #for j in range(int(2)) :
-            for j in range(int(nbRobots/nbEquipes)) :
+            for j in range(int(4)) :
                 robotName = self.RobotsNames[random.randint(0,len(self.RobotsNames)-1)]
                 color = self.colors[random.randint(0,len(self.colors)-1)]
                 robot = self.ajouterRobot(robotName, color, self.equipes[i])
@@ -99,7 +99,7 @@ class Simulation:
         return estPresent
     
     def ajouterEnchere(self) -> None :
-        enchere = Enchere(self.carte, self.numeroEnchere)
+        enchere = Enchere(self.carte, self.numeroEnchere, self)
         self.taches.append(enchere)
         self.numeroEnchere += 1
 

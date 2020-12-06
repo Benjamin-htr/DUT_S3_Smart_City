@@ -46,6 +46,10 @@ class Robot:
 
         self.EnchereEnCours = False
 
+        self.NearbyGagnant = False
+
+        
+
 
 
 
@@ -205,28 +209,29 @@ class Robot:
     #méthode permettant au robot d'Acquérir une tache
     def AcquisitionTache(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom) -> bool :
         retour = False
-        if self.tache == None :
+        if self.tache == None and self.EnchereEnCours == False :
             #tache la plus proche :
             NearbyTache = self.PlusProcheVolOiseau(self.simulation.getTaches(), "Tache")
-
+            
             if type(NearbyTache) == Tache :
                 self.gagnant = True
                 retour = NearbyTache
-
-            elif type(NearbyTache) == Enchere :
+            
+            
+            elif type(NearbyTache) == Enchere and self.EnchereEnCours == False and self.gagnant == False:
                 self.setChemin(self.cellule.getPosition())
-
                 NearbyTache.arriveeParticipant(self)
 
                 retour = NearbyTache
             
-
-            if self.gagnant :
+        
+            elif self.gagnant :
                 #je la définie comme étant la tâche du robot
                 self.tache = NearbyTache
 
                 #je la supprime de la liste des tâches de la simulation
-                self.simulation.taches.remove(self.tache)
+                if type(self.tache) == Tache :
+                    self.simulation.taches.remove(self.tache)
                         
 
                 #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
@@ -244,6 +249,7 @@ class Robot:
 
                 self.gagnant = False
 
+        #print("robot :", self.nom,"enchereEnCours :", self.EnchereEnCours)
         return retour
     
     
