@@ -211,6 +211,7 @@ class Robot:
         retour = False
         if self.tache == None and self.EnchereEnCours == False :
             #tache la plus proche :
+            print(self.nom, "    ", len(self.simulation.getTaches()))
             NearbyTache = self.PlusProcheVolOiseau(self.simulation.getTaches(), "Tache")
             
             if type(NearbyTache) == Tache :
@@ -230,8 +231,8 @@ class Robot:
                 self.tache = NearbyTache
 
                 #je la supprime de la liste des tâches de la simulation
-                if type(self.tache) == Tache :
-                    self.simulation.taches.remove(self.tache)
+                
+                self.simulation.taches.remove(self.tache)
                         
 
                 #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
@@ -248,6 +249,7 @@ class Robot:
                 self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/10)
 
                 self.gagnant = False
+                self.EnchereEnCours = False
 
         #print("robot :", self.nom,"enchereEnCours :", self.EnchereEnCours)
         return retour
@@ -258,6 +260,7 @@ class Robot:
         arrive = False
         if (self.ObjetDestination == self.tache.getDepart()) and (self.cellule.getPosition() == self.destination) :
             if self.ObjetDestination in self.carte.lieu :
+                print(self.nom, "est sur lieu depart")
                 self.ajouterMarchandise((self.ObjetDestination.getMarchandise()))
                 self.tache.supprimerForme()
                 self.carte.lieu.remove(self.ObjetDestination)

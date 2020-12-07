@@ -121,8 +121,12 @@ class GestionSimulation:
             return
 
         robots=self.getRobots()
-
+        #print("nb taches :", len(self.controlSimulation.simulation.getTaches()))
+        if self.pause == False :
+            self.controlSimulation.simulation.checkEnchere(self.vitesse)
+            self.AffichageEncheres.updateAffichageEncheres(self.controlSimulation.simulation.getEncheres())
         for i in range(len(robots)):
+        
             currentCell=robots[i].cellule
             #print(robots[i].nom, " :", currentCell)
             if typeDeplacement == "random" and self.pause == False :
@@ -155,8 +159,7 @@ class GestionSimulation:
             robots[i].checkBatterie(self.tailleX)
         if self.pause == False :
             self.scoreboard.updateScoreboard(self.controlSimulation.simulation.equipes)
-            self.AffichageEncheres.updateAffichageEncheres(self.controlSimulation.simulation.getEncheres())
-            self.controlSimulation.simulation.checkEnchere(self.vitesse)
+            
             self.controlSimulation.simulation.launchStations(self.tailleX)
 
         self.CanvasCarte.after(self.vitesse, lambda : self.deplacement(typeDeplacement))

@@ -47,8 +47,9 @@ class AffichageEncheres:
 
     def updateAffichageEncheres(self, encheres) :
         for enchere in encheres :
-            enchere.dessinerEnchere(self.ScrollFrame.viewPort, self.bg)  
             enchere.updateEnchereFrame(self.bg)
+            enchere.dessinerEnchere(self.ScrollFrame.viewPort, self.bg)  
+            
         
             
     def deleteEnchereFrame(self, Encherframe, enchere) :

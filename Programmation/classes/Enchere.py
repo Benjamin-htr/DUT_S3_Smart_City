@@ -43,7 +43,7 @@ class Enchere(Tache):
             
 
 
-    def JouerEnchere(self) :
+    """def JouerEnchere(self) :
         retour = False
         if len(self.participants) == 1 :
             self.nomGagnant = self.participants[0].nom
@@ -66,19 +66,47 @@ class Enchere(Tache):
         
         if self.duree <= 0 and len(self.participants) >= 2 :
             self.gagnant.gagnant = True
-            self.enchereTerminée()
+            self.enchereTerminée()"""
+
+    def JouerEnchere(self) :
+        retour = False
+        if len(self.participants) == 1 :
+            self.nomGagnant = self.participants[0].nom
+
+        
+        elif len(self.participants) >= 2 :
+            for robot in self.participants :
+                if robot not in self.offres :
+                    self.offres[robot] = self.Encherir(robot)
+
+            self.gagnant = min(self.offres, key=self.offres.get)
+
+            self.nomGagnant = self.gagnant.nom
+            
+        if self.duree == 0 :
+            if len(self.participants) == 1 :
+                self.nomGagnant = self.participants[0].nom
+                self.gagnant = self.participants[0]
+                self.gagnant.gagnant = True
+                retour = True
+                print("1er elif ", "enchere no ", self.numero, "gagnat :", self.gagnant.nom)
+                self.enchereTerminée()
+
+            elif len(self.participants) >= 2 :
+                self.gagnant.gagnant = True
+                print("2eme elif ", "enchere no ", self.numero, "gagnat :", self.gagnant.nom)
+                self.enchereTerminée()
             
             
     def enchereTerminée(self) :
         for i in range(len(self.participants)) :
-            self.participants[0].offre = "Aucune"
-            self.participants[0].EnchereEnCours = False
-            print(self.participants[0].nom, " : ", self.participants[0].EnchereEnCours)
-            del self.participants[0]
+            self.participants[i].offre = "Aucune"
+            self.participants[i].EnchereEnCours = False
+            print(self.participants[i].nom, " : ", self.participants[0].EnchereEnCours)
 
         self.EnchereFrame.pack_forget()
         self.EnchereFrame.destroy()
-        self.simulation.taches.remove(self)
+        #self.simulation.taches.remove(self)
         del self
 
 
@@ -126,7 +154,7 @@ class Enchere(Tache):
     def chargerRobots(self, bg) :
         for robot in self.participants :
             #print(self.robotFrame)
-            if robot not in self.robotFrame :
+            if robot not in self.robotFrame and self.EnchereFrame != None :
                 name = robot.nom
                 offre = robot.offre
                 chaine = name + ' offre : ' + str(offre)
