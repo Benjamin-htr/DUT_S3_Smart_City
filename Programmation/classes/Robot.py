@@ -210,6 +210,13 @@ class Robot:
     def AcquisitionTache(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom) -> bool :
         retour = False
         if self.tache == None and self.EnchereEnCours == False :
+
+            self.cameraMoovable = cameraMoovable
+            self.scale = scale
+            self.tailleX = tailleX
+            self.tailleLieuxMission = tailleLieuxMission
+            self.zoom = zoom
+
             #tache la plus proche :
             print(self.nom, "    ", len(self.simulation.getTaches()))
             NearbyTache = self.PlusProcheVolOiseau(self.simulation.getTaches(), "Tache")
@@ -226,34 +233,36 @@ class Robot:
                 retour = NearbyTache
             
         
-            if self.gagnant :
-                #je la définie comme étant la tâche du robot
-                self.tache = NearbyTache
-
-                #je la supprime de la liste des tâches de la simulation
-                
-                self.simulation.taches.remove(self.tache)
-                        
-
-                #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
-                self.ObjetDestination = self.tache.getDepart()
-                self.destination = self.tache.getDepart().getCellule().getPosition()
-                self.setChemin(self.destination)
-
-                #si le zoom est activé et que j'ai déjà zoomé alors je réinitialise la caméra :
-                if cameraMoovable and scale != 1 :
-                    tailleX = zoom.resetZoom2()
-                #Je dessine le lieu départ
-                self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
-                self.outline='red'
-                self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/10)
-
-                self.gagnant = False
-                self.EnchereEnCours = False
+            
 
         #print("robot :", self.nom,"enchereEnCours :", self.EnchereEnCours)
         return retour
     
+    def affecterTache(self, tache) :
+        if self.gagnant :
+            #je la définie comme étant la tâche du robot
+            self.tache = tache
+
+            #je la supprime de la liste des tâches de la simulation          
+            self.simulation.taches.remove(tache)
+                        
+
+            #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
+            self.ObjetDestination = self.tache.getDepart()
+            self.destination = self.tache.getDepart().getCellule().getPosition()
+            self.setChemin(self.destination)
+
+            #si le zoom est activé et que j'ai déjà zoomé alors je réinitialise la caméra :
+            if self.cameraMoovable and self.scale != 1 :
+                tailleX = self.zoom.resetZoom2()
+            #Je dessine le lieu départ
+            self.tache.dessinerLieu(0, self.tailleX, self.tailleLieuxMission, 'red')
+            self.outline='red'
+            self.carte.carte.itemconfigure(self.form, outline = 'red', width = self.tailleX/10)
+
+            self.gagnant = False
+            self.EnchereEnCours = False
+
     
 
     def estSurLieuDepart(self) :

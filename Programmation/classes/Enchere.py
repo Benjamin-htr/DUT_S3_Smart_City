@@ -29,7 +29,7 @@ class Enchere(Tache):
 
 
     def arriveeParticipant(self, robot) :
-        if robot not in self.participants :
+        if robot not in self.participants and self.duree > 1:
             print("arrive de", robot.nom, "dans enchere numero", self.numero)
             robot.EnchereEnCours = True
             self.participants.append(robot)
@@ -90,11 +90,13 @@ class Enchere(Tache):
                 self.gagnant.gagnant = True
                 retour = True
                 print("1er elif ", "enchere no ", self.numero, "gagnat :", self.gagnant.nom)
+                self.gagnant.affecterTache(self)
                 self.enchereTerminée()
 
             elif len(self.participants) >= 2 :
                 self.gagnant.gagnant = True
                 print("2eme elif ", "enchere no ", self.numero, "gagnat :", self.gagnant.nom)
+                self.gagnant.affecterTache(self)
                 self.enchereTerminée()
             
             
@@ -179,6 +181,7 @@ class Enchere(Tache):
 
     def updateEnchereFrame(self, bg) :
         if self.EnchereFrame != None :
+            #print(self.EnchereFrame)
             self.chargerRobots(bg)
 
             chaine = 'Temps Restant :' + ' ' + str(self.duree)
