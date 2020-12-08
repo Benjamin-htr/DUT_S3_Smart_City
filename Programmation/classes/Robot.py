@@ -54,7 +54,7 @@ class Robot:
 
 
     def dessinerRobot(self, tailleX, tailleRobot, nouveau = False) :
-        taillePolice=round(tailleX/2)
+        taillePolice=round(tailleX/1.7)
         font = Font(family="Fixedsys",size=-taillePolice, weight="bold")
         
         x = self.cellule.x
@@ -84,7 +84,7 @@ class Robot:
             y1=self.carte.carte.canvasy(x*tailleX+(tailleX*diamFin))
 
         self.form = self.carte.carte.create_oval(x0, y0, x1, y1, fill=self.color, tags='form')
-        self.form2 = self.carte.carte.create_text(xText, yText,text=self.equipe.letter, fill='red', font=font)
+        self.form2 = self.carte.carte.create_text(xText, yText,text=self.equipe.letter, fill='black', font=font)
 
     def supprimerForme(self) -> None :
          self.carte.carte.delete(self.form)
@@ -226,7 +226,6 @@ class Robot:
             self.zoom = zoom
 
             #tache la plus proche :
-            print(self.nom, "    ", len(self.simulation.getTaches()))
             NearbyTache = self.PlusProcheVolOiseau(self.simulation.getTaches(), "Tache")
             
             if type(NearbyTache) == Tache :
@@ -280,7 +279,6 @@ class Robot:
         arrive = False
         if (self.ObjetDestination == self.tache.getDepart()) and (self.cellule.getPosition() == self.destination) :
             if self.ObjetDestination in self.carte.lieu :
-                print(self.nom, "est sur lieu depart")
                 self.ajouterMarchandise((self.ObjetDestination.getMarchandise()))
                 self.tache.supprimerForme()
                 self.carte.lieu.remove(self.ObjetDestination)
@@ -342,7 +340,7 @@ class Robot:
         
     def checkBatterie(self, tailleX):
         if self.batterie < 0:
-            print("J'ai moins 0 en batterie enculé : " + str(self.batterie) )
+            print("J'ai moins 0 en batterie : " + str(self.batterie))
 
         stations = self.carte.getStationRecharge()
         stationPlusProche = self.PlusProcheVolOiseau(stations, "Station")

@@ -42,7 +42,7 @@ class Simulation:
 
         #on génère les tâches :
         self.genererTaches()
-        print("taches sim debut:", self.taches)
+        
 
         #self.afficher(carte)
 
@@ -120,7 +120,8 @@ class Simulation:
         for i in range(nbTachesEncheres) :
             self.ajouterEnchere()
 
-        print(len(self.taches))
+        print("Nombre de taches simples au début :", nbTachesSimples)
+        print("Nombre de taches à Enchère au début :", nbTachesEncheres)
 
         
 
