@@ -64,12 +64,6 @@ class Simulation:
 
                 
 
-
-
-    def afficher(self, carte):
-        print(carte)
-
-
     def ajouterRobot(self, name, color, equipe : Equipe) -> Robot :
         robot = equipe.ajouterRobot(name, color, self.carte.getCelluleRandom(), self.carte, self)
         self.robots.append(robot)
@@ -119,9 +113,6 @@ class Simulation:
             self.ajouterTache()
         for i in range(nbTachesEncheres) :
             self.ajouterEnchere()
-
-        print("Nombre de taches simples au début :", nbTachesSimples)
-        print("Nombre de taches à Enchère au début :", nbTachesEncheres)
 
         
 

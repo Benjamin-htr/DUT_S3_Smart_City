@@ -11,8 +11,6 @@ class Scoreboard:
 
         self.frames=[]
 
-        self.equipes = None
-
         self.dessinerScoreboard()
 
         self.scores = None

@@ -53,15 +53,9 @@ class GestionSimulation:
         self.scale = 1
 
         #peut on bouger la camero + zoom
-        self.cameraMoovable = False
         self.cameraMoovable = True
 
-        #zoom :
-        self.zoom=None
 
-        self.preScale = None
-        self.preTrue_x = None
-        self.preTrue_y = None
 
         #permet de savoir si la simulation est en pause ou non :
         self.pause=False
@@ -86,7 +80,7 @@ class GestionSimulation:
         #personnalisation de la fenêtre
         self.window.title('smart_City')
         self.window.geometry('1350x700')
-        #self.window.iconbitmap('logo.ico')
+        self.window.iconbitmap('logo.ico')
         self.window.resizable(height=False, width=False)
 
         #on créer le scoreboard :
@@ -312,12 +306,6 @@ class GestionSimulation:
             entree.bind("<Return>", EnregisterNom)
 
 
-    
-    
-    def ajouterRobot(self, name) -> None:
-        self.controlSimulation.creerRobot(name)
-
-
     def getRobots(self) -> list:
         return self.controlSimulation.getRobots()
 
@@ -393,6 +381,7 @@ class GestionSimulation:
             LancerSimulation.pack(side=LEFT)
 
             #Bouton ArreterSimulation :
+            
             ArreterSimulation = Button(Gestion, text='Réinitialiser Simulation', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:self.arreterSimulation())
             ArreterSimulation.pack(side=RIGHT)
 
@@ -405,8 +394,8 @@ class GestionSimulation:
             #self.CanvasCarte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)
 
             #Bouton settings :
-            icon=PhotoImage(file="classes/icons/settings.png")
-            settings = Button(self.window, image = icon, height = 1, width = 1, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
+            icon=PhotoImage(file="settings.png")
+            settings = Button(self.window, image = icon, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
             settings.grid(row= 0, column=3) 
 
             self.window.mainloop()
