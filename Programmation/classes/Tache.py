@@ -4,10 +4,10 @@ from classes.Carte import Carte
 import random
 
 class Tache:
-    def __init__(self, carte : Carte):
+    def __init__(self, carte : Carte, recompense = random.randint(100,200)):
         self.carte = carte
         self.temps = 60 #A gerer plus tard
-        self.recompense = random.randint(100,200)
+        self.recompense = recompense
         self.lieuDepart = self.carte.ajouterLieuMission([ ("Patate1", 20), ("Patate2", 25)])
         self.lieuArrivee = self.carte.ajouterLieuMission()
 

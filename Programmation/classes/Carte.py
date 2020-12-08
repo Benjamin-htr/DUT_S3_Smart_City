@@ -260,6 +260,29 @@ class Carte :
 
         return dist
 
+    def getDistance(self, positionDep : tuple, positionArr) -> int:
+        dist = []
+        for i in range(self.nx):
+            dist.append([])
+            for j in range(self.ny):
+                dist[i].append(-1)
+
+        File = []
+        dist[positionDep[0]][positionDep[1]] = 0
+        File.append(positionDep)
+
+        while dist[positionArr[0]][positionArr[1]] == -1:
+            k = File[0]
+            liste = self.attenantes(k)
+            for i in range(len(liste)):
+                if dist[liste[i][0]][liste[i][1]] == -1:
+                    File.append(liste[i])
+                    dist[liste[i][0]][liste[i][1]] = dist[k[0]][k[1]]+1
+
+            del File[0]
+        return dist[positionArr[0]][positionArr[1]]
+
+
     def attenantes(self, coord : tuple) -> list:
         cell = self.cellule(coord[0], coord[1])
         liste = []

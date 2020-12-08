@@ -3,6 +3,7 @@ from classes.Carte import Carte
 from classes.Cellule import Cellule
 from classes.Chemin import Chemin
 from classes.Tache import Tache
+from classes.Enchere import Enchere
 from classes.StationRecharge import StationRecharge
 from tkinter.font import Font
 
@@ -17,6 +18,7 @@ class Robot:
         self.chemin = None
         self.destination = None
         self.equipe = equipe
+        self.perteBatterie = random.randint(1,2)
 
         #attribut permettant de connaitre l'objet de la destination du robot (lieuMission, stationRecharge ou tache)
         self.ObjetDestination = None
@@ -37,6 +39,16 @@ class Robot:
         self.batterie=random.randint(85, 100)
 
         self.enRecharge = False
+
+        self.gagnant = False
+
+        self.offre = "Aucune"
+
+        self.EnchereEnCours = False
+
+        self.NearbyGagnant = False
+
+        
 
 
 
@@ -69,7 +81,6 @@ class Robot:
 
         self.form = self.carte.carte.create_oval(x0, y0, x1, y1, fill=self.color, tags='form')
         self.form2 = self.carte.carte.create_text(xText, yText,text=self.equipe.letter, fill='black', font=font)
-
 
     def supprimerForme(self) -> None :
          self.carte.carte.delete(self.form)
@@ -105,7 +116,6 @@ class Robot:
 
         return direction
 
-
     def setChemin(self, positionArr) -> None:
         #print('setchemin')
         resolution = self.carte.resolution(self.cellule.getPosition() , positionArr)
@@ -113,6 +123,9 @@ class Robot:
         self.destination = resolution[len (resolution) - 1]
         self.chemin = Chemin(resolution)
 
+    def setCheminAvecResolution(self, resolution) -> None:
+        self.destination = resolution[len (resolution) - 1]
+        self.chemin = Chemin(resolution)
 
     def deplacement(self, tailleX) -> str:
         if not(self.chemin.vide()): 
@@ -138,7 +151,8 @@ class Robot:
                 self.carte.carte.move(self.form,tailleX,0)
                 self.carte.carte.move(self.form2,tailleX,0)
 
-            self.batterie -= 2
+            self.batterie -= self.perteBatterie
+
 
             
 
@@ -151,17 +165,24 @@ class Robot:
     def verificationMur(self, direction) -> bool:
         return self.carte.murPresentCell(direction, self.cellule)
 
-    def choixTacheDijkstra(self, listTache : list) -> Tache:
-        distanceTache = []
-        for tache in listTache:
-            distanceTache.append(len(self.carte.resolution(self.cellule.getPosition() , tache.lieuDepart.getPosition())))
-        distanceMin = min(distanceTache)
-        tacheChoisi = listTache[ distanceTache.index( distanceMin ) ]
+    def PlusProcheDijkstra(self, liste : list, recherche) -> Tache:
+        distance = []
+        for obj in liste:
+            if recherche == "Tache":
+                distance.append(self.carte.getDistance(self.cellule.getPosition(), obj.lieuDepart.getPosition()))
+            elif recherche == "Station":
+                distance.append(self.carte.getDistance(self.cellule.getPosition(), obj.getCellule().getPosition()))
 
-        return tacheChoisi
+        distanceMin = min(distance)
+        objChoisi = liste[ distance.index( distanceMin ) ]
+
+        if recherche == "Station":
+            return (objChoisi, distanceMin)
+        return objChoisi
 
     def PlusProcheVolOiseau(self, liste : list, recherche):
         distance = []
+        
         for obj in liste:
             x1 = self.cellule.x
             y1 = self.cellule.y
@@ -179,6 +200,7 @@ class Robot:
         return tacheChoisi
 
 
+
     def getDestination(self):
         return self.destination
 
@@ -188,19 +210,46 @@ class Robot:
     def deposerMarchandise(self) -> None:
         self.coffre = []
 
-    
     #méthode permettant au robot d'Acquérir une tache
     def AcquisitionTache(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom) -> bool :
-        if self.tache == None :
+        retour = False
+        if self.tache == None and self.EnchereEnCours == False :
+
+            self.cameraMoovable = cameraMoovable
+            self.scale = scale
+            self.tailleX = tailleX
+            self.tailleLieuxMission = tailleLieuxMission
+            self.zoom = zoom
+
             #tache la plus proche :
+            print(self.nom, "    ", len(self.simulation.getTaches()))
             NearbyTache = self.PlusProcheVolOiseau(self.simulation.getTaches(), "Tache")
+            
+            if type(NearbyTache) == Tache :
+                self.gagnant = True
+                retour = NearbyTache
+            
+            
+            elif type(NearbyTache) == Enchere and self.EnchereEnCours == False and self.gagnant == False:
+                self.setChemin(self.cellule.getPosition())
+                NearbyTache.arriveeParticipant(self)
 
+                retour = NearbyTache
+            
+        
+            
+
+        #print("robot :", self.nom,"enchereEnCours :", self.EnchereEnCours)
+        return retour
+    
+    def affecterTache(self, tache) :
+        if self.gagnant :
             #je la définie comme étant la tâche du robot
-            self.tache = NearbyTache
+            self.tache = tache
 
-            #je la supprime de la liste des tâches de la simulation
-            self.simulation.taches.remove(self.tache)
-                    
+            #je la supprime de la liste des tâches de la simulation          
+            self.simulation.taches.remove(tache)
+                        
 
             #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
             self.ObjetDestination = self.tache.getDepart()
@@ -208,19 +257,23 @@ class Robot:
             self.setChemin(self.destination)
 
             #si le zoom est activé et que j'ai déjà zoomé alors je réinitialise la caméra :
-            if cameraMoovable and scale != 1 :
-                 tailleX = zoom.resetZoom2()
+            if self.cameraMoovable and self.scale != 1 :
+                tailleX = self.zoom.resetZoom2()
             #Je dessine le lieu départ
-            self.tache.dessinerLieu(0, tailleX, tailleLieuxMission, 'red')
+            self.tache.dessinerLieu(0, self.tailleX, self.tailleLieuxMission, 'red')
             self.outline='red'
-            self.carte.carte.itemconfigure(self.form, outline = 'red', width = tailleX/10)
+            self.carte.carte.itemconfigure(self.form, outline = 'red', width = self.tailleX/10)
 
-            return True
+            self.gagnant = False
+            self.EnchereEnCours = False
+
+    
 
     def estSurLieuDepart(self) :
         arrive = False
         if (self.ObjetDestination == self.tache.getDepart()) and (self.cellule.getPosition() == self.destination) :
             if self.ObjetDestination in self.carte.lieu :
+                print(self.nom, "est sur lieu depart")
                 self.ajouterMarchandise((self.ObjetDestination.getMarchandise()))
                 self.tache.supprimerForme()
                 self.carte.lieu.remove(self.ObjetDestination)
@@ -247,8 +300,8 @@ class Robot:
 
         return arrive
         
-
     def AccomplirTâche(self, cameraMoovable, scale, tailleX, tailleLieuxMission, zoom =None) :
+        retour = False
 
         #s'il a auparavant recuperer une tache
         if self.tache != None :
@@ -269,33 +322,48 @@ class Robot:
             if self.estSurLieuArrive() :
                 #on ajoute la recompense à son equipe :
                 self.equipe.ajouterArgent(self.tache.recompense)
-                #on ajoute la recompense au robot e :
+                #on ajoute la recompense au robot :
                 self.argent += (self.tache.recompense)
                 #je réinitialise les attributs d'instance :
                 self.passéSurLieuDepart = False
+                retour = self.tache
                 self.tache = None
+                self.outline='white'
                 self.carte.carte.itemconfigure(self.form, outline = 'white', width = tailleX/tailleX)
-                print('Tache terminée ! ', self.equipe.name, ' argent : ', self.equipe.argent)
-                return True
+                #print('Tache terminée ! ', self.equipe.name, ' argent : ', self.equipe.argent)
+                return retour
         
+    def checkBatterie(self, tailleX):
+        if self.batterie < 0:
+            print("J'ai moins 0 en batterie enculé : " + str(self.batterie) )
 
-    def checkBatterie(self, tailleX) :
-        if self.batterie <= 40 :
+        stations = self.carte.getStationRecharge()
+        stationPlusProche = self.PlusProcheVolOiseau(stations, "Station")
+        resolution = self.carte.resolution(self.cellule.getPosition(), stationPlusProche.getCellule().getPosition())
+        distance = len(resolution)
+
+
+        if (distance + 1) * self.perteBatterie > self.batterie - 2*self.perteBatterie:
             if not isinstance(self.ObjetDestination, StationRecharge) :
                 self.PreviousObjetDestination = self.ObjetDestination
                 self.PreviousDestination = self.destination
                 self.PreviousOutline = self.outline
 
+                self.ObjetDestination = stationPlusProche
+                self.destination = stationPlusProche.getCellule().getPosition()
+                self.setCheminAvecResolution(resolution)
+                #self.setChemin(self.destination)  
+
             self.outline='blue'
             self.carte.carte.itemconfigure(self.form, outline = 'blue', width = tailleX/10)
 
-            stations = self.carte.getStationRecharge()
-            
-            stationPlusProche = self.PlusProcheVolOiseau(stations, "Station")
 
-            self.ObjetDestination = stationPlusProche
-            self.destination = stationPlusProche.getCellule().getPosition()
-            self.setChemin(self.destination)
+            #self.ObjetDestination = stationPlusProche
+            #self.destination = stationPlusProche.getCellule().getPosition()
+
+
+            #self.setChemin(self.destination)
+
 
             if (self.enRecharge == False) :
                 self.estSurStation()
@@ -320,20 +388,8 @@ class Robot:
 
 
     def estSurStation(self) :
-        self.enRecharge=False
+        #self.enRecharge=False
         if (isinstance(self.ObjetDestination, StationRecharge) and (self.cellule.getPosition() == self.destination)) :
             if self.ObjetDestination in self.carte.lieu :
                 self.ObjetDestination.arriveeRobot(self)
                 self.enRecharge=True
-
-
-
-
-
-
-
-
-
-        
-
-        

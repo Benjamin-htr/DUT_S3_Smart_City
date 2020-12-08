@@ -64,8 +64,6 @@ class Carte:
                     self.effaceMur((x, y), 'S')
                 else:
                     self.effaceMur((x,y), 'E')
-        
-        print(self.cellule(2,2).murs)
 
 
     def effaceMur(self, coord, orientation) :
