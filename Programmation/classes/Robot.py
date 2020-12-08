@@ -54,7 +54,8 @@ class Robot:
 
 
     def dessinerRobot(self, tailleX, tailleRobot, nouveau = False) :
-        font = Font(family="Fixedsys",size=14,weight="bold")
+        taillePolice=round(tailleX/2)
+        font = Font(family="Fixedsys",size=-taillePolice, weight="bold")
         
         x = self.cellule.x
         y = self.cellule.y
@@ -63,6 +64,9 @@ class Robot:
         diam=tailleRobot
         diamDeb=((100-diam)/2)/100
         diamFin=(((100-diam)/2)+diam)/100
+
+        
+
 
         x0=(y*tailleY+(tailleY*diamDeb))
         y0=(x*tailleX+(tailleX*diamDeb))
@@ -80,7 +84,7 @@ class Robot:
             y1=self.carte.carte.canvasy(x*tailleX+(tailleX*diamFin))
 
         self.form = self.carte.carte.create_oval(x0, y0, x1, y1, fill=self.color, tags='form')
-        self.form2 = self.carte.carte.create_text(xText, yText,text=self.equipe.letter, fill='black', font=font)
+        self.form2 = self.carte.carte.create_text(xText, yText,text=self.equipe.letter, fill='red', font=font)
 
     def supprimerForme(self) -> None :
          self.carte.carte.delete(self.form)
@@ -224,11 +228,14 @@ class Robot:
             if type(NearbyTache) == Tache :
                 self.gagnant = True
                 retour = NearbyTache
+                self.affecterTache(NearbyTache)
+                
             
             
             elif type(NearbyTache) == Enchere and self.EnchereEnCours == False and self.gagnant == False:
                 self.setChemin(self.cellule.getPosition())
                 NearbyTache.arriveeParticipant(self)
+                
 
                 retour = NearbyTache
             

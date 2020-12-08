@@ -57,7 +57,7 @@ class Simulation:
 
             self.equipes.append(Equipe(name, letter))
             #for j in range(int(2)) :
-            for j in range(int(4)) :
+            for j in range(int(nbRobots/nbEquipes)) :
                 robotName = self.RobotsNames[random.randint(0,len(self.RobotsNames)-1)]
                 color = self.colors[random.randint(0,len(self.colors)-1)]
                 robot = self.ajouterRobot(robotName, color, self.equipes[i])
@@ -108,17 +108,19 @@ class Simulation:
         self.taches.append(tache)
 
     def genererTaches(self) :
-        nbTaches = len(self.robots*2)
-        nbEncheres = round(nbTaches*(40/100))
-
-        if nbEncheres < 2.0 :
-            nbEncheres = 2
+        nbTachesTotal = len(self.robots*2)
+        nbTachesSimples = round(nbTachesTotal*(40/100))
+        
+        nbTachesEncheres = round(nbTachesTotal*(60/100))
+        
 
         
-        """for i in range(nbTaches) :
-            self.ajouterTache()"""
-        for i in range(nbTaches) :
+        for i in range(nbTachesSimples) :
+            self.ajouterTache()
+        for i in range(nbTachesEncheres) :
             self.ajouterEnchere()
+
+        print(len(self.taches))
 
         
 

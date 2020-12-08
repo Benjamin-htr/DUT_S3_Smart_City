@@ -11,7 +11,7 @@ class Enchere(Tache):
         self.simulation = simulation
         self.numero = numero
         self.participants = []
-        self.duree = 10 #en seconde
+        self.duree = 15 #en seconde
 
         self.offres = {}
 
