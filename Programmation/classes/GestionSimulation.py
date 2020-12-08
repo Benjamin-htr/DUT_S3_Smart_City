@@ -243,9 +243,13 @@ class GestionSimulation:
         windowGagnant.title("Gagnant de la simulation")
         windowGagnant.geometry("300x50")
         windowGagnant.resizable(height=False, width=False)
-        equipeGagnante = self.controlSimulation.simulation.getEquipeGagnant()
-        Label(windowGagnant, text="L'équipe gagnante :").pack()
-        Label(windowGagnant, text=equipeGagnante.getName() + " avec " + str(equipeGagnante.getArgent()) + " points.").pack()
+        if self.controlSimulation.simulation.egalité():
+            Label(windowGagnant, text="Toutes les équipes ont été aussi fortes !").pack()
+            Label(windowGagnant, text="Il y a égalité").pack()
+        else:
+            equipeGagnante = self.controlSimulation.simulation.getEquipeGagnant()
+            Label(windowGagnant, text="L'équipe gagnante :").pack()
+            Label(windowGagnant, text=equipeGagnante.getName() + " avec " + str(equipeGagnante.getArgent()) + " points.").pack()
 
         
     """

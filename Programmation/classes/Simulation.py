@@ -138,4 +138,12 @@ class Simulation:
             if equipe.getArgent() >  equipeGagnante.getArgent():
                 equipeGagnante = equipe
         return equipeGagnante
+
+    def egalité(self) -> bool:
+        egalité = True
+        score = self.equipes[0].getArgent()
+        for equipe in self.equipes:
+            if equipe.getArgent() != score:
+                egalité = False
+        return egalité
             
