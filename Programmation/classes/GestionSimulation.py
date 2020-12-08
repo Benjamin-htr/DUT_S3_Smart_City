@@ -86,7 +86,7 @@ class GestionSimulation:
         #personnalisation de la fenêtre
         self.window.title('smart_City')
         self.window.geometry('1350x700')
-        self.window.iconbitmap('logo.ico')
+        #self.window.iconbitmap('logo.ico')
         self.window.resizable(height=False, width=False)
 
         #on créer le scoreboard :
@@ -223,6 +223,7 @@ class GestionSimulation:
         
     def arreterSimulation(self):
         if (self.EnCours==True) :
+            self.afficherGagnant()
             self.textStartButton.set("Lancer Simulation")
             self.pause=False
             self.EnCours=False
@@ -235,8 +236,17 @@ class GestionSimulation:
             self.controlSimulation = None
             self.tailleX=0
             self.scale=1
-            
             return None
+
+    def afficherGagnant(self) -> None:
+        windowGagnant = Toplevel(self.window)
+        windowGagnant.title("Gagnant de la simulation")
+        windowGagnant.geometry("300x50")
+        windowGagnant.resizable(height=False, width=False)
+        equipeGagnante = self.controlSimulation.simulation.getEquipeGagnant()
+        Label(windowGagnant, text="L'équipe gagnante :").pack()
+        Label(windowGagnant, text=equipeGagnante.getName() + " avec " + str(equipeGagnante.getArgent()) + " points.").pack()
+
         
     """
     Cette méthode permet d'ouvrir la fenêtre permettant de créer un nouveau robot si elle n'existe pas déjà et si la simulation est 
@@ -391,8 +401,8 @@ class GestionSimulation:
             #self.CanvasCarte.grid(row = 0, column = 2, rowspan=10, padx = 10, pady=25)
 
             #Bouton settings :
-            icon=PhotoImage(file="classes/icons/settings.png")
-            settings = Button(self.window, image=icon, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
+            #icon=PhotoImage(file="classes/icons/settings.png")
+            settings = Button(self.window, height = 1, width = 1, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
             settings.grid(row= 0, column=3) 
 
             self.window.mainloop()

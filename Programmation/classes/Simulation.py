@@ -134,4 +134,10 @@ class Simulation:
         for enchere in encheres :
             enchere.checkEnchere(vitesse)
     
-
+    def getEquipeGagnant(self) -> str:
+        equipeGagnante = self.equipes[0]
+        for equipe in self.equipes:
+            if equipe.getArgent() >  equipeGagnante.getArgent():
+                equipeGagnante = equipe
+        return equipeGagnante
+            

@@ -30,7 +30,7 @@ class Enchere(Tache):
 
     def arriveeParticipant(self, robot) :
         if robot not in self.participants and self.duree > 1:
-            print("arrive de", robot.nom, "dans enchere numero", self.numero)
+            #print("arrive de", robot.nom, "dans enchere numero", self.numero)
             robot.EnchereEnCours = True
             self.participants.append(robot)
         
@@ -89,13 +89,13 @@ class Enchere(Tache):
                 self.gagnant = self.participants[0]
                 self.gagnant.gagnant = True
                 retour = True
-                print("1er elif ", "enchere no ", self.numero, "gagnat :", self.gagnant.nom)
+                #print("1er elif ", "enchere no ", self.numero, "gagnat :", self.gagnant.nom)
                 self.gagnant.affecterTache(self)
                 self.enchereTerminée()
 
             elif len(self.participants) >= 2 :
                 self.gagnant.gagnant = True
-                print("2eme elif ", "enchere no ", self.numero, "gagnat :", self.gagnant.nom)
+                #print("2eme elif ", "enchere no ", self.numero, "gagnat :", self.gagnant.nom)
                 self.gagnant.affecterTache(self)
                 self.enchereTerminée()
             
@@ -104,7 +104,7 @@ class Enchere(Tache):
         for i in range(len(self.participants)) :
             self.participants[i].offre = "Aucune"
             self.participants[i].EnchereEnCours = False
-            print(self.participants[i].nom, " : ", self.participants[0].EnchereEnCours)
+            #print(self.participants[i].nom, " : ", self.participants[0].EnchereEnCours)
 
         self.EnchereFrame.pack_forget()
         self.EnchereFrame.destroy()

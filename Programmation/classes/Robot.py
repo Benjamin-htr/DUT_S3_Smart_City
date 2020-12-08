@@ -127,6 +127,10 @@ class Robot:
         self.destination = resolution[len (resolution) - 1]
         self.chemin = Chemin(resolution)
 
+    def setCheminAvecResolution(self, resolution) -> None:
+        self.destination = resolution[len (resolution) - 1]
+        self.chemin = Chemin(resolution)
+
     def deplacement(self, tailleX) -> str:
         if not(self.chemin.vide()): 
             #print('rentré')
@@ -333,15 +337,18 @@ class Robot:
                 self.tache = None
                 self.outline='white'
                 self.carte.carte.itemconfigure(self.form, outline = 'white', width = tailleX/tailleX)
-                print('Tache terminée ! ', self.equipe.name, ' argent : ', self.equipe.argent)
+                #print('Tache terminée ! ', self.equipe.name, ' argent : ', self.equipe.argent)
                 return retour
         
     def checkBatterie(self, tailleX):
         if self.batterie < 0:
             print("J'ai moins 0 en batterie enculé : " + str(self.batterie) )
+
         stations = self.carte.getStationRecharge()
         stationPlusProche = self.PlusProcheVolOiseau(stations, "Station")
-        distance = len(self.carte.resolution(self.cellule.getPosition(), stationPlusProche.getCellule().getPosition()))
+        resolution = self.carte.resolution(self.cellule.getPosition(), stationPlusProche.getCellule().getPosition())
+        distance = len(resolution)
+
 
         if (distance + 1) * self.perteBatterie > self.batterie - 2*self.perteBatterie:
             if not isinstance(self.ObjetDestination, StationRecharge) :
@@ -351,7 +358,8 @@ class Robot:
 
                 self.ObjetDestination = stationPlusProche
                 self.destination = stationPlusProche.getCellule().getPosition()
-                self.setChemin(self.destination)  
+                self.setCheminAvecResolution(resolution)
+                #self.setChemin(self.destination)  
 
             self.outline='blue'
             self.carte.carte.itemconfigure(self.form, outline = 'blue', width = tailleX/10)
@@ -392,15 +400,3 @@ class Robot:
             if self.ObjetDestination in self.carte.lieu :
                 self.ObjetDestination.arriveeRobot(self)
                 self.enRecharge=True
-
-
-
-
-
-
-
-
-
-        
-
-        
