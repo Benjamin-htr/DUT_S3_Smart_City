@@ -29,7 +29,7 @@ class Simulation:
 
         self.numeroEnchere = 1
 
-    def generationCarte(self, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
+    def generationCarte(self, nbEquipes, nbRobotParEquipe, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
         carte = Carte(self.CanvasCarte, nbCells)
         carte.creationCartes(densite)
         carte.dessinerCarte()
@@ -38,7 +38,7 @@ class Simulation:
         carte.dessinerStationsRecharges(tailleStationRecharge)
 
         #on génère les equipes :
-        self.genererEquipes(2)
+        self.genererEquipes(nbEquipes, nbRobotParEquipe)
 
         #on génère les tâches :
         self.genererTaches()
@@ -46,9 +46,7 @@ class Simulation:
 
         #self.afficher(carte)
 
-    def genererEquipes(self, nbEquipes = 2) :
-        nbRobots=self.carte.nx / 4
-
+    def genererEquipes(self, nbEquipes, nbRobotParEquipe) :
         for i in range (nbEquipes) :
             name = self.EquipesNames[random.randint(0,len(self.EquipesNames)-1)]
             self.EquipesNames.remove(name)
@@ -57,7 +55,7 @@ class Simulation:
 
             self.equipes.append(Equipe(name, letter))
             #for j in range(int(2)) :
-            for j in range(int(nbRobots/nbEquipes)) :
+            for j in range(nbRobotParEquipe) :
                 robotName = self.RobotsNames[random.randint(0,len(self.RobotsNames)-1)]
                 color = self.colors[random.randint(0,len(self.colors)-1)]
                 robot = self.ajouterRobot(robotName, color, self.equipes[i])

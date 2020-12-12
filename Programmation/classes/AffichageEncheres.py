@@ -23,7 +23,7 @@ class AffichageEncheres:
         #on dessine le cadre :
         self.frame = Frame(self.window, height = 500, width=270, bg=self.bg, highlightbackground="gray65", highlightthickness=1)
         #on l'affiche :
-        self.frame.grid(row=1, column =4, padx=10)
+        self.frame.grid(row=1, column =4, columnspan = 3, padx=10, pady = 10)
         self.frame.pack_propagate(False)
         self.frame.grid_propagate(False)
 

@@ -6,6 +6,7 @@ from classes.Tache import Tache
 from classes.Enchere import Enchere
 from tkinter import *
 from tkinter import messagebox
+from tkinter.font import Font
 import time
 import random
 
@@ -44,6 +45,12 @@ class GestionSimulation:
 
         #nb de cellules (nb de cellule en largeur = nb de cellule en hauteur):
         self.nbCells=20
+
+        #nombre d'équipes :
+        self.nbEquipes = 2
+
+        #nombre de robots par équipes :
+        self.nbRobotParEquipe = int((self.nbCells/4)/self.nbEquipes)
 
         #taille des cellules (utiles pour l'affichage de la carte)
         self.tailleX=0
@@ -173,7 +180,7 @@ class GestionSimulation:
 
             #on créer la simulation :
             controlSimulation = ControlSimulation()
-            sim = controlSimulation.creerSimulation(self.CanvasCarte, self.nbCells, self.densite, self.tailleStationRecharge, self.tailleLieuxMission)
+            sim = controlSimulation.creerSimulation(self.nbEquipes, self.nbRobotParEquipe, self.CanvasCarte, self.nbCells, self.densite, self.tailleStationRecharge, self.tailleLieuxMission)
             self.controlSimulation = controlSimulation
         
 
@@ -353,16 +360,31 @@ class GestionSimulation:
             entree5 = Spinbox(newWindow, textvariable=var5, from_=30, to=100, width=10)
             entree5.grid(row=9, sticky=W)
 
+            Label(newWindow,  text ="Nombre d'équipes de 1 à 10 :", wraplength=180, width=25, anchor=W, justify=LEFT).grid(row=10, sticky=W)
+            var6 = IntVar(newWindow)
+            var6.set(self.nbEquipes)
+            entree6 = Spinbox(newWindow, textvariable=var6, from_=1, to=10, width=10)
+            entree6.grid(row=11, sticky=W)
+
+            Label(newWindow,  text ="Nombre de robots par équipes de 1 à 15:", wraplength=180, width=25, anchor=W, justify=LEFT).grid(row=12, sticky=W)
+            var7 = IntVar(newWindow)
+            var7.set(self.nbRobotParEquipe)
+            entree7 = Spinbox(newWindow, textvariable=var7, from_=1, to=15, width=10)
+            entree7.grid(row=13, sticky=W)
+
             Confirmer = Button(newWindow, text='Confirmer', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:Confirmer())
-            Confirmer.grid(row= 10, pady=10)
+            Confirmer.grid(row= 14, pady=10)
 
             #enregistre les modifications effectuées
             def Confirmer() :
                 self.tailleRobot=int(entree3.get())
                 self.densite=int(entree2.get())
                 self.tailleStationRecharge=int(entree5.get())
+                self.nbEquipes=int(entree6.get())
                 self.tailleLieuxMission=int(entree4.get())
                 self.nbCells=int(entree1.get())
+                self.nbRobotParEquipe=int(entree7.get())
+                
                 
 
 
@@ -397,5 +419,32 @@ class GestionSimulation:
             icon=PhotoImage(file="settings.png")
             settings = Button(self.window, image = icon, height = 20, width = 20, cursor="hand2", overrelief=GROOVE, command =lambda:self.OpenSettings())
             settings.grid(row= 0, column=3) 
+
+            #légende :
+            legende = Frame(self.window, height = 100, width=270)
+            legende.grid(row=2, column = 4)
+            StationFrame = Frame(legende)
+            StationFrame.pack(fill=X)
+            canva = Canvas(StationFrame, bg = 'blue', height =24, width = 24, highlightthickness=0)
+            canva.grid(row=0, column=0, padx = 5)
+            Robot = Label(StationFrame, text = ': Stations de recharges', font=Font(family="Helvetica",size=12,weight="normal"), anchor=W)
+            Robot.grid(row=0, column = 1, pady = 5)
+
+            LieuDepFrame = Frame(legende)
+            LieuDepFrame.pack(fill=X)
+            canva = Canvas(LieuDepFrame, bg = 'red', height =24, width = 24, highlightthickness=0)
+            canva.grid(row=0, column=0, padx = 5)
+            Robot = Label(LieuDepFrame, text = ': Lieu de départ des tâches', font=Font(family="Helvetica",size=12,weight="normal"), anchor=W)
+            Robot.grid(row=0, column = 1, pady = 5)
+
+            LieuArrFrame = Frame(legende)
+            LieuArrFrame.pack(fill=X)
+            canva = Canvas(LieuArrFrame, bg = 'green', height =24, width = 24, highlightthickness=0)
+            canva.grid(row=0, column=0, padx = 5)
+            Robot = Label(LieuArrFrame, text = ": Lieu d'arrivée des tâches", font=Font(family="Helvetica",size=12,weight="normal"), anchor=W)
+            Robot.grid(row=0, column = 1, pady=5)
+
+
+
 
             self.window.mainloop()
