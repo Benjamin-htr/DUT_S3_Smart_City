@@ -78,12 +78,21 @@ class Scoreboard:
             Equipeframe = Frame(self.ScoreFrame.viewPort, bg=self.bg, highlightbackground="black", highlightthickness=1)
             Equipeframe.pack(fill=X)
 
+    
+
             NameEquipeFrame = Frame(Equipeframe, bg=self.bg)
             NameEquipeFrame.pack(fill=X)
+
+            modeDeplacement = 'Algorithme Déplacement : ' + self.equipes[i].modeDeplacement
+            algorithme = Label(Equipeframe, text=modeDeplacement, bg=self.bg, font=Font(family="Helvetica",size=12,weight="normal"), anchor=W)
+            algorithme.pack(fill=X)
+
             letter = Label(NameEquipeFrame, text=self.equipes[i].letter, bg=self.bg, font=Font(family="Fixedsys",size=24,weight="bold"), anchor=W)
             letter.grid(row=0, column=0)
             equipe = Label(NameEquipeFrame, textvariable = self.descriptionEquipes[self.equipes[i]], bg=self.bg, font=Font(family="Helvetica",size=14,weight="bold"), anchor=W)
             equipe.grid(row=0, column = 1)
+
+
 
             self.chargerRobots(Equipeframe, equipes[i])
 

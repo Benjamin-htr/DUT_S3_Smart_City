@@ -7,8 +7,10 @@ from classes.Enchere import Enchere
 from tkinter import *
 from tkinter import messagebox
 from tkinter.font import Font
+from tkinter import ttk
 import time
 import random
+
 
 
 class GestionSimulation:
@@ -98,6 +100,10 @@ class GestionSimulation:
 
         self.vitesse = 1000 #en miliseconde
 
+        #mode de déplacement :
+        self.modeDeplacement = StringVar()
+        self.modeDeplacement.set("Tous djikstra")
+
 
 
 
@@ -180,7 +186,7 @@ class GestionSimulation:
 
             #on créer la simulation :
             controlSimulation = ControlSimulation()
-            sim = controlSimulation.creerSimulation(self.nbEquipes, self.nbRobotParEquipe, self.CanvasCarte, self.nbCells, self.densite, self.tailleStationRecharge, self.tailleLieuxMission)
+            sim = controlSimulation.creerSimulation(self.nbEquipes, self.nbRobotParEquipe, str(self.modeDeplacement.get()), self.CanvasCarte, self.nbCells, self.densite, self.tailleStationRecharge, self.tailleLieuxMission)
             self.controlSimulation = controlSimulation
         
 
@@ -319,11 +325,17 @@ class GestionSimulation:
     def getTaches(self) -> list:
         return self.controlSimulation.getTaches()
 
+
+
     """
     Méthode permettant d'ouvrir la fenêtre des options si elle n'est pas déja ouverte :
     """
     def OpenSettings(self) :
         if self.WindowSettingState == False :
+            def SelectListeDeroulante(event) :
+                self.modeDeplacement.set(listeDeroulante.get())
+                #print(self.modeDeplacement.get())
+
             self.WindowSettingState = True
             newWindow = Toplevel(self.window) 
             newWindow.title("Paramètres") 
@@ -372,8 +384,13 @@ class GestionSimulation:
             entree7 = Spinbox(newWindow, textvariable=var7, from_=1, to=15, width=10)
             entree7.grid(row=13, sticky=W)
 
+            Label(newWindow,  text ="Algorithme de déplacement des équipes :", wraplength=180, width=25, anchor=W, justify=LEFT).grid(row=14, sticky=W)
+            listeDeroulante = ttk.Combobox(newWindow, values=["Tous djikstra", "Tous Astar", "Djikstra et Astar 1 fois sur 2"], width = 25, textvariable=self.modeDeplacement)
+            listeDeroulante.grid(row=15, sticky=W)
+            listeDeroulante.bind("<<ComboboxSelected>>", SelectListeDeroulante)
+
             Confirmer = Button(newWindow, text='Confirmer', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:Confirmer())
-            Confirmer.grid(row= 14, pady=10)
+            Confirmer.grid(row= 16, pady=10)
 
             #enregistre les modifications effectuées
             def Confirmer() :

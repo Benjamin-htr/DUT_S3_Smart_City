@@ -16,6 +16,8 @@ class Robot:
         self.carte = carte
         self.simulation = simulation
         self.chemin = None
+
+        #cellule de destination :
         self.destination = None
         self.equipe = equipe
         self.perteBatterie = random.randint(1,2)
@@ -47,6 +49,11 @@ class Robot:
         self.EnchereEnCours = False
 
         self.NearbyGagnant = False
+
+        #Pour A Star :
+        self.listeOuverte = []
+        self.listeFermee = []
+        ###
 
         
 
@@ -122,13 +129,15 @@ class Robot:
 
     def setChemin(self, positionArr) -> None:
         #print('setchemin')
-        resolution = self.carte.resolution(self.cellule.getPosition() , positionArr)
-        #print("Resolution" ,resolution)
-        self.destination = resolution[len (resolution) - 1]
+        if self.equipe.modeDeplacement == "Djikstra" :
+            resolution = self.carte.resolution(self.cellule.getPosition() , positionArr)
+
+        elif self.equipe.modeDeplacement == "Astar" :
+            resolution = self.cheminAStar(self.carte.cellule(positionArr[0], positionArr[1]))
         self.chemin = Chemin(resolution)
+        
 
     def setCheminAvecResolution(self, resolution) -> None:
-        self.destination = resolution[len (resolution) - 1]
         self.chemin = Chemin(resolution)
 
     def deplacement(self, tailleX) -> str:
@@ -259,8 +268,10 @@ class Robot:
 
             #je définie le lieu de depart de la tache comme etant le nouvel obj de destination du robot
             self.ObjetDestination = self.tache.getDepart()
-            self.destination = self.tache.getDepart().getCellule().getPosition()
-            self.setChemin(self.destination)
+            self.destination = self.tache.getDepart().getCellule()
+            self.setChemin(self.destination.getPosition())
+            #print("destination :", self.destination)
+            #print("a etoile : ",  self.cheminAStar(self.destination))
 
             #si le zoom est activé et que j'ai déjà zoomé alors je réinitialise la caméra :
             if self.cameraMoovable and self.scale != 1 :
@@ -277,7 +288,7 @@ class Robot:
 
     def estSurLieuDepart(self) :
         arrive = False
-        if (self.ObjetDestination == self.tache.getDepart()) and (self.cellule.getPosition() == self.destination) :
+        if (self.ObjetDestination == self.tache.getDepart()) and (self.cellule.getPosition() == self.destination.getPosition()) :
             if self.ObjetDestination in self.carte.lieu :
                 self.ajouterMarchandise((self.ObjetDestination.getMarchandise()))
                 self.tache.supprimerForme()
@@ -285,8 +296,8 @@ class Robot:
 
                 #je définie le lieu d'arrivee de la tache comme etant le nouvelle obj de destination du robot
                 self.ObjetDestination = self.tache.getArrivee()
-                self.destination = self.tache.getArrivee().getCellule().getPosition()
-                self.setChemin(self.destination)
+                self.destination = self.tache.getArrivee().getCellule()
+                self.setChemin(self.destination.getPosition())
                 #print("lieu arrivee", self.destination)
 
                 arrive = True
@@ -295,7 +306,7 @@ class Robot:
             
     def estSurLieuArrive(self) :
         arrive = False
-        if (self.ObjetDestination == self.tache.getArrivee()) and (self.cellule.getPosition() == self.destination) :
+        if (self.ObjetDestination == self.tache.getArrivee()) and (self.cellule.getPosition() == self.destination.getPosition()) :
             if self.ObjetDestination in self.carte.lieu :
                 self.deposerMarchandise()
                 self.tache.supprimerForme()
@@ -344,7 +355,10 @@ class Robot:
 
         stations = self.carte.getStationRecharge()
         stationPlusProche = self.PlusProcheVolOiseau(stations, "Station")
-        resolution = self.carte.resolution(self.cellule.getPosition(), stationPlusProche.getCellule().getPosition())
+        if self.equipe.modeDeplacement == "Djikstra" :
+            resolution = self.carte.resolution(self.cellule.getPosition(), stationPlusProche.getCellule().getPosition())
+        elif self.equipe.modeDeplacement == "Astar" :
+            resolution = self.cheminAStar(stationPlusProche.getCellule())
         distance = len(resolution)
 
 
@@ -355,7 +369,7 @@ class Robot:
                 self.PreviousOutline = self.outline
 
                 self.ObjetDestination = stationPlusProche
-                self.destination = stationPlusProche.getCellule().getPosition()
+                self.destination = stationPlusProche.getCellule()
                 self.setCheminAvecResolution(resolution)
                 #self.setChemin(self.destination)  
 
@@ -378,7 +392,7 @@ class Robot:
 
 
     def rechargeFinie(self, tailleX) :
-        if (isinstance(self.ObjetDestination, StationRecharge) and (self.cellule.getPosition() == self.destination)) :
+        if (isinstance(self.ObjetDestination, StationRecharge) and (self.cellule.getPosition() == self.destination.getPosition())) :
             self.enRecharge=False
             self.ObjetDestination.departRobot(self)
 
@@ -388,13 +402,107 @@ class Robot:
 
             self.ObjetDestination = self.PreviousObjetDestination
             self.destination = self.PreviousDestination
-            self.setChemin(self.destination)
+            self.setChemin(self.destination.getPosition())
 
 
 
     def estSurStation(self) :
         #self.enRecharge=False
-        if (isinstance(self.ObjetDestination, StationRecharge) and (self.cellule.getPosition() == self.destination)) :
+        if (isinstance(self.ObjetDestination, StationRecharge) and (self.cellule.getPosition() == self.destination.getPosition())) :
             if self.ObjetDestination in self.carte.lieu :
                 self.ObjetDestination.arriveeRobot(self)
                 self.enRecharge=True
+    
+    #Pour algorithme A Star :
+    def getVoisins(self, cell) -> list :
+        liste =  []
+        CoordVoisins = self.carte.attenantes((cell.x, cell.y))
+        for coord in CoordVoisins :
+            liste.append(self.carte.cellule(coord[0], coord[1]))
+        return liste
+
+
+    def ajouterCasesAdjacentes(self, cellCourrante, cellArr) :
+        voisins = self.getVoisins(cellCourrante)
+        for voisin in voisins :
+            if (voisin not in self.listeFermee) :
+                coutCase = cellCourrante.coutCase + 1
+                coutHeuristique = (((cellArr.x-voisin.x)**2) + ((cellArr.y - voisin.y)**2)) ** 0.5
+                coutTotal = coutCase + coutHeuristique
+                parent = cellCourrante
+
+                if voisin in self.listeOuverte :
+                    if coutTotal < voisin.coutTotal :
+                        voisin.coutCase = coutCase
+                        voisin.coutHeuristique = coutHeuristique
+                        voisin.coutTotal = coutTotal
+                        voisin.parent = parent
+
+                else :
+                    voisin.coutCase = coutCase
+                    voisin.coutHeuristique = coutHeuristique
+                    voisin.coutTotal = coutTotal
+                    voisin.parent = parent
+                    self.listeOuverte.append(voisin)
+
+
+    def getMeilleurNoeud(self) -> Cellule :
+        MeilleurNoeud = self.listeOuverte[0]
+        for noeud in self.listeOuverte :
+            if noeud.coutTotal < MeilleurNoeud.coutTotal :
+                MeilleurNoeud = noeud
+        return MeilleurNoeud
+
+    def ajouterListeFermee(self, cell) :
+        self.listeFermee.append(cell)
+        if cell in self.listeOuverte :
+            self.listeOuverte.remove(cell)
+        else :
+            print("Le noeud n'apparaît pas dans la liste ouverte, impossible à supprimer !")
+
+
+    def reconstituerChemin(self) -> list :
+        chemin = []
+        arrivee = self.listeFermee[len(self.listeFermee)-1]
+        chemin.insert(0, arrivee.getPosition())
+
+        parent = arrivee.parent
+        while parent != 0 :
+            chemin.insert(0, parent.getPosition())
+            parent = parent.parent
+
+        return chemin
+        
+
+    def cheminAStar(self, cellArr) -> list :
+        #print(self.nom, " : Astar")
+        cellCourante = self.cellule
+        cellCourante.parent = 0
+        cellCourante.coutCase = 0
+
+        self.listeOuverte.append(cellCourante)
+        self.ajouterListeFermee(cellCourante)
+        self.ajouterCasesAdjacentes(cellCourante, cellArr)
+
+        while (cellCourante != cellArr) and (len(self.listeOuverte) != 0) :
+            cellCourante = self.getMeilleurNoeud()
+            self.ajouterListeFermee(cellCourante)
+            self.ajouterCasesAdjacentes(cellCourante, cellArr)
+
+        if (cellCourante == cellArr) :
+            chemin = self.reconstituerChemin()
+            self.listeOuverte = []
+            self.listeFermee = []
+            return chemin
+
+
+
+
+
+
+        
+
+
+
+        
+        

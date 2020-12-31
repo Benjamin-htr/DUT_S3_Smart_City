@@ -29,7 +29,7 @@ class Simulation:
 
         self.numeroEnchere = 1
 
-    def generationCarte(self, nbEquipes, nbRobotParEquipe, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
+    def generationCarte(self, nbEquipes, nbRobotParEquipe, modeDeplacement, nbCells, densite, tailleStationRecharge, tailleLieuxMission):
         carte = Carte(self.CanvasCarte, nbCells)
         carte.creationCartes(densite)
         carte.dessinerCarte()
@@ -38,7 +38,8 @@ class Simulation:
         carte.dessinerStationsRecharges(tailleStationRecharge)
 
         #on génère les equipes :
-        self.genererEquipes(nbEquipes, nbRobotParEquipe)
+        self.genererEquipes(nbEquipes, nbRobotParEquipe, modeDeplacement)
+        #self.genererEquipes(1, 1)
 
         #on génère les tâches :
         self.genererTaches()
@@ -46,15 +47,25 @@ class Simulation:
 
         #self.afficher(carte)
 
-    def genererEquipes(self, nbEquipes, nbRobotParEquipe) :
+    def genererEquipes(self, nbEquipes, nbRobotParEquipe, modeDeplacement) :
         for i in range (nbEquipes) :
             name = self.EquipesNames[random.randint(0,len(self.EquipesNames)-1)]
             self.EquipesNames.remove(name)
             letter = self.letters[0]
             self.letters.remove(letter)
 
-            self.equipes.append(Equipe(name, letter))
-            #for j in range(int(2)) :
+            if modeDeplacement == "Tous djikstra" :
+                self.equipes.append(Equipe(name, letter, "Djikstra"))
+            elif modeDeplacement == "Tous Astar" :
+                self.equipes.append(Equipe(name, letter, "Astar"))
+            elif modeDeplacement == "Djikstra et Astar 1 fois sur 2" :
+                if i%2 == 0 :
+                    mode = "Djikstra"
+                elif i%2 == 1 :
+                    mode = "Astar"
+                self.equipes.append(Equipe(name, letter, mode))
+
+            #for j in range(int(1)) :
             for j in range(nbRobotParEquipe) :
                 robotName = self.RobotsNames[random.randint(0,len(self.RobotsNames)-1)]
                 color = self.colors[random.randint(0,len(self.colors)-1)]
@@ -109,8 +120,10 @@ class Simulation:
         
         for i in range(nbTachesSimples) :
             self.ajouterTache()
-        for i in range(nbTachesEncheres) :
-            self.ajouterEnchere()
+
+        if len(self.robots) != 1 :
+            for i in range(nbTachesEncheres) :
+                self.ajouterEnchere()
 
         
 

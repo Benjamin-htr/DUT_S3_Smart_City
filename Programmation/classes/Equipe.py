@@ -2,11 +2,12 @@ from classes.Robot import Robot
 
 class Equipe:
     
-    def __init__(self, name : str, letter):
+    def __init__(self, name : str, letter, modeDeplacement):
         self.name = name
         self.argent = 0
         self.robots = []
         self.letter = letter
+        self.modeDeplacement = modeDeplacement
         
     def ajouterRobot(self, nom, color, cellule, carte, simulation) -> Robot:
         robot = Robot(nom,color,cellule,carte,simulation, self)
