@@ -83,7 +83,7 @@ class Enchere(Tache):
 
             self.nomGagnant = self.gagnant.nom
             
-        if self.duree == 0 :
+        if int(self.duree) == 0 :
             if len(self.participants) == 1 :
                 self.nomGagnant = self.participants[0].nom
                 self.gagnant = self.participants[0]

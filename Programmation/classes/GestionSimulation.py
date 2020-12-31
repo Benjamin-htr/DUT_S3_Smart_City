@@ -389,8 +389,16 @@ class GestionSimulation:
             listeDeroulante.grid(row=15, sticky=W)
             listeDeroulante.bind("<<ComboboxSelected>>", SelectListeDeroulante)
 
+            Label(newWindow,  text ="Vitesse de déplacement des robots (1 pas toutes les tant de ms :):", wraplength=180, width=25, anchor=W, justify=LEFT).grid(row=16, sticky=W)
+            var8 = IntVar(newWindow)
+            var8.set(self.vitesse)
+            entree8 = Spinbox(newWindow, textvariable=var8, from_=100, to=1000, increment= 100, width=10)
+            entree8.grid(row=17, sticky=W)
+
+
+
             Confirmer = Button(newWindow, text='Confirmer', height = 1, width = 20, cursor="hand2", overrelief=GROOVE, command=lambda:Confirmer())
-            Confirmer.grid(row= 16, pady=10)
+            Confirmer.grid(row= 18, pady=10)
 
             #enregistre les modifications effectuées
             def Confirmer() :
@@ -401,6 +409,7 @@ class GestionSimulation:
                 self.tailleLieuxMission=int(entree4.get())
                 self.nbCells=int(entree1.get())
                 self.nbRobotParEquipe=int(entree7.get())
+                self.vitesse=int(entree8.get())
                 
                 
 
