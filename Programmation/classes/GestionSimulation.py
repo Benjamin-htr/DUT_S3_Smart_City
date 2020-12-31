@@ -88,7 +88,7 @@ class GestionSimulation:
         
         #personnalisation de la fenêtre
         self.window.title('smart_City')
-        self.window.geometry('1350x700')
+        self.window.geometry('1350x700-50+40')
         self.window.iconbitmap('logo.ico')
         self.window.resizable(height=False, width=False)
 
