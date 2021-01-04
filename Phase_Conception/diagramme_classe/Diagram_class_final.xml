@@ -1,0 +1,312 @@
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>444</x><y>152</y><w>390</w><h>520</h></coordinates><panel_attributes>GestionSimulation
+--
+- zoom : Zoom
+- window : Window
+- nbLieuMission : int
+- nbStationRecharge : int
+- EnCours : Bool
+- WindowNewRobState : Bool
+- WindowSettingState :Bool
+- tailleRobot : int
+- densite : int
+- tailleStationRecharge : int
+- tailleLieuxMission : int
+- tailleTaches : int
+- nbCellules : int
+- taileX : int
+- scale : int
+- cameraMoovable : Bool
+- pause : Bool
+- textStartButton : stringVar()
+- CanvasCarte : Canvas
+- vitesse : int
+--
++ ajouterRobot(nom : string) : void
++ afficherRobot () : void
++ déplacement(type : string) : void
++ lancerSimulation() : void
++ arreterSimulation() : void
++ afficherGagnant() : void
++ getRobots() : list
++ getTaches() : list
++ openSetting() : void
++ afficherSimulation() : void
++ demanderNom() : string
++ construct(nbLieuMission : int, nbStationRecharge : int)
+
+
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>823</x><y>172</y><w>280</w><h>60</h></coordinates><panel_attributes>lt=-&gt;
+m1=1..1</panel_attributes><additional_attributes>10;10;260;10;260;40</additional_attributes></element><element><id>UMLClass</id><coordinates><x>914</x><y>1361</y><w>320</w><h>209</h></coordinates><panel_attributes>Cellule
+--
+- x : int
+- y : int
+- murs : dict
+- coutCase : int
+- coutHeuristique : int
+- couTotal : int
+- parent : Cellule
+--
++ construct(x : int, y : int, lieu = None : Lieu)
++ toString() : string
++ setLieu(lieu : Lieu) : void
++ murPresent(direction) : bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1474</x><y>981</y><w>210</w><h>89</h></coordinates><panel_attributes>LieuMission
+--
+- stock : array
+--
++ construct(stock)
++ getMarchandise() : marchandise</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1474</x><y>811</y><w>170</w><h>119</h></coordinates><panel_attributes>SationRecharge
+--
+- garage : list
+- tauxDeRecharge : int
+--
++ArriveeRobot(robot ) :void
++ departRobot(robot) : void
++ Recharger(tailleX : int) : void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1194</x><y>902</y><w>150</w><h>130</h></coordinates><panel_attributes>Lieu
+--
+- signe : string
+--
++ construct(x, y)
++ getSigne() : string
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1334</x><y>851</y><w>160</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;110;80;110;140;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>684</x><y>862</y><w>399</w><h>420</h></coordinates><panel_attributes>Carte
+--
+- canvas : canvas
+- nx : int
+- ny : int
+- cadrillage : list
+- lieu : list
+- longueur : int
+- largeur : int
+--
++ construct()
++ cellule(x : int, y : int)
++ toString() : string
++ creationCartes(densite) : void
++ dessinerCarte() : void
++ dessinerStationRecharge(tailleStation) : void
++ getCelluleRandom () : cellule
++ estPresent(cellule) : bool
++ ajouterLieuMission(stock : list) : lieu
++ ajouterStationRecharge() : void
++ effecerMur(coordonnée : tuple, orientation : string) : void
++ murPresentCell(direction : string, cellule) : bool
++ distance(positionDep : tuple) : list
++ getDistance(positionDep : tuple, positionArr : tuple) : int
++ attenantes(coord : tuple) : list
++ resolution(positionDep : tuple, positionArr : tuple) : list
++ getLieuMission() : list
++ getStationsRecharges() : list
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1073</x><y>942</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>10;10;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1053</x><y>1272</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>914</x><y>412</y><w>340</w><h>360</h></coordinates><panel_attributes>Simulation
+--
+- CnavasCarte : Canvas
+- robots : list
+- taches : list
+- Equipes : list
+--
++ construct(nbLieuMission : int, nbStationRecharge : int)
++ générationCarte(nbCells, densite, tailleStation, tailleLieuMission) : void
++ ajouterRobot(name, couleur, equipe) : robot
++ getRobots() : list
++ getTaches() : list
++ getEncheres() : list
++ estPresent(cellule) : bool
++ ajouterEnchere() : void
++ ajouterTache() : void
++ genererTaches() : void
++ genererEquipes(nb = 2) : void
++ launchStations(taille) : void
++ checkEncheres(vitesse) : void
++ getEquipeGagnant : Equipe
++ Egalité() : bool
++ créerRobot(nom) : Robot
++ getListeTaches() : liste</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1043</x><y>761</y><w>50</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=1..1
+m2=1..1</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>1083</x><y>322</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;-
+m2=1.1</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>864</x><y>211</y><w>429</w><h>119</h></coordinates><panel_attributes>ControlSimulation
+--
+--
++ construct()
++ créerSimulation(nbLieuMission : int, nbStationRecharge : int) : Simulation 
++ créerRobot(nom) : Robot
++ getRobots() : list
++ getTaches() : list
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1223</x><y>1022</y><w>110</w><h>450</h></coordinates><panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;&gt;
+m1=0..1
+</panel_attributes><additional_attributes>70;10;70;430;10;430</additional_attributes></element><element><id>UMLClass</id><coordinates><x>144</x><y>962</y><w>460</w><h>720</h></coordinates><panel_attributes>Robot
+--
+- nom : string
+- couleur : list
+- destination : Cellule
+- perteBatterie : int
+- ObjetDestination : Objet
+- coffre : list
+- poidMax : int
+- forme : TkinterObject
+- forme2 : TkinterText
+- argent : int
+- outline : string
+- batterie
+- enRecharge : Bool
+- gagnant : Bool
+- offre : string
+- EnchereEnCours : bool
+- listeOuverte : list
+- listeFermee : list
+--
++ dessinerRobot(tailleX : int, tailleRobot : int, nouveau : bool) : void
++ supprimerForme() : void
++ deplacementRandom(tailleX) : void
++ setChemin(postionArrivée) : void
++ setCheminAvecResolution(resolution : list) : void
++ deplacement(tailleX) : string
++ choisirDirection() : string
++ verificationMur(direction) : bool
++ plusProcheDjikstra(liste) : Objet
++ plusProcheVoloiseaux(liste) : Objet
++ getDestination() : cellule
++ ajouterMarchandise(liste) : void
++ déposerMarchandise() : void
++ acquisitionTache(cameraMoovable, scale, tailleX, tailleLieuMission, zoom) : bool
++ affecterTache(tache) : void
++ estSurLieuDepart() : bool
++ estSurLieuArrivée() : bool
++ accomplirTache(cameraMoovable, scale, tailleX, tailleLieuMission, zoom) : Tache
++ checkBatterie(tailleX) : void
++ RechargeFinie(tailleX) : void
++ estSurStation() : bool
++ getVoisins() : list
++ ajouterCasesAdjacentes(cellCourrante, cellArr)
++ getMeilleurNoeud() : Cellule
++ ajouterListeFermee(Cellule) 
++ reconstituerChemin() : list
++ cheminAStar(cellArr : Cellule) : list
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>593</x><y>992</y><w>110</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>594</x><y>721</y><w>340</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>320;10;10;11</additional_attributes></element><element><id>UMLClass</id><coordinates><x>624</x><y>1372</y><w>210</w><h>190</h></coordinates><panel_attributes>Tache
+--
+- temps : int
+- recompense : int
+- lieuDepart : Lieu
+- LieuArrivee : Lieu
+- forme : TkinterObject
+--
++ getDepart() : LieuMission
++ getArrivee() : Cellule
++ getTemps() : int
++ dessinerLieu(Lieu, tailleX, tailleLieuMission, couleur) : void
++ supprimerForme() : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>594</x><y>1262</y><w>80</w><h>130</h></coordinates><panel_attributes>lt=&lt;-
+m2=1..1</panel_attributes><additional_attributes>60;110;60;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>824</x><y>1402</y><w>110</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes><additional_attributes>90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>804</x><y>1022</y><w>560</w><h>630</h></coordinates><panel_attributes>lt=-
+m2=1..1
+m1=0..*</panel_attributes><additional_attributes>10;540;10;610;520;610;520;10</additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>682</y><w>830</w><h>1070</h></coordinates><panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;
+m2=0..*</panel_attributes><additional_attributes>540;880;540;1050;10;1050;10;10;810;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>300</x><y>1802</y><w>210</w><h>110</h></coordinates><panel_attributes>Marchandise
+--
+- nom : string
+- poids : float
+--
++ getPoids() : string
++ getName() : float</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>473</x><y>1062</y><w>1110</w><h>970</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>1070;10;1080;950;10;950;10;850</additional_attributes></element><element><id>Relation</id><coordinates><x>374</x><y>1672</y><w>50</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
+m2=0..*
+m1=1..1</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>390</x><y>702</y><w>210</w><h>180</h></coordinates><panel_attributes>Equipe
+--
+- nom : string
+- argent : int
+- letter : string
+- robots : list
+--
++ ajouterRobots(nom, couleur, cellule, carte, simulation) : Robot
++ getName() : string
++ ajouterArgent(montant) : void
++ getRobots() : liste
++ getArgent() : int</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>484</x><y>871</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+m1=0..*
+m2=1..1</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>660</x><y>1672</y><w>210</w><h>320</h></coordinates><panel_attributes>Enchère
+--
+- participants : array
+- durée : int
+- numero : int
+- offre : dict
+- nomGagnant : string
+- EnchereFrame : Frame
+- EnchereTime : Widget
+- EnchereGagnant : Widget
+- robotFrame : dict
+- descriptionRobots = dict
+--
++ arriverParticipant(robot) : void
++ checkEnhere(vitesse) : void
++ jouerEnchere() : void
++ encherTerminee() : void
++ Encherir(robot) : int
++ dessinerEnchere(root, bg) : Frame
++ chargerRobot(bg) : void
++ updateEnchereFrame(bg) : void
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>1552</y><w>30</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>140</x><y>0</y><w>210</w><h>170</h></coordinates><panel_attributes>zoom
+--
++ master : window
++ tailleXDeb : int
++ nbZoom : int
+--
++ move_Start(event) : void
++ move_move(event) : void
++ resetZoom(event) : int
++ resetZoom2() : int
++ zoom(event) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>190</y><w>340</w><h>280</h></coordinates><panel_attributes>Scoreboard
+--
+- window : window
+- equipes : list
+- bg : string
+- frames : list
+- scores : frame
+- descriptionEquipes : dict
+- robotsCanvas : dict
+- robotsFormes : dict
+- descriptionRobots : dict
+--
++ dessinerScoreboard() : void
++ chargerDonnees(equipes : list) : void
++ chargerEquipes(equipes : list) : void
++ chargerRobot(EquipeFrame : Frame, equipe : Equipe) : void
++ resetScoreboard() : void
++ updateScoreboard(equipes : list) : void
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>480</y><w>350</w><h>200</h></coordinates><panel_attributes>AffichageEncheres
+--
+- window : window
+- Encheres : list
+- bg : string
+- EnchereFrames : list
+--
++ dessiner() : void
++ chargerDonnees(encheres : list) : void
++ chargerEncheres(encheres : list) : void
++ updateAffichageEncheres(encheres : list) : void
++ deleteEnchereFrame(enchereFrame : frame, enchere) : void
++ resetAffichageEncheres() : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>160</x><y>762</y><w>210</w><h>100</h></coordinates><panel_attributes>Chemin
+--
+- chemin : list
+--
++ positionToDirection() : void
++ prochainePosition() : cellule
++ vide() : bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>130</y><w>120</w><h>60</h></coordinates><panel_attributes>lt=&lt;-
+m2=1..1</panel_attributes><additional_attributes>10;10;100;40</additional_attributes></element><element><id>Relation</id><coordinates><x>1334</x><y>951</y><w>160</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;80;10;140;80</additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>340</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m2=1..1</panel_attributes><additional_attributes>10;10;100;10</additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>530</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m2=1..1</panel_attributes><additional_attributes>10;10;100;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>850</y><w>50</w><h>130</h></coordinates><panel_attributes>lt=&lt;-
+m1=1..1
+m2=1..1</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>1030</x><y>1560</y><w>210</w><h>130</h></coordinates><panel_attributes>lt=&lt;-
+m2=0..1
+r2=- enfant
+
+r1=-parent</panel_attributes><additional_attributes>150;10;150;110;10;110;10;10</additional_attributes></element></diagram>

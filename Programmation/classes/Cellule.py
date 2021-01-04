@@ -20,7 +20,6 @@ class Cellule:
         self.coutHeuristique = None
         self.coutTotal = None
         self.parent = None
-        
 #end A Star
     
 
